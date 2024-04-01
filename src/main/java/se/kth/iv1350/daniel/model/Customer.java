@@ -7,20 +7,12 @@ import java.util.List;
 
 public class Customer
 {
-    private static Customer currentCustomer = null;
     Integer customerId = null;
     private List<Item> shopList;
-    private Customer(){
-        this.shopList = new ArrayList<>();
-    }
 
-    public static Customer getInstance()
+    public Customer()
     {
-        if (currentCustomer == null)
-        {
-            currentCustomer = new Customer();
-        }
-        return currentCustomer;
+        this.shopList = new ArrayList<>();
     }
 
     public void setCustomerId(Integer customerId)
@@ -37,14 +29,15 @@ public class Customer
     {
         return this.shopList;
     }
+
     public void addItem(ItemDTO itemInfo, Integer quantity)
     {
         this.shopList.add(new Item(itemInfo, quantity));
     }
 
-    public boolean isItemExist(int itemId)
+    public boolean contains(int itemId)
     {
-        for(Item item : shopList)
+        for (Item item : shopList)
         {
             if (item.getItemInfo().itemId() == itemId)
             {
@@ -56,7 +49,7 @@ public class Customer
 
     public void updateQuantity(int itemId, Integer quantity)
     {
-        for(Item item : shopList)
+        for (Item item : shopList)
         {
             if (item.getItemInfo().itemId() == itemId)
             {
@@ -65,7 +58,6 @@ public class Customer
             }
         }
     }
-
 
 
 }
