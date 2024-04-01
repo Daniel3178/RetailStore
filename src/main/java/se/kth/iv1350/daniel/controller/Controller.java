@@ -1,14 +1,12 @@
 package se.kth.iv1350.daniel.controller;
 
+import se.kth.iv1350.daniel.integration.accounting_system.AccountingSystem;
 import se.kth.iv1350.daniel.integration.discount_db.DiscountDB;
 import se.kth.iv1350.daniel.integration.inventory_db.Inventory;
 import se.kth.iv1350.daniel.model.Item;
 import se.kth.iv1350.daniel.model.Payment;
 import se.kth.iv1350.daniel.model.Sale;
-import se.kth.iv1350.daniel.model.dto.DiscountDTO;
-import se.kth.iv1350.daniel.model.dto.DiscountRequestDTO;
-import se.kth.iv1350.daniel.model.dto.ItemDTO;
-import se.kth.iv1350.daniel.model.dto.ReceiptDTO;
+import se.kth.iv1350.daniel.model.dto.*;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -40,6 +38,10 @@ public class Controller
     public void startNewSale()
     {
         this.currentSale = new Sale();
+    }
+    public void endSale()
+    {
+        this.currentSale = null;
     }
     public void addItem(int itemId, Integer quantity)
     {
@@ -75,10 +77,8 @@ public class Controller
     public ReceiptDTO pay(Double amount)
     {
         Payment customerPayment = new Payment(amount);
-//        this.currentSale.setCurrentPayment(customerPayment);
-
-        List<Item> allItem = currentSale.getCustomerShopList();
-
+        Inventory.getInstance().updateInventory(currentSale.getCustomerShopList());
+        AccountingSystem.getInstance().updateAccountingSystem(currentSale.getSaleInfo());
         customerPayment.register();
         return customerPayment.getReceipt(currentSale.getSaleInfo());
     }

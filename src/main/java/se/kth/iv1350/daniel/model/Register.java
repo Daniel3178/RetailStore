@@ -20,12 +20,15 @@ public class Register
 
     public void increaseAmount(double amount)
     {
+
         currentAmount += amount;
+        System.out.println("Register increased with some money: " + amount);
     }
 
     public void decreaseAmount(double amount)
     {
         currentAmount -= amount;
+        System.out.println("Register decreased with some money: " + this.currentAmount);
     }
 
     public double getCurrentAmount()
