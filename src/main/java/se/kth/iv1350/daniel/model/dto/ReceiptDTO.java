@@ -4,8 +4,9 @@ public record ReceiptDTO(SaleDTO saleInfo, double amountPaid, double changeAmoun
 {
     public void print()
     {
-        System.out.printf("total price: %-5f" ,
-                          saleInfo.totalPrice()
+        System.out.printf("total price: %-5f | change received: %-5f" ,
+                          saleInfo.totalPrice(),
+                          changeAmount
         );
         System.out.println("Receipt Printed");
     }
