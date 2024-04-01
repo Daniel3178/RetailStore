@@ -1,8 +1,11 @@
 package se.kth.iv1350.daniel.integration.inventory_db;
 
+import se.kth.iv1350.daniel.model.Item;
 import se.kth.iv1350.daniel.model.dto.DescriptionDTO;
 import se.kth.iv1350.daniel.model.dto.ItemDTO;
 import se.kth.iv1350.daniel.model.dto.PriceDTO;
+
+import java.util.List;
 
 public class Inventory
 {
@@ -27,5 +30,10 @@ public class Inventory
         return new ItemDTO(0.23, "Tomato", 1,
                            new DescriptionDTO("Italy", "Today"),
                            new PriceDTO("SEK", 12.0));
+    }
+
+    public void updateInventory(List<Item> allItems)
+    {
+        System.out.println("inventory update");
     }
 }
