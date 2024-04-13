@@ -1,11 +1,15 @@
 package se.kth.iv1350.daniel.model;
 import se.kth.iv1350.daniel.model.dto.*;
+
+import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
 
 public class Sale
 {
-
+    private static int saleId = 0;
     private double myTotalPrice;
     private final String myCurrentDate;
     private double myTotalVat;
@@ -18,7 +22,9 @@ public class Sale
         this.myItems = new ArrayList<>();
         this.myTotalVat = 0;
         this.myTotalPrice = 0;
-        this.myCurrentDate = "TODAY";
+        LocalDateTime now = LocalDateTime.now();
+        this.myCurrentDate = now.format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss"));
+        saleId += 1;
     }
 
 
@@ -31,7 +37,7 @@ public class Sale
     {
         for(Item item: myItems)
         {
-            if (item.getItemInfo().itemId() == itemId)
+            if (item.getItemId() == itemId)
             {
                 return true;
             }
@@ -58,11 +64,11 @@ public class Sale
         assert quantity > 0: "Quantity should be > 0";
         for (Item item : myItems)
         {
-            if (item.getItemInfo().itemId() == itemId)
+            if (item.getItemId() == itemId)
             {
                 item.increaseQuantity(quantity);
-                myTotalPrice += item.getItemInfo().price() * quantity *(1 + item.getItemInfo().vatRate());
-                myTotalVat += item.getItemInfo().price() * quantity * item.getItemInfo().vatRate();
+                myTotalPrice += item.getItemPrice() * quantity *(1 + item.getItemInfo().vatRate());
+                myTotalVat += item.getItemPrice() * quantity * item.getItemVat();
                 return new LastSaleUpdateDTO(item.getItemInfo(), quantity, myTotalPrice, myTotalVat);
             }
         }
@@ -98,16 +104,16 @@ public class Sale
      */
     public AppliedDiscountDTO applyDiscount(DiscountDTO discount)
     {
-        switch (discount.discountTypeDTO().discountType().getAmountType()){
+        switch (discount.getAmountType()){
             case AMOUNT: {
-                myTotalPrice -= discount.discountTypeDTO().value();
-                AppliedDiscountDTO discountInSale = new AppliedDiscountDTO(discount,discount.discountTypeDTO().value(),
+                myTotalPrice -= discount.getDiscountValue();
+                AppliedDiscountDTO discountInSale = new AppliedDiscountDTO(discount,discount.getDiscountValue(),
                 myTotalPrice);
                 myDiscounts.add(discountInSale);
                 return discountInSale;
             }
             case PRECENT: {
-                double tempReducedAmount = myTotalPrice * discount.discountTypeDTO().value();
+                double tempReducedAmount = myTotalPrice * discount.getDiscountValue();
                 myTotalPrice -= tempReducedAmount;
                 AppliedDiscountDTO discountInSale = new AppliedDiscountDTO(discount, tempReducedAmount, myTotalPrice);
                 myDiscounts.add(discountInSale);
@@ -116,10 +122,14 @@ public class Sale
             default: return null;
         }
     }
+    public int getSaleId()
+    {
+        return saleId;
+    }
 
     public SaleDTO getSaleInfo()
     {
-        return new SaleDTO(this.myItems, this.myTotalPrice, this.myTotalVat, this.myCurrentDate, this.myDiscounts);
+        return new SaleDTO(saleId,this.myItems, this.myTotalPrice, this.myTotalVat, this.myCurrentDate, this.myDiscounts);
     }
 
 }

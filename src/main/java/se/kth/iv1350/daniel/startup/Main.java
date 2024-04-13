@@ -10,11 +10,8 @@ public class Main
     public static void main(String[] args)
     {
         View view = new View(new Controller(new ExternalSysCreator()));
-
         view.runSampleTest();
-        view.runSampleTest();
-        view.runSampleTest();
-        SaleLog sales = SaleLog.getInstance();
+        SaleLog.getInstance();
 
     }
 }

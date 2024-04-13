@@ -17,6 +17,18 @@ public class Item
         return myItemDTO;
     }
 
+    public int getItemId()
+    {
+        return myItemDTO.itemId();
+    }
+    public double getItemPrice()
+    {
+        return myItemDTO.price();
+    }
+    public double getItemVat()
+    {
+        return myItemDTO.vatRate();
+    }
     public void increaseQuantity(int quantity)
     {
             this.quantity += quantity;
