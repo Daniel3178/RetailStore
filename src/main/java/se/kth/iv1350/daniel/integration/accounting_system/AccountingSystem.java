@@ -4,18 +4,10 @@ import se.kth.iv1350.daniel.model.dto.SaleDTO;
 
 public class AccountingSystem
 {
-    private static AccountingSystem accountingSystem = null;
-    private AccountingSystem()
-    {
-    }
 
-    public static AccountingSystem getInstance()
+    public AccountingSystem()
     {
-        if(accountingSystem == null)
-        {
-            accountingSystem = new AccountingSystem();
-        }
-        return accountingSystem;
+
     }
 
     public void updateAccountingSystem(SaleDTO saleInfo)

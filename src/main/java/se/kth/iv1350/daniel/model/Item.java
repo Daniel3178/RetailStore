@@ -4,28 +4,28 @@ import se.kth.iv1350.daniel.model.dto.ItemDTO;
 
 public class Item
 {
-    private final ItemDTO itemDTO;
+    private final ItemDTO myItemDTO;
     private int quantity;
-    public Item(ItemDTO itemInfo, Integer quantity)
+    public Item(ItemDTO itemInfo, int quantity)
     {
-        this.itemDTO = itemInfo;
-        this.quantity = quantity == null ? 1 : quantity;
+        this.myItemDTO = itemInfo;
+        this.quantity =  quantity;
     }
 
     public ItemDTO getItemInfo()
     {
-        return itemDTO;
+        return myItemDTO;
     }
 
     public void setQuantity(int quantity)
     {
-        this.quantity += quantity;
+            this.quantity += quantity;
     }
     @Override
     public String toString()
     {
         StringBuilder stringBuilder = new StringBuilder();
-        stringBuilder.append(itemDTO.toString());
+        stringBuilder.append(myItemDTO.toString());
         stringBuilder.append("\n x");
         stringBuilder.append(this.quantity);
         stringBuilder.append('\n');

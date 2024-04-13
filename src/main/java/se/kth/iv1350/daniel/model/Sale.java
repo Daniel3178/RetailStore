@@ -1,108 +1,127 @@
 package se.kth.iv1350.daniel.model;
-
-import se.kth.iv1350.daniel.model.dto.DiscountDTO;
-import se.kth.iv1350.daniel.model.dto.DiscountRequestDTO;
-import se.kth.iv1350.daniel.model.dto.ItemDTO;
-import se.kth.iv1350.daniel.model.dto.SaleDTO;
-
+import se.kth.iv1350.daniel.model.dto.*;
+import java.util.ArrayList;
 import java.util.List;
 
 public class Sale
 {
-    private Customer currentCustomer = null;
-    private Double totalPrice = null;
-    private String currentDate;
-    private double totalVat;
-    private List<DiscountDTO> discounts = null;
-    private Payment currentPayment = null;
+    public static enum discountAmountType{
+        PRECENT,
+        AMOUNT
+    }
+
+    private double myTotalPrice;
+    private final String myCurrentDate;
+    private double myTotalVat;
+    private final List<AppliedDiscountDTO> myDiscounts;
+    private final List<Item> myItems;
 
     public Sale()
     {
-        currentCustomer = new Customer();
+        this.myDiscounts = new ArrayList<>();
+        this.myItems = new ArrayList<>();
+        this.myTotalVat = 0;
+        this.myTotalPrice = 0;
+        this.myCurrentDate = "TODAY";
+    }
+
+
+    /**
+     * Task: To check whether an item exist in the current sale
+     * @param itemId: ID to search for the item in the list
+     * @return: true if exist otherwise false
+     */
+    public boolean contains(int itemId)
+    {
+        for(Item item: myItems)
+        {
+            if (item.getItemInfo().itemId() == itemId)
+            {
+                return true;
+            }
+        }
+        return false;
     }
 
     /**
-     * A part of Singletone design pattern
-     *
-     * @return: the current instance of this class.
+     * @return: all the items in the current sale
      */
-
-    public boolean contains(int itemId)
+    public List<Item> getShopList()
     {
-        return currentCustomer.contains(itemId);
+        return this.myItems;
     }
 
-    public void setCurrentPayment(Payment newPayment)
+    /**
+     * Task: increase the number of a specific item in the list
+     * @param itemId: Is used to find the specific item
+     * @param quantity: Number of item to add
+     * @return: The description of the item that has been added and the updated total price
+     */
+    public LastSaleUpdateDTO updateQuantity(int itemId, int quantity)
     {
-        this.currentPayment = newPayment;
-    }
-    public Payment getCurrentPayment()
-    {
-        return this.currentPayment;
-    }
-    public void updateQuantity(int itemId, Integer quantity)
-    {
-        this.currentCustomer.updateQuantity(itemId, quantity);
+
+        for (Item item : myItems)
+        {
+            if (item.getItemInfo().itemId() == itemId)
+            {
+                item.setQuantity(quantity);
+                myTotalPrice += item.getItemInfo().price() * quantity *(1 + item.getItemInfo().vatRate());
+                myTotalVat += item.getItemInfo().price() * quantity * item.getItemInfo().vatRate();
+                return new LastSaleUpdateDTO(item.getItemInfo(), quantity, myTotalPrice, myTotalVat);
+            }
+        }
+        return null;
     }
 
+    /**
+     * Task: To add a new item in the shopping list
+     * @param itemDTO: contains the information about the item
+     * @param quantity: specifies the number of such item
+     * @return: The description of the item that has been added and the updated total price
+     */
+    public LastSaleUpdateDTO addItem(ItemDTO itemDTO, int quantity)
+    {
+        this.myItems.add(new Item(itemDTO, quantity));
+        myTotalPrice += itemDTO.price() * quantity *(1 + itemDTO.vatRate());
+        myTotalVat += itemDTO.price() * quantity * itemDTO.vatRate();
+        return new LastSaleUpdateDTO(itemDTO, quantity, myTotalPrice, myTotalVat);
+    }
+
+
+    public double getTotalPrice()
+    {
+        return this.myTotalPrice;
+    }
+
+    /**
+     * Task: It applies a discount, updates the total price and stores the discount for the sale report
+     * @param discount: contains type and description, here we use type to specify how a discount should be applied
+     * @return: A summary that specifies what type of discount has been applied and how much the price has been reduced
+     */
+    public AppliedDiscountDTO applyDiscount(DiscountDTO discount)
+    {
+        switch (discount.discountTypeDTO().discountType().getAmountType()){
+            case AMOUNT :{
+                myTotalPrice -= discount.discountTypeDTO().value();
+                AppliedDiscountDTO discountInSale = new AppliedDiscountDTO(discount,discount.discountTypeDTO().value(),
+                myTotalPrice);
+                myDiscounts.add(discountInSale);
+                return discountInSale;
+            }
+            case PRECENT:{
+                double tempReducedAmount = myTotalPrice * discount.discountTypeDTO().value();
+                myTotalPrice -= tempReducedAmount;
+                AppliedDiscountDTO discountInSale = new AppliedDiscountDTO(discount, tempReducedAmount, myTotalPrice);
+                myDiscounts.add(discountInSale);
+                return discountInSale;
+            }
+        }
+        return null;
+    }
 
     public SaleDTO getSaleInfo()
     {
-        return new SaleDTO(currentCustomer.getShopList(), this.totalPrice, this.discounts, 20.0, "Today");
+        return new SaleDTO(this.myItems, this.myTotalPrice, this.myTotalVat, this.myCurrentDate, this.myDiscounts);
     }
-    public void addItem(ItemDTO itemDTO, Integer quantity)
-    {
-        this.currentCustomer.addItem(itemDTO, quantity);
-    }
-
-    public void setCustomerId(Integer customerId)
-    {
-        currentCustomer.setCustomerId(customerId);
-    }
-
-    public List<Item> getCustomerShopList()
-    {
-        return currentCustomer.getShopList();
-    }
-
-    private void calculateTotalShopListSum()
-    {
-        double tempTotalPrice = 0;
-        for(Item item : currentCustomer.getShopList())
-        {
-            tempTotalPrice += item.getItemInfo().getPriceAmount();
-        }
-        this.totalPrice = tempTotalPrice;
-    }
-    public void decreaseTotalPrice(double amount)
-    {
-        if (this.totalPrice == null)
-        {
-            calculateTotalShopListSum();
-            this.totalPrice -= amount;
-            return;
-        }
-        this.totalPrice -= amount;
-
-    }
-
-    public void applyDiscounts(List<DiscountDTO> discounts)
-    {
-        setCurrentDiscounts(discounts);
-        for(DiscountDTO discount: discounts)
-        {
-            this.totalPrice -= discount.percentage() * this.totalPrice;
-        }
-    }
-    public DiscountRequestDTO getDiscountInfo()
-    {
-        return new DiscountRequestDTO(currentCustomer.getCustomerId(), this.totalPrice);
-    }
-
-    private void setCurrentDiscounts(List<DiscountDTO> discounts)
-    {
-        this.discounts = discounts;
-    }
-
 
 }
