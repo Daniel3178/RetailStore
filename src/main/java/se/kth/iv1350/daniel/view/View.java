@@ -1,9 +1,7 @@
 package se.kth.iv1350.daniel.view;
-
 import se.kth.iv1350.daniel.controller.Controller;
 import se.kth.iv1350.daniel.model.dto.AppliedDiscountDTO;
 import se.kth.iv1350.daniel.model.dto.LastSaleUpdateDTO;
-import se.kth.iv1350.daniel.model.dto.ReceiptDTO;
 
 import java.util.List;
 
@@ -19,12 +17,17 @@ public class View
     {
         ctr.startNewSale();
         LastSaleUpdateDTO lastSaleUpdate = ctr.addItem(1, 5);
+        System.out.println(lastSaleUpdate.toString());
+        LastSaleUpdateDTO lastSaleUpdate2 = ctr.addItem(1, 2);
+        System.out.println(lastSaleUpdate2.toString());
         List<AppliedDiscountDTO> appliedDiscounts = ctr.applyDiscountsOnSale();
+        for(AppliedDiscountDTO ad : appliedDiscounts)
+        {
+            System.out.println(ad.toString());
+        }
         AppliedDiscountDTO appliedDiscountByCustomerId = ctr.applyDiscountByCustomerId(1);
-        //ctr.applyDiscount(1);
-//        ReceiptDTO receiptDTO = ctr.pay(102.0);
-//        receiptDTO.print();
-        ctr.pay(100);
+        System.out.println(appliedDiscountByCustomerId.toString());
+        ctr.pay(200);
         ctr.endSale();
     }
 

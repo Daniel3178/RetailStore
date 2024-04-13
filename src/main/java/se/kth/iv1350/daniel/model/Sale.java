@@ -5,10 +5,6 @@ import java.util.List;
 
 public class Sale
 {
-    public static enum discountAmountType{
-        PRECENT,
-        AMOUNT
-    }
 
     private double myTotalPrice;
     private final String myCurrentDate;
@@ -59,12 +55,12 @@ public class Sale
      */
     public LastSaleUpdateDTO updateQuantity(int itemId, int quantity)
     {
-
+        assert quantity > 0: "Quantity should be > 0";
         for (Item item : myItems)
         {
             if (item.getItemInfo().itemId() == itemId)
             {
-                item.setQuantity(quantity);
+                item.increaseQuantity(quantity);
                 myTotalPrice += item.getItemInfo().price() * quantity *(1 + item.getItemInfo().vatRate());
                 myTotalVat += item.getItemInfo().price() * quantity * item.getItemInfo().vatRate();
                 return new LastSaleUpdateDTO(item.getItemInfo(), quantity, myTotalPrice, myTotalVat);
@@ -81,6 +77,7 @@ public class Sale
      */
     public LastSaleUpdateDTO addItem(ItemDTO itemDTO, int quantity)
     {
+        assert quantity > 0: "Quantity should be > 0";
         this.myItems.add(new Item(itemDTO, quantity));
         myTotalPrice += itemDTO.price() * quantity *(1 + itemDTO.vatRate());
         myTotalVat += itemDTO.price() * quantity * itemDTO.vatRate();
@@ -94,6 +91,7 @@ public class Sale
     }
 
     /**
+     * Exception: It should not return null!
      * Task: It applies a discount, updates the total price and stores the discount for the sale report
      * @param discount: contains type and description, here we use type to specify how a discount should be applied
      * @return: A summary that specifies what type of discount has been applied and how much the price has been reduced
@@ -101,22 +99,22 @@ public class Sale
     public AppliedDiscountDTO applyDiscount(DiscountDTO discount)
     {
         switch (discount.discountTypeDTO().discountType().getAmountType()){
-            case AMOUNT :{
+            case AMOUNT: {
                 myTotalPrice -= discount.discountTypeDTO().value();
                 AppliedDiscountDTO discountInSale = new AppliedDiscountDTO(discount,discount.discountTypeDTO().value(),
                 myTotalPrice);
                 myDiscounts.add(discountInSale);
                 return discountInSale;
             }
-            case PRECENT:{
+            case PRECENT: {
                 double tempReducedAmount = myTotalPrice * discount.discountTypeDTO().value();
                 myTotalPrice -= tempReducedAmount;
                 AppliedDiscountDTO discountInSale = new AppliedDiscountDTO(discount, tempReducedAmount, myTotalPrice);
                 myDiscounts.add(discountInSale);
                 return discountInSale;
             }
+            default: return null;
         }
-        return null;
     }
 
     public SaleDTO getSaleInfo()

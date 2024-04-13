@@ -17,7 +17,7 @@ public class Item
         return myItemDTO;
     }
 
-    public void setQuantity(int quantity)
+    public void increaseQuantity(int quantity)
     {
             this.quantity += quantity;
     }

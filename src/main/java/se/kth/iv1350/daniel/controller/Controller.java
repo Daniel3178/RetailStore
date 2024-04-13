@@ -9,6 +9,7 @@ import se.kth.iv1350.daniel.integration.inventory_db.Inventory;
 import se.kth.iv1350.daniel.model.Item;
 import se.kth.iv1350.daniel.model.Payment;
 import se.kth.iv1350.daniel.model.Sale;
+import se.kth.iv1350.daniel.model.SaleLog;
 import se.kth.iv1350.daniel.model.dto.*;
 
 import java.util.ArrayList;
@@ -22,9 +23,6 @@ public class Controller
     Inventory myInventory;
     Register myRegister;
     ReceiptPrinter myReceiptPrinter;
-    // Sale currentSale = null
-    // Customer currentSale = null
-    // public void start sale() ::- currentSale = new Sale() ...
 
     public Controller(ExternalSysCreator externalSysCreator) {
         this.myAccountingSys = externalSysCreator.getAccountingSystem();
@@ -34,15 +32,13 @@ public class Controller
         this.myReceiptPrinter = new ReceiptPrinter();
     }
 
-
-
-
     public void startNewSale()
     {
         this.myCurrentSale = new Sale();
     }
     public void endSale()
     {
+        SaleLog.getInstance().addSale(this.myCurrentSale.getSaleInfo());
         this.myCurrentSale = null;
     }
 
@@ -60,7 +56,6 @@ public class Controller
         }
         else
         {
-            //Inventory inv = Inventory.getInstance();
             ItemDTO itemDTO = myInventory.fetchItem(itemId);
             return myCurrentSale.addItem(itemDTO, quantity);
         }
@@ -98,14 +93,5 @@ public class Controller
         ReceiptDTO receipt = payment.getReceipt(saleInfo);
         myReceiptPrinter.printReceipt(receipt);
     }
-
-//    public ReceiptDTO pay(Double amount)
-//    {
-//        Payment customerPayment = new Payment(amount);
-//        Inventory.getInstance().updateInventory(currentSale.getCustomerShopList());
-//        //AccountingSystem.getInstance().updateAccountingSystem(currentSale.getSaleInfo());
-//        customerPayment.register();
-//        return customerPayment.getReceipt(currentSale.getSaleInfo());
-//    }
 
 }

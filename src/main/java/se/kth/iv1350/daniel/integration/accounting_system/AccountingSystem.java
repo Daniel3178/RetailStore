@@ -5,11 +5,6 @@ import se.kth.iv1350.daniel.model.dto.SaleDTO;
 public class AccountingSystem
 {
 
-    public AccountingSystem()
-    {
-
-    }
-
     public void updateAccountingSystem(SaleDTO saleInfo)
     {
         System.out.println("Accounting updated");

@@ -8,14 +8,9 @@ import java.util.List;
 
 public class Inventory
 {
-  public Inventory()
-  {
-
-  }
-
     public ItemDTO fetchItem(int itemId)
     {
-        return new ItemDTO(20.99, 0.06, itemId,
+        return new ItemDTO(20.00, 0.06, itemId,
                            new ItemDescriptionDTO("Tomatoe", "Italy", "Tommorow"));
     }
 

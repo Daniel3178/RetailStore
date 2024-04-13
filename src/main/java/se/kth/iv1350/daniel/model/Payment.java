@@ -1,21 +1,20 @@
 package se.kth.iv1350.daniel.model;
 
-import se.kth.iv1350.daniel.integration.Register;
 import se.kth.iv1350.daniel.model.dto.ReceiptDTO;
 import se.kth.iv1350.daniel.model.dto.SaleDTO;
 
 public class Payment
 {
-    private final double amount;
+    private final double paidAmount;
 
     public Payment(double amount)
     {
-        this.amount= amount;
+        this.paidAmount = amount;
     }
 
-    public double getAmount()
+    public double getPaidAmount()
     {
-        return this.amount;
+        return this.paidAmount;
     }
 
     /**
@@ -25,7 +24,8 @@ public class Payment
      */
     private double calculateChange(double totalPrice)
     {
-        return amount - totalPrice;
+        assert paidAmount - totalPrice >= 0: "Customer has not paid fully";
+        return paidAmount - totalPrice;
     }
 
     /**
@@ -35,7 +35,7 @@ public class Payment
      */
     public ReceiptDTO getReceipt(SaleDTO saleInfo)
     {
-        return new ReceiptDTO(saleInfo, this.amount, calculateChange(saleInfo.totalPrice()));
+        return new ReceiptDTO(saleInfo, this.paidAmount, calculateChange(saleInfo.totalPrice()));
     }
 
 }

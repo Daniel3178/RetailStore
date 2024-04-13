@@ -11,26 +11,12 @@ public class Register
         currentAmount = 0;
     }
 
-//    public static Register getInstance()
-//    {
-//        if (currentRegister == null)
-//        {
-//            currentRegister = new Register();
-//        }
-//        return currentRegister;
-//    }
 
     public void registerPayment(Payment payment)
     {
-        this.currentAmount += payment.getAmount();
-        System.out.println("Register increased with some money: " + payment.getAmount());
+        this.currentAmount += payment.getPaidAmount();
+        System.out.println("Register increased with some money: " + payment.getPaidAmount());
     }
-//    public void increaseAmount(double amount)
-//    {
-//
-//        currentAmount += amount;
-//        System.out.println("Register increased with some money: " + amount);
-//    }
 
     public void decreaseAmount(double amount)
     {

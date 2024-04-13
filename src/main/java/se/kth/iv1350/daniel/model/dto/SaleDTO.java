@@ -1,6 +1,5 @@
 package se.kth.iv1350.daniel.model.dto;
 
-import se.kth.iv1350.daniel.model.Discount;
 import se.kth.iv1350.daniel.model.Item;
 
 import java.util.List;
