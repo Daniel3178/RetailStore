@@ -15,13 +15,13 @@ public class Register
     public void registerPayment(Payment payment)
     {
         this.currentAmount += payment.getPaidAmount();
-        System.out.printf("Register increased with some money: %.2f SEK\n", payment.getPaidAmount());
+        System.out.printf("Register increased with customer's paid money: %.2f SEK\n", payment.getPaidAmount());
     }
 
     public void decreaseAmount(double amount)
     {
         currentAmount -= amount;
-        System.out.printf("Register decreased with some money: %.2f SEK\n", amount);
+        System.out.printf("Register decreased with change money returned to customer: %.2f SEK\n", amount);
         System.out.printf("Register has currently: %.2f SEK\n", this.currentAmount);
     }
 
