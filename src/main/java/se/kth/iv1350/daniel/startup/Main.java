@@ -11,8 +11,8 @@ public class Main
     {
         View view = new View(new Controller(new ExternalSysCreator()));
         view.runSampleTest(200);
-        view.runSampleTest(300);
-        view.runSampleTest(400);
+//        view.runSampleTest(300);
+//        view.runSampleTest(400);
 
         SaleLog.getInstance();
 

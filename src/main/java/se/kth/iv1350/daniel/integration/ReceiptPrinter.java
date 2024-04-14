@@ -7,7 +7,7 @@ public class ReceiptPrinter
     public void printReceipt(ReceiptDTO receipt)
     {
         System.out.println("--- Printer starts printing receipt ---");
-        receipt.generateReceipt();
+        System.out.println(receipt.generateReceipt());
         System.out.println("--- Printer ends printing receipt ---");
     }
 }
