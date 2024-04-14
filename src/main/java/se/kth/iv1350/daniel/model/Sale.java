@@ -1,7 +1,5 @@
 package se.kth.iv1350.daniel.model;
 import se.kth.iv1350.daniel.model.dto.*;
-
-import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
@@ -14,12 +12,12 @@ public class Sale
     private final String myCurrentDate;
     private double myTotalVat;
     private final List<AppliedDiscountDTO> myDiscounts;
-    private final List<Item> myItems;
+    private final List<Item> myShoplist;
 
     public Sale()
     {
         this.myDiscounts = new ArrayList<>();
-        this.myItems = new ArrayList<>();
+        this.myShoplist = new ArrayList<>();
         this.myTotalVat = 0;
         this.myTotalPrice = 0;
         LocalDateTime now = LocalDateTime.now();
@@ -35,14 +33,7 @@ public class Sale
      */
     public boolean contains(int itemId)
     {
-        for(Item item: myItems)
-        {
-            if (item.getItemId() == itemId)
-            {
-                return true;
-            }
-        }
-        return false;
+        return myShoplist.stream().anyMatch(item -> item.getItemId() == itemId);
     }
 
     /**
@@ -50,7 +41,7 @@ public class Sale
      */
     public List<Item> getShopList()
     {
-        return this.myItems;
+        return this.myShoplist;
     }
 
     /**
@@ -62,12 +53,12 @@ public class Sale
     public LastSaleUpdateDTO updateQuantity(int itemId, int quantity)
     {
         assert quantity > 0: "Quantity should be > 0";
-        for (Item item : myItems)
+        for (Item item : myShoplist)
         {
             if (item.getItemId() == itemId)
             {
                 item.increaseQuantity(quantity);
-                myTotalPrice += item.getItemPrice() * quantity *(1 + item.getItemInfo().vatRate());
+                myTotalPrice += item.getItemPrice() * quantity *(1 + item.getItemVat());
                 myTotalVat += item.getItemPrice() * quantity * item.getItemVat();
                 return new LastSaleUpdateDTO(item.getItemInfo(), quantity, myTotalPrice, myTotalVat);
             }
@@ -84,7 +75,7 @@ public class Sale
     public LastSaleUpdateDTO addItem(ItemDTO itemDTO, int quantity)
     {
         assert quantity > 0: "Quantity should be > 0";
-        this.myItems.add(new Item(itemDTO, quantity));
+        this.myShoplist.add(new Item(itemDTO, quantity));
         myTotalPrice += itemDTO.price() * quantity *(1 + itemDTO.vatRate());
         myTotalVat += itemDTO.price() * quantity * itemDTO.vatRate();
         return new LastSaleUpdateDTO(itemDTO, quantity, myTotalPrice, myTotalVat);
@@ -98,9 +89,10 @@ public class Sale
 
     /**
      * Exception: It should not return null!
-     * Task: It applies a discount, updates the total price and stores the discount for the sale report
+     * Task: It applies a discount, updates the total price and stores the discount as applied discount for the sale report
      * @param discount: contains type and description, here we use type to specify how a discount should be applied
-     * @return: A summary that specifies what type of discount has been applied and how much the price has been reduced
+     * @return: An object that tells what kind of discount, the reduced amount from total price and the updated total price
+     * after the discount has been applied
      */
     public AppliedDiscountDTO applyDiscount(DiscountDTO discount)
     {
@@ -122,14 +114,10 @@ public class Sale
             default: return null;
         }
     }
-    public int getSaleId()
-    {
-        return saleId;
-    }
 
     public SaleDTO getSaleInfo()
     {
-        return new SaleDTO(saleId,this.myItems, this.myTotalPrice, this.myTotalVat, this.myCurrentDate, this.myDiscounts);
+        return new SaleDTO(saleId, this.myShoplist, this.myTotalPrice, this.myTotalVat, this.myCurrentDate, this.myDiscounts);
     }
 
 }

@@ -37,10 +37,7 @@ public class Item
     public String toString()
     {
         StringBuilder stringBuilder = new StringBuilder();
-        stringBuilder.append(myItemDTO.toString());
-        stringBuilder.append("\n x");
-        stringBuilder.append(this.quantity);
-        stringBuilder.append('\n');
+        stringBuilder.append(myItemDTO.toString()).append("\n").append(this.quantity).append("\n");
         return stringBuilder.toString();
     }
 }

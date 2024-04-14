@@ -8,7 +8,10 @@ public record DiscountDTO(DiscountTypeDTO discountTypeDTO, DiscountDescriptionDT
     {
         return discountTypeDTO.discountType().getAmountType();
     }
-
+    public DiscountEnums.DiscountType getDiscountType()
+    {
+        return discountTypeDTO.discountType();
+    }
     public double getDiscountValue()
     {
         return discountTypeDTO.value();
