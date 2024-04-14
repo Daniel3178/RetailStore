@@ -50,7 +50,7 @@ public class Sale
      * @param quantity: Number of item to add
      * @return: The description of the item that has been added and the updated total price
      */
-    public LastSaleUpdateDTO updateQuantity(int itemId, int quantity)
+    public LastSaleUpdateDTO increaseQuantity(int itemId, int quantity)
     {
         assert quantity > 0: "Quantity should be > 0";
         for (Item item : myShoplist)

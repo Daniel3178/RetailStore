@@ -13,7 +13,7 @@ public class View
         this.ctr = ctr;
     }
 
-    public void runSampleTest()
+    public void runSampleTest(double customerPayAmount)
     {
         ctr.startNewSale();
         LastSaleUpdateDTO lastSaleUpdate = ctr.addItem(1, 5);
@@ -27,7 +27,7 @@ public class View
         }
         AppliedDiscountDTO appliedDiscountByCustomerId = ctr.applyDiscountByCustomerId(1);
         System.out.println(appliedDiscountByCustomerId.toString());
-        ctr.pay(200);
+        ctr.pay(customerPayAmount);
         ctr.endSale();
     }
 

@@ -52,7 +52,7 @@ public class Controller
     {
         if(myCurrentSale.contains(itemId))
         {
-            return myCurrentSale.updateQuantity(itemId, quantity);
+            return myCurrentSale.increaseQuantity(itemId, quantity);
         }
         else
         {
@@ -91,6 +91,7 @@ public class Controller
         myAccountingSys.updateAccountingSystem(saleInfo);
         myRegister.registerPayment(payment);
         ReceiptDTO receipt = payment.getReceipt(saleInfo);
+        myRegister.decreaseAmount(receipt.changeAmount());
         myReceiptPrinter.printReceipt(receipt);
     }
 
