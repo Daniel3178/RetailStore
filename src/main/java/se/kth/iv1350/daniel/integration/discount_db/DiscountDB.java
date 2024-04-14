@@ -2,39 +2,36 @@ package se.kth.iv1350.daniel.integration.discount_db;
 
 import se.kth.iv1350.daniel.model.Item;
 import se.kth.iv1350.daniel.model.dto.DiscountDTO;
+import se.kth.iv1350.daniel.model.dto.DiscountDescriptionDTO;
+import se.kth.iv1350.daniel.model.DiscountEnums.DiscountType;
+import se.kth.iv1350.daniel.model.dto.DiscountTypeDTO;
 
 import java.util.List;
 
 public class DiscountDB
 {
-    private static DiscountDB discountDB = null;
-    private DiscountDB()
+    public DiscountDTO calculateReducedAmount(List<Item> allItem)
     {
-
-    }
-    public static DiscountDB getInstance()
-    {
-        if (discountDB == null)
-        {
-            discountDB = new DiscountDB();
-        }
-        return discountDB;
-    }
-    public double calculateReducedAmount(List<Item> allItem)
-    {
-        return 2.0;
+        return new DiscountDTO(
+                new DiscountTypeDTO(DiscountType.ITEM_DISC, 30.0),
+                new DiscountDescriptionDTO("This discount is based on shop list")
+        );
     }
 
-    public DiscountDTO findDiscountByCustId(int customerId)
+    public DiscountDTO findDiscountByCustomerId(int customerId)
     {
-        System.out.println("Finding discount by cust id is called");
-        return new DiscountDTO("VIP", 0.2);
+        return new DiscountDTO(
+                new DiscountTypeDTO(DiscountType.MEMBER_BONUS, 0.05),
+                new DiscountDescriptionDTO("5% discount for member customer")
+        );
     }
 
     public DiscountDTO findDiscountByTotalSum(double totalSum)
     {
-        System.out.println("Finding discount by total sum is called");
-        return new DiscountDTO("PremiumShop", 0.1);
+        return new DiscountDTO(
+                new DiscountTypeDTO(DiscountType.GOLDEN_SHOP, 0.10),
+                new DiscountDescriptionDTO("10% discount on shop over 100 sek")
+        );
 
     }
 }

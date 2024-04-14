@@ -1,11 +1,15 @@
 package se.kth.iv1350.daniel.controller;
 
+import se.kth.iv1350.daniel.integration.ExternalSysCreator;
+import se.kth.iv1350.daniel.integration.ReceiptPrinter;
+import se.kth.iv1350.daniel.integration.Register;
 import se.kth.iv1350.daniel.integration.accounting_system.AccountingSystem;
 import se.kth.iv1350.daniel.integration.discount_db.DiscountDB;
 import se.kth.iv1350.daniel.integration.inventory_db.Inventory;
 import se.kth.iv1350.daniel.model.Item;
 import se.kth.iv1350.daniel.model.Payment;
 import se.kth.iv1350.daniel.model.Sale;
+import se.kth.iv1350.daniel.model.SaleLog;
 import se.kth.iv1350.daniel.model.dto.*;
 
 import java.util.ArrayList;
@@ -13,74 +17,81 @@ import java.util.List;
 
 public class Controller
 {
-    private static Controller ctr = null;
-    Sale currentSale = null;
+    Sale myCurrentSale;
+    AccountingSystem myAccountingSys;
+    DiscountDB myDiscountDb;
+    Inventory myInventory;
+    Register myRegister;
+    ReceiptPrinter myReceiptPrinter;
 
-    // Sale currentSale = null
-    // Customer currentSale = null
-    // public void start sale() ::- currentSale = new Sale() ...
-
-    private Controller() {}
-
-    /**
-     * A part of Singletone design pattern
-     * @return: the one and only instance of this class
-     */
-    public static Controller getInstance()
-    {
-        if (ctr == null)
-        {
-            ctr = new Controller();
-        }
-        return ctr;
+    public Controller(ExternalSysCreator externalSysCreator) {
+        this.myAccountingSys = externalSysCreator.getAccountingSystem();
+        this.myDiscountDb = externalSysCreator.getDiscountDB();
+        this.myInventory = externalSysCreator.getInventory();
+        this.myRegister = new Register();
+        this.myReceiptPrinter = new ReceiptPrinter();
     }
 
     public void startNewSale()
     {
-        this.currentSale = new Sale();
+        this.myCurrentSale = new Sale();
     }
     public void endSale()
     {
-        this.currentSale = null;
+        SaleLog.getInstance().addSale(this.myCurrentSale.getSaleInfo());
+        this.myCurrentSale = null;
     }
-    public void addItem(int itemId, Integer quantity)
-    {
 
-        if(currentSale.contains(itemId))
+    /**
+     * It is view's responsibility to not send null as quantity!!
+     * @param itemId
+     * @param quantity
+     * @return
+     */
+    public LastSaleUpdateDTO addItem(int itemId, int quantity)
+    {
+        if(myCurrentSale.contains(itemId))
         {
-            currentSale.updateQuantity(itemId, quantity);
+            return myCurrentSale.updateQuantity(itemId, quantity);
         }
         else
         {
-            Inventory inv = Inventory.getInstance();
-            ItemDTO itemDTO = inv.fetchItem(itemId);
-            currentSale.addItem(itemDTO, quantity);
+            ItemDTO itemDTO = myInventory.fetchItem(itemId);
+            return myCurrentSale.addItem(itemDTO, quantity);
         }
     }
 
-    public void applyDiscount(Integer customerId)
+
+    public List<AppliedDiscountDTO> applyDiscountsOnSale()
     {
-        currentSale.setCustomerId(customerId);
-        List<Item> allItems = currentSale.getCustomerShopList();
-        DiscountDB discountDB = DiscountDB.getInstance();
-        double reducedAmount = discountDB.calculateReducedAmount(allItems);
-        currentSale.decreaseTotalPrice(reducedAmount);
-        DiscountRequestDTO discountInfo = currentSale.getDiscountInfo();
-        List<DiscountDTO> discountsFound = new ArrayList<>();
-        discountsFound.add(DiscountDB.getInstance().findDiscountByCustId(discountInfo.customerId()));
-        discountsFound.add(DiscountDB.getInstance().findDiscountByTotalSum(discountInfo.totalSum()));
-        currentSale.applyDiscounts(discountsFound);
+        List<AppliedDiscountDTO> appliedDiscounts = new ArrayList<>();
+        List<Item> shopList = myCurrentSale.getShopList();
+        DiscountDTO itemDiscount = myDiscountDb.calculateReducedAmount(shopList);
+        appliedDiscounts.add(myCurrentSale.applyDiscount(itemDiscount));
+        double totalPrice = myCurrentSale.getTotalPrice();
+        DiscountDTO totalPriceDiscount = myDiscountDb.findDiscountByTotalSum(totalPrice);
+        appliedDiscounts.add(myCurrentSale.applyDiscount(totalPriceDiscount));
+        return appliedDiscounts;
+    }
+
+    public AppliedDiscountDTO applyDiscountByCustomerId(int customerId)
+    {
+        AppliedDiscountDTO appliedDiscount;
+        DiscountDTO customerDiscount = myDiscountDb.findDiscountByCustomerId(customerId);
+        appliedDiscount = myCurrentSale.applyDiscount(customerDiscount);
+        return appliedDiscount;
     }
 
 
-
-    public ReceiptDTO pay(Double amount)
+    public void pay(double amount)
     {
-        Payment customerPayment = new Payment(amount);
-        Inventory.getInstance().updateInventory(currentSale.getCustomerShopList());
-        AccountingSystem.getInstance().updateAccountingSystem(currentSale.getSaleInfo());
-        customerPayment.register();
-        return customerPayment.getReceipt(currentSale.getSaleInfo());
+        Payment payment = new Payment(amount);
+        SaleDTO saleInfo = myCurrentSale.getSaleInfo();
+        myInventory.updateInventory(saleInfo.shoplist());
+        myAccountingSys.updateAccountingSystem(saleInfo);
+        myRegister.registerPayment(payment);
+        ReceiptDTO receipt = payment.getReceipt(saleInfo);
+        myReceiptPrinter.printReceipt(receipt);
     }
 
 }

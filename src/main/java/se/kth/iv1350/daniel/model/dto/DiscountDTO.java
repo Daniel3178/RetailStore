@@ -1,5 +1,19 @@
 package se.kth.iv1350.daniel.model.dto;
 
-public record DiscountDTO(String type, double percentage)
+import se.kth.iv1350.daniel.model.DiscountEnums;
+
+public record DiscountDTO(DiscountTypeDTO discountTypeDTO, DiscountDescriptionDTO discountDescriptionDTO)
 {
+    public DiscountEnums.DiscountAmountType getAmountType()
+    {
+        return discountTypeDTO.discountType().getAmountType();
+    }
+    public DiscountEnums.DiscountType getDiscountType()
+    {
+        return discountTypeDTO.discountType();
+    }
+    public double getDiscountValue()
+    {
+        return discountTypeDTO.value();
+    }
 }
