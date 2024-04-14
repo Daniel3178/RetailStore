@@ -18,10 +18,10 @@ public class Register
         System.out.printf("Register increased with customer's paid money: %.2f SEK\n", payment.getPaidAmount());
     }
 
-    public void decreaseAmount(double amount)
+    public void decreaseAmount(Payment payment)
     {
-        currentAmount -= amount;
-        System.out.printf("Register decreased with change money returned to customer: %.2f SEK\n", amount);
+        currentAmount -= payment.getChangeAmount();
+        System.out.printf("Register decreased with change money returned to customer: %.2f SEK\n", payment.getChangeAmount());
         System.out.printf("Register has currently: %.2f SEK\n", this.currentAmount);
     }
 

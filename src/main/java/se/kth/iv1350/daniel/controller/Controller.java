@@ -85,13 +85,13 @@ public class Controller
 
     public void pay(double amount)
     {
-        Payment payment = new Payment(amount);
         SaleDTO saleInfo = myCurrentSale.getSaleInfo();
+        Payment payment = new Payment(amount, saleInfo);
         myInventory.updateInventory(saleInfo.shoplist());
         myAccountingSys.updateAccountingSystem(saleInfo);
         myRegister.registerPayment(payment);
         ReceiptDTO receipt = payment.getReceipt(saleInfo);
-        myRegister.decreaseAmount(receipt.changeAmount());
+        myRegister.decreaseAmount(payment);
         myReceiptPrinter.printReceipt(receipt);
     }
 

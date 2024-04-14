@@ -6,17 +6,18 @@ import se.kth.iv1350.daniel.model.dto.SaleDTO;
 public class Payment
 {
     private final double paidAmount;
-
-    public Payment(double amount)
+    private final double changeAmount;
+    public Payment(double amount, SaleDTO saleInfo)
     {
         this.paidAmount = amount;
+        this.changeAmount = calculateChange(saleInfo.totalPrice());
     }
 
     public double getPaidAmount()
     {
         return this.paidAmount;
     }
-
+    public double getChangeAmount(){return this.changeAmount;}
     /**
      * Exception: It should alter if the change is negative i.e. customer has not paid fully.
      * @param totalPrice: the total price of the sale.
@@ -35,7 +36,7 @@ public class Payment
      */
     public ReceiptDTO getReceipt(SaleDTO saleInfo)
     {
-        return new ReceiptDTO(saleInfo, this.paidAmount, calculateChange(saleInfo.totalPrice()));
+        return new ReceiptDTO(saleInfo, this.paidAmount, this.changeAmount);
     }
 
 }

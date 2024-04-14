@@ -4,7 +4,7 @@ public record ReceiptDTO(SaleDTO saleInfo, double amountPaid, double changeAmoun
 {
     public void generateReceipt()
     {
-        System.out.printf("total price: %.2f | change received: %.2f\n",
+        System.out.printf("total price: %.2f | change returned: %.2f\n",
                           saleInfo.totalPrice(),
                           changeAmount
         );
