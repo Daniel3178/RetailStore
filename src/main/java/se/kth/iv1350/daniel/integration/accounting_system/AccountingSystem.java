@@ -7,6 +7,6 @@ public class AccountingSystem
 
     public void updateAccountingSystem(SaleDTO saleInfo)
     {
-        System.out.println("Accounting updated");
+        System.out.println("Accounting System is updated");
     }
 }

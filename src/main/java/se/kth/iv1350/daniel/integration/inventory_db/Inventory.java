@@ -16,6 +16,6 @@ public class Inventory
 
     public void updateInventory(List<Item> allItems)
     {
-        System.out.println("inventory update");
+        System.out.println("Inventory is updated");
     }
 }
