@@ -9,7 +9,7 @@ public record ItemDTO( double price, double vatRate, int itemId, ItemDescription
         StringBuilder sb = new StringBuilder();
         sb.append("ItemID: ").append(itemId).append("\n");
         sb.append("Price inclusive VAT: ").append(formatedPriceInclVat).append("\n");
-        sb.append("VAT Rate: ").append(vatRate).append("\n");
+        sb.append("VAT Rate: ").append(vatRate*100).append(" %\n");
         sb.append(descDTO.toString());
         return sb.toString();
     }

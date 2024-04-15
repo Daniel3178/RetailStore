@@ -83,7 +83,7 @@ public class Controller
     }
 
 
-    public void pay(double amount)
+    public double pay(double amount)
     {
         SaleDTO saleInfo = myCurrentSale.getSaleInfo();
         Payment payment = new Payment(amount, saleInfo);
@@ -93,6 +93,7 @@ public class Controller
         ReceiptDTO receipt = payment.getReceipt(saleInfo);
         myRegister.decreaseAmount(payment);
         myReceiptPrinter.printReceipt(receipt);
+        return payment.getChangeAmount();
     }
 
 }

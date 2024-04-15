@@ -14,7 +14,7 @@ public record AppliedDiscountDTO(DiscountDTO discountDTO, double reducedAmount, 
         StringBuilder sb = new StringBuilder();
         sb.append("Discount Type :\n").append(discountDTO.getDiscountType()).append("\n");
         if(this.discountDTO.getAmountType() == DiscountAmountType.PRECENT){
-            sb.append("% ").append(formattedDiscountValuePrecent).append("\n");
+            sb.append(formattedDiscountValuePrecent).append("%\n");
         }
         else{
             sb.append(formattedDiscountValue).append(" SEK\n");
