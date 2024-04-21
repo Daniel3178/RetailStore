@@ -12,15 +12,15 @@ public record AppliedDiscountDTO(DiscountDTO discountDTO, double reducedAmount, 
         String formattedTotalPrice = String.format("%.2f", updatedTotalPrice);
 
         StringBuilder sb = new StringBuilder();
-        sb.append("Discount Type :\n").append(discountDTO.getDiscountType()).append("\n");
+        sb.append("[*]\tDiscount Type : ").append(discountDTO.getDiscountType()).append(" ");
         if(this.discountDTO.getAmountType() == DiscountAmountType.PERCENT){
             sb.append(formattedDiscountValuePrecent).append("%\n");
         }
         else{
             sb.append(formattedDiscountValue).append(" SEK\n");
         }
-        sb.append("Reduced amount : ").append(formattedReducedAmount).append(" SEK \n");
-        sb.append("Total price after discount : ").append(formattedTotalPrice).append(" SEK \n");
+        sb.append("[*]\tReduced amount : ").append(formattedReducedAmount).append(" SEK \n");
+        sb.append("[*]\tTotal price after discount : ").append(formattedTotalPrice).append(" SEK \n");
         return sb.toString();
     }
 }

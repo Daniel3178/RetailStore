@@ -23,7 +23,7 @@ public class Register
     public void registerPayment(PaymentDTO payment)
     {
         this.currentAmount += payment.getPaidAmount();
-        System.out.printf("Register increased with customer's paid money: %.2f SEK\n", payment.getPaidAmount());
+        System.out.printf("[!]\tRegister increased with customer's paid money: %.2f SEK\n", payment.getPaidAmount());
     }
 
     /**
@@ -33,8 +33,8 @@ public class Register
     public void decreaseAmount(PaymentDTO payment)
     {
         currentAmount -= payment.getChangeAmount();
-        System.out.printf("Register decreased with change money returned to customer: %.2f SEK\n", payment.getChangeAmount());
-        System.out.printf("Register has currently: %.2f SEK\n", this.currentAmount);
+        System.out.printf("[!]\tRegister decreased with change money returned to customer: %.2f SEK\n", payment.getChangeAmount());
+        System.out.printf("[!]\tRegister has currently: %.2f SEK\n", this.currentAmount);
     }
 
     public double getCurrentAmount()

@@ -6,11 +6,11 @@ public record ItemDescriptionDTO(String name, String description, String expirat
     public String toString()
     {
         StringBuilder sb = new StringBuilder();
-        sb.append("name: ").append(name).append('\n');
-        sb.append("description: ").append(description).append('\n');
-        sb.append("expirationDate: ").append(expirationDate).append('\n');
-        sb.append("Category: ").append(category).append('\n');
-        sb.append("Supplier: ").append(supplier).append('\n');
+        sb.append("[*]\tname: ").append(name).append('\n');
+        sb.append("[*]\tdescription: ").append(description).append('\n');
+        sb.append("[*]\texpirationDate: ").append(expirationDate).append('\n');
+        sb.append("[*]\tCategory: ").append(category).append('\n');
+        sb.append("[*]\tSupplier: ").append(supplier).append('\n');
         return sb.toString();
     }
 }

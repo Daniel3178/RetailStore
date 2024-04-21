@@ -29,7 +29,7 @@ public class View
         }
         AppliedDiscountDTO appliedDiscountByCustomerId = ctr.applyDiscountByCustomerId(1);
         System.out.println(appliedDiscountByCustomerId.toString());
-        System.out.printf("Cashier should return: %.2f SEK\n", ctr.pay(customerPayAmount));
+        System.out.printf("[*]\tCashier should return: %.2f SEK\n", ctr.pay(customerPayAmount));
         ctr.endSale();
     }
 

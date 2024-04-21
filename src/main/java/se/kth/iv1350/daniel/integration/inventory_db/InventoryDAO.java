@@ -16,7 +16,7 @@ public class InventoryDAO
 
     public void updateInventory(List<Item> allItems)
     {
-        System.out.println("Inventory is updated");
+        System.out.println("[!]\tInventory is updated");
         Inventory.getInstance().updateInventory(allItems);
     }
 }

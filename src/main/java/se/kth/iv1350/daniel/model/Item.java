@@ -29,6 +29,10 @@ public class Item
     {
         return myItemDTO.price();
     }
+    public double getItemPriceInclVat()
+    {
+        return myItemDTO.price()*(1+ myItemDTO.vatRate());
+    }
     public double getItemVat()
     {
         return myItemDTO.vatRate();
