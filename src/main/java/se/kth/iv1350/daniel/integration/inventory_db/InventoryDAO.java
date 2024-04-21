@@ -9,7 +9,6 @@ import java.util.Map;
 
 public class InventoryDAO
 {
-
     public ItemDTO fetchItem(int itemId)
     {
         return Inventory.getInstance().findItemById(itemId);

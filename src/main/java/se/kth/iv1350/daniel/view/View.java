@@ -16,10 +16,12 @@ public class View
     public void runSampleTest(double customerPayAmount)
     {
         ctr.startNewSale();
-        LastSaleUpdateDTO lastSaleUpdate = ctr.addItem(101, 5);
-        System.out.println(lastSaleUpdate.toString());
-        LastSaleUpdateDTO lastSaleUpdate2 = ctr.addItem(102, 2);
-        System.out.println(lastSaleUpdate2.toString());
+        for (int i = 101; i< 110; i++)
+        {
+            LastSaleUpdateDTO lastSaleUpdate = ctr.addItem(i, i-100);
+            System.out.println(lastSaleUpdate.toString());
+        }
+
         List<AppliedDiscountDTO> appliedDiscounts = ctr.applyDiscountsOnSale();
         for(AppliedDiscountDTO ad : appliedDiscounts)
         {

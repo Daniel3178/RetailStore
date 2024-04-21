@@ -6,7 +6,6 @@ public record ItemDescriptionDTO(String name, String description, String expirat
     public String toString()
     {
         StringBuilder sb = new StringBuilder();
-        sb.append("Description: ");
         sb.append("name: ").append(name).append('\n');
         sb.append("description: ").append(description).append('\n');
         sb.append("expirationDate: ").append(expirationDate).append('\n');

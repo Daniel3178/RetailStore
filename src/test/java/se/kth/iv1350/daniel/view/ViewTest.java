@@ -40,7 +40,7 @@ class ViewTest
     @Test
     void runSampleTest()
     {
-        instanceToTest.runSampleTest(200);
+        instanceToTest.runSampleTest(1000);
         String printOut = inMemPrintOut.toString();
         String expectedOutput = "Cashier should return";
         assertTrue(printOut.contains(expectedOutput), "UI did not start correctly");

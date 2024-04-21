@@ -9,8 +9,8 @@ public record LastSaleUpdateDTO(ItemDTO itemDTO, int quantity, double totalPrice
         String formattedTotalVat = String.format("%.2f", totalVat);
 
         StringBuilder sb = new StringBuilder();
-        sb.append("Item Information:\n").append(itemDTO).append("\n");
-        sb.append("Quantity: ").append(quantity).append("\n");
+        sb.append("Item Information:\n").append(itemDTO);
+        sb.append("Quantity: ").append(quantity).append("\n\n");
         sb.append("Total Price: ").append(formattedTotalPrice).append(" SEK\n");
         sb.append("Total VAT: ").append(formattedTotalVat).append(" SEK\n");
         return sb.toString();
