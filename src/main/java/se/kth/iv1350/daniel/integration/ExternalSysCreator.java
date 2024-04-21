@@ -2,18 +2,18 @@ package se.kth.iv1350.daniel.integration;
 
 import se.kth.iv1350.daniel.integration.accounting_system.AccountingSystem;
 import se.kth.iv1350.daniel.integration.discount_db.DiscountDB;
-import se.kth.iv1350.daniel.integration.inventory_db.Inventory;
+import se.kth.iv1350.daniel.integration.inventory_db.InventoryDAO;
 
 public class ExternalSysCreator
 {
     AccountingSystem accountingSystem;
     DiscountDB discountDB;
-    Inventory inventory;
+    InventoryDAO inventoryDAO;
     public ExternalSysCreator()
     {
         this.accountingSystem = new AccountingSystem();
         this.discountDB = new DiscountDB();
-        this.inventory = new Inventory();
+        this.inventoryDAO = new InventoryDAO();
     }
 
     public AccountingSystem getAccountingSystem()
@@ -24,8 +24,8 @@ public class ExternalSysCreator
     {
         return this.discountDB;
     }
-    public Inventory getInventory()
+    public InventoryDAO getInventory()
     {
-        return this.inventory;
+        return this.inventoryDAO;
     }
 }

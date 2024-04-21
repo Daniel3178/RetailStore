@@ -16,9 +16,9 @@ public class View
     public void runSampleTest(double customerPayAmount)
     {
         ctr.startNewSale();
-        LastSaleUpdateDTO lastSaleUpdate = ctr.addItem(1, 5);
+        LastSaleUpdateDTO lastSaleUpdate = ctr.addItem(101, 5);
         System.out.println(lastSaleUpdate.toString());
-        LastSaleUpdateDTO lastSaleUpdate2 = ctr.addItem(1, 2);
+        LastSaleUpdateDTO lastSaleUpdate2 = ctr.addItem(102, 2);
         System.out.println(lastSaleUpdate2.toString());
         List<AppliedDiscountDTO> appliedDiscounts = ctr.applyDiscountsOnSale();
         for(AppliedDiscountDTO ad : appliedDiscounts)

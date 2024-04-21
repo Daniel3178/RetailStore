@@ -2,7 +2,7 @@ package se.kth.iv1350.daniel.model.dto;
 
 import se.kth.iv1350.daniel.model.DiscountEnums;
 
-public record DiscountDTO(DiscountTypeDTO discountTypeDTO, DiscountDescriptionDTO discountDescriptionDTO)
+public record DiscountDTO(DiscountTypeDTO discountTypeDTO, String discountDescription)
 {
     public DiscountEnums.DiscountAmountType getAmountType()
     {

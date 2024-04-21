@@ -13,7 +13,7 @@ public record AppliedDiscountDTO(DiscountDTO discountDTO, double reducedAmount, 
 
         StringBuilder sb = new StringBuilder();
         sb.append("Discount Type :\n").append(discountDTO.getDiscountType()).append("\n");
-        if(this.discountDTO.getAmountType() == DiscountAmountType.PRECENT){
+        if(this.discountDTO.getAmountType() == DiscountAmountType.PERCENT){
             sb.append(formattedDiscountValuePrecent).append("%\n");
         }
         else{

@@ -17,6 +17,10 @@ public class Item
         return myItemDTO;
     }
 
+    public int getQuantity()
+    {
+        return this.quantity;
+    }
     public int getItemId()
     {
         return myItemDTO.itemId();
@@ -29,6 +33,11 @@ public class Item
     {
         return myItemDTO.vatRate();
     }
+
+    /**
+     * Increases the current quantity by a number
+     * @param quantity: the number that will be added to the current count
+     */
     public void increaseQuantity(int quantity)
     {
             this.quantity += quantity;

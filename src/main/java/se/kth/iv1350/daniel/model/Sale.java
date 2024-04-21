@@ -104,7 +104,7 @@ public class Sale
                 myDiscounts.add(discountInSale);
                 return discountInSale;
             }
-            case PRECENT: {
+            case PERCENT: {
                 double tempReducedAmount = myTotalPrice * discount.getDiscountValue();
                 myTotalPrice -= tempReducedAmount;
                 AppliedDiscountDTO discountInSale = new AppliedDiscountDTO(discount, tempReducedAmount, myTotalPrice);

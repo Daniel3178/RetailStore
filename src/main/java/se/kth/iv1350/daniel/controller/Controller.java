@@ -5,7 +5,7 @@ import se.kth.iv1350.daniel.integration.ReceiptPrinter;
 import se.kth.iv1350.daniel.integration.Register;
 import se.kth.iv1350.daniel.integration.accounting_system.AccountingSystem;
 import se.kth.iv1350.daniel.integration.discount_db.DiscountDB;
-import se.kth.iv1350.daniel.integration.inventory_db.Inventory;
+import se.kth.iv1350.daniel.integration.inventory_db.InventoryDAO;
 import se.kth.iv1350.daniel.model.Item;
 import se.kth.iv1350.daniel.model.Payment;
 import se.kth.iv1350.daniel.model.Sale;
@@ -20,14 +20,14 @@ public class Controller
     Sale myCurrentSale;
     AccountingSystem myAccountingSys;
     DiscountDB myDiscountDb;
-    Inventory myInventory;
+    InventoryDAO myInventoryDAO;
     Register myRegister;
     ReceiptPrinter myReceiptPrinter;
 
     public Controller(ExternalSysCreator externalSysCreator) {
         this.myAccountingSys = externalSysCreator.getAccountingSystem();
         this.myDiscountDb = externalSysCreator.getDiscountDB();
-        this.myInventory = externalSysCreator.getInventory();
+        this.myInventoryDAO = externalSysCreator.getInventory();
         this.myRegister = new Register();
         this.myReceiptPrinter = new ReceiptPrinter();
     }
@@ -56,7 +56,7 @@ public class Controller
         }
         else
         {
-            ItemDTO itemDTO = myInventory.fetchItem(itemId);
+            ItemDTO itemDTO = myInventoryDAO.fetchItem(itemId);
             return myCurrentSale.addItem(itemDTO, quantity);
         }
     }
@@ -86,8 +86,8 @@ public class Controller
     public double pay(double amount)
     {
         SaleDTO saleInfo = myCurrentSale.getSaleInfo();
-        Payment payment = new Payment(amount, saleInfo);
-        myInventory.updateInventory(saleInfo.shoplist());
+        PaymentDTO payment = new Payment(amount, saleInfo);
+        myInventoryDAO.updateInventory(saleInfo.shoplist());
         myAccountingSys.updateAccountingSystem(saleInfo);
         myRegister.registerPayment(payment);
         ReceiptDTO receipt = payment.getReceipt(saleInfo);
