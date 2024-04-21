@@ -9,9 +9,9 @@ import static se.kth.iv1350.daniel.integration.inventory_db.ItemConstants.*;
 class Inventory
 {
     /**
-     * The path where all the data on items exist or it will be written
+     * The path where all the data on items exist and it will be written
      */
-    private final String PATH = "src/main/java/se/kth/iv1350/daniel/integration/inventory_db/";
+    private final String PATH = "src/main/resources/";
     private static Inventory instance;
     private Map<Integer, List<String>> myCurrentData;
 
