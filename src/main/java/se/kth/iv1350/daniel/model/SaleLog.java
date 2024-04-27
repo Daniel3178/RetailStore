@@ -31,11 +31,19 @@ public class SaleLog
         return instance;
     }
 
+    /**
+     * Retrieves a list of all sales.
+     * @return List of SaleDTO containing information about all sales.
+     */
     public List<SaleDTO> getAllSale()
     {
         return this.allSale;
     }
 
+    /**
+     * Adds a sale to the list of all sales.
+     * @param saleInfo The SaleDTO containing information about the sale to be added.
+     */
     public void addSale(SaleDTO saleInfo)
     {
         allSale.add(saleInfo);

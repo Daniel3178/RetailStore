@@ -1,5 +1,4 @@
 package se.kth.iv1350.daniel.integration.inventory_db;
-import se.kth.iv1350.daniel.model.Item;
 import se.kth.iv1350.daniel.model.dto.ItemDTO;
 import se.kth.iv1350.daniel.model.dto.ItemDescriptionDTO;
 import java.io.*;
@@ -61,14 +60,14 @@ class Inventory
      * It looks up each item in myCurrentData based on itemId and updates the quantity.
      * @param shoplist: list of items in the sale that should be subtracted from the inventory
      */
-    void updateInventory(List<Item> shoplist){
-        for(Item eachItem: shoplist)
+    void updateInventory(List<ItemDTO> shoplist){
+        for(ItemDTO eachItem: shoplist)
         {
-            List<String> info = myCurrentData.get(eachItem.getItemId());
+            List<String> info = myCurrentData.get(eachItem.itemId());
             int quantity = Integer.parseInt(info.get(QUANTITY.getIndex()));
-            quantity -= eachItem.getQuantity();
+            quantity -= eachItem.quantity();
             info.set(QUANTITY.getIndex(), Integer.toString(quantity));
-            myCurrentData.replace(eachItem.getItemId(), info);
+            myCurrentData.replace(eachItem.itemId(), info);
         }
 //        saveData();
     }

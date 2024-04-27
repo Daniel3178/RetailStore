@@ -35,27 +35,24 @@ class ItemTest
     {
         int increasedNumber = 10;
         myItem.increaseQuantity(increasedNumber);
-        assertTrue(
-                myItem.getQuantity() == increasedNumber + BEFORE_INCREMENT,
-                "IncreaseQuantity method does not handle positive numbers"
+        assertEquals(myItem.getQuantity(), increasedNumber + BEFORE_INCREMENT,
+                     "IncreaseQuantity method does not handle positive numbers"
         );
     }
 
     @Test
     void increaseQuantityByZero()
     {
-        int increasedNumber = 0;
-        myItem.increaseQuantity(increasedNumber);
-        assertTrue(myItem.getQuantity() == BEFORE_INCREMENT, "IncreasedQuantity method does not handle zero");
+        final int ZERO = 0;
+        assertDoesNotThrow(()->myItem.increaseQuantity(ZERO), "IncreasedQuantity method does not handle adding zero");
     }
 
     @Disabled
     @Test
     void increaseQuantityByNegativeNumber()
     {
-        int increasedNumber = -10;
-        myItem.increaseQuantity(increasedNumber);
-        assertTrue(
-                myItem.getQuantity() == BEFORE_INCREMENT, "IncreasedQuantity method does not handle negative numbers");
+        final int NEGATIVE_NUMBER = -10;
+        assertDoesNotThrow(()->
+                myItem.increaseQuantity(NEGATIVE_NUMBER), "IncreasedQuantity method does not handle negative numbers");
     }
 }

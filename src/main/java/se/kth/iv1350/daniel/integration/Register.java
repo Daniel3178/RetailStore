@@ -1,6 +1,4 @@
 package se.kth.iv1350.daniel.integration;
-
-import se.kth.iv1350.daniel.model.Payment;
 import se.kth.iv1350.daniel.model.dto.PaymentDTO;
 
 public class Register

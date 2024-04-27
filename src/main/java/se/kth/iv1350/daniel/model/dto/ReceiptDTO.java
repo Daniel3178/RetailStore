@@ -12,10 +12,10 @@ public record ReceiptDTO(SaleDTO saleInfo, double amountPaid, double changeAmoun
         sb.append("\tDate: ").append(saleInfo.date()).append("\n");
         sb.append("\t---------------------------------------------\n");
 
-        for (Item item : saleInfo.shoplist())
+        for (ItemDTO item : saleInfo.shoplist())
         {
             formattedString = String.format("%.2f", item.getItemPriceInclVat());
-            sb.append(String.format("\t%-33s %s x %s\n", item.getItemInfo().descDTO().name(), item.getQuantity(),
+            sb.append(String.format("\t%-33s %s x %s\n", item.descDTO().name(), item.quantity(),
                                     formattedString));
         }
         sb.append("\n");

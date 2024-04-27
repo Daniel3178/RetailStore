@@ -15,6 +15,7 @@ import se.kth.iv1350.daniel.model.dto.*;
 import java.util.ArrayList;
 import java.util.List;
 
+
 public class Controller
 {
     Sale myCurrentSale;
@@ -24,6 +25,10 @@ public class Controller
     Register myRegister;
     ReceiptPrinter myReceiptPrinter;
 
+    /**
+     * Initializes a new Controller instance with dependencies from ExternalSysCreator.
+     * @param externalSysCreator An instance of ExternalSysCreator providing external systems.
+     */
     public Controller(ExternalSysCreator externalSysCreator) {
         this.myAccountingSys = externalSysCreator.getAccountingSystem();
         this.myDiscountDb = externalSysCreator.getDiscountDB();
@@ -32,6 +37,9 @@ public class Controller
         this.myReceiptPrinter = new ReceiptPrinter();
     }
 
+    /**
+     * Starts a new sale by initializing a new Sale instance.
+     */
     public void startNewSale()
     {
         this.myCurrentSale = new Sale();
@@ -43,10 +51,10 @@ public class Controller
     }
 
     /**
-     * It is view's responsibility to not send null as quantity!!
-     * @param itemId
-     * @param quantity
-     * @return
+     * Adds an item to the current sale or increases its quantity if already added.
+     * @param itemId The ID of the item to add.
+     * @param quantity The quantity of the item to add.
+     * @return LastSaleUpdateDTO containing information about the updated sale.
      */
     public LastSaleUpdateDTO addItem(int itemId, int quantity)
     {
@@ -61,11 +69,14 @@ public class Controller
         }
     }
 
-
+    /**
+     * Applies discounts on the current sale based on items and total price.
+     * @return List of AppliedDiscountDTOs containing information about applied discounts.
+     */
     public List<AppliedDiscountDTO> applyDiscountsOnSale()
     {
         List<AppliedDiscountDTO> appliedDiscounts = new ArrayList<>();
-        List<Item> shopList = myCurrentSale.getShopList();
+        List<ItemDTO> shopList = myCurrentSale.getShopList();
         DiscountDTO itemDiscount = myDiscountDb.calculateReducedAmount(shopList);
         appliedDiscounts.add(myCurrentSale.applyDiscount(itemDiscount));
         double totalPrice = myCurrentSale.getTotalPrice();
