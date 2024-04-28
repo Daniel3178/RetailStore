@@ -109,6 +109,6 @@ class SaleTest
     @Test
     void applyDiscount()
     {
-
+        // NOT REQUIRED
     }
 }
