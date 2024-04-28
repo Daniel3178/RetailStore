@@ -4,6 +4,7 @@ import se.kth.iv1350.daniel.model.dto.AppliedDiscountDTO;
 import se.kth.iv1350.daniel.model.dto.LastSaleUpdateDTO;
 
 import java.util.List;
+import java.util.Random;
 
 public class View
 {
@@ -15,10 +16,11 @@ public class View
 
     public void runSampleTest(double customerPayAmount)
     {
+        Random rand = new Random();
         ctr.startNewSale();
-        for (int i = 101; i< 110; i++)
+        for (int i = 101, j = rand.nextInt(1, 10) ; i< 110; i++, j=rand.nextInt(1, 10))
         {
-            LastSaleUpdateDTO lastSaleUpdate = ctr.addItem(i, i-100);
+            LastSaleUpdateDTO lastSaleUpdate = ctr.addItem(i, j);
             System.out.println(lastSaleUpdate.toString());
         }
 

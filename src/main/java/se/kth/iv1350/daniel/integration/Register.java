@@ -13,25 +13,24 @@ public class Register
         currentAmount = 0;
     }
 
-
     /**
      * Adds the sum that customer has paid to the register
-     * @param payment: contains the paid amount sum
+     * @param paidAmount: contains the paid amount sum
      */
-    public void registerPayment(PaymentDTO payment)
+    public void registerPayment(double paidAmount)
     {
-        this.currentAmount += payment.getPaidAmount();
-        System.out.printf("[!]\tRegister increased with customer's paid money: %.2f SEK\n", payment.getPaidAmount());
+        this.currentAmount += paidAmount;
+        System.out.printf("[!]\tRegister increased with customer's paid money: %.2f SEK\n", paidAmount);
     }
 
     /**
      * Subtracts the change that should be returned to the customer
-     * @param payment: contains the change amount
+     * @param changeAmount: contains the change amount
      */
-    public void decreaseAmount(PaymentDTO payment)
+    public void decreaseAmount(double changeAmount)
     {
-        currentAmount -= payment.getChangeAmount();
-        System.out.printf("[!]\tRegister decreased with change money returned to customer: %.2f SEK\n", payment.getChangeAmount());
+        currentAmount -= changeAmount;
+        System.out.printf("[!]\tRegister decreased with change money returned to customer: %.2f SEK\n", changeAmount);
         System.out.printf("[!]\tRegister has currently: %.2f SEK\n", this.currentAmount);
     }
 

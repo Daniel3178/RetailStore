@@ -100,11 +100,10 @@ public class Controller
         PaymentDTO payment = new Payment(amount, saleInfo);
         myInventoryDAO.updateInventory(saleInfo.shoplist());
         myAccountingSys.updateAccountingSystem(saleInfo);
-        myRegister.registerPayment(payment);
+        myRegister.registerPayment(payment.getPaidAmount());
         ReceiptDTO receipt = payment.getReceipt(saleInfo);
-        myRegister.decreaseAmount(payment);
+        myRegister.decreaseAmount(payment.getChangeAmount());
         myReceiptPrinter.printReceipt(receipt);
         return payment.getChangeAmount();
     }
-
 }

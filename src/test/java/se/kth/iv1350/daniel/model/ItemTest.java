@@ -47,6 +47,52 @@ class ItemTest
         assertDoesNotThrow(()->myItem.increaseQuantity(ZERO), "IncreasedQuantity method does not handle adding zero");
     }
 
+    @Test
+    void calculatePriceInclusiveVatPositiveQuantity()
+    {
+        final int QUANTITY = 1;
+        double result = myItem.calculatePriceInclusiveVat(QUANTITY);
+        double expected = myItem.getItemPrice() * QUANTITY* (1+myItem.getItemVat());
+        assertEquals(expected, result, "Calculation of price inclusive vat is wrong");
+    }
+
+    @Test
+    void calculatePriceInclusiveVatNegativeQuantity()
+    {
+        final int NEGATIVE_QUANTITY = -1;
+        assertDoesNotThrow(()->myItem.calculateVatAmount(NEGATIVE_QUANTITY), "Negative quantity is not handled");
+    }
+
+    @Test
+    void calculatePriceInclusiveVatZeroQuantity()
+    {
+        final int ZERO_QUANTITY = 0;
+        assertDoesNotThrow(()->myItem.calculateVatAmount(ZERO_QUANTITY), "Zero quantity is not handled");
+    }
+
+    @Test
+    void calculateVatAmountPositiveQuantity()
+    {
+        final int QUANTITY = 1;
+        double result = myItem.calculateVatAmount(QUANTITY);
+        double expected = myItem.getItemPrice() * QUANTITY* myItem.getItemVat();
+        assertEquals(expected, result, "Calculation of vat amount is wrong");
+    }
+
+    @Test
+    void calculateVatAmountNegativeQuantity()
+    {
+        final int NEGATIVE_QUANTITY = -1;
+        assertDoesNotThrow(()->myItem.calculateVatAmount(NEGATIVE_QUANTITY), "Negative quantity is not handled");
+    }
+
+    @Test
+    void calculateVatAmountZeroQuantity()
+    {
+        final int ZERO_QUANTITY = 0;
+        assertDoesNotThrow(()->myItem.calculateVatAmount(ZERO_QUANTITY), "Zero quantity is not handled");
+    }
+
     @Disabled
     @Test
     void increaseQuantityByNegativeNumber()

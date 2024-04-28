@@ -27,10 +27,8 @@ public class Sale
         saleId += 1;
     }
 
-
     /**
      * Task: To check whether an item exist in the current sale
-     *
      * @param itemId: ID to search for the item in the list
      * @return: true if exist otherwise false
      */
@@ -47,13 +45,10 @@ public class Sale
         List<ItemDTO> shopList = new ArrayList<>();
         for (Item item : this.myShoplist)
         {
-            shopList.add(new ItemDTO(item.getItemPrice(), item.getItemVat(), item.getItemId(), item.getItemInfo()
-                                                                                                   .descDTO(),
-                                      item.getQuantity()));
+            shopList.add(item.getItemDTO());
         }
         return shopList;
     }
-
 
     /**
      * Task: increase the number of a specific item in the list
@@ -70,36 +65,12 @@ public class Sale
             if (item.getItemId() == itemId)
             {
                 item.increaseQuantity(quantity);
-                myTotalPrice += calculatePriceInclusiveVat(item.getItemPrice(), quantity , item.getItemVat());
-                myTotalVat += calculateVatAmount( item.getItemPrice() , quantity , item.getItemVat());
-                return new LastSaleUpdateDTO(item.getItemInfo(), quantity, myTotalPrice, myTotalVat);
+                myTotalPrice += item.calculatePriceInclusiveVat(quantity);
+                myTotalVat += item.calculateVatAmount(quantity);
+                return new LastSaleUpdateDTO(item.getItemDTO(), quantity, myTotalPrice, myTotalVat);
             }
         }
         return null;
-    }
-
-    /**
-     * Calculates the price inclusive of VAT for a given price, quantity, and total VAT rate.
-     * @param price The unit price of the item.
-     * @param quantity The quantity of the item.
-     * @param myTotalVat The total VAT rate.
-     * @return The total price inclusive of VAT.
-     */
-    private double calculatePriceInclusiveVat(double price, int quantity, double myTotalVat)
-    {
-        return price * quantity * (1 + myTotalVat);
-    }
-
-    /**
-     * Calculates the VAT amount for a given price, quantity, and VAT rate.
-     * @param price The unit price of the item.
-     * @param quantity The quantity of the item.
-     * @param vat The VAT rate.
-     * @return The VAT amount.
-     */
-    private double calculateVatAmount(double price, int quantity, double vat)
-    {
-        return price * quantity * vat;
     }
 
     /**
@@ -112,12 +83,12 @@ public class Sale
     public LastSaleUpdateDTO addItem(ItemDTO itemDTO, int quantity)
     {
         assert quantity > 0 : "Quantity should be > 0";
-        this.myShoplist.add(new Item(itemDTO, quantity));
-        myTotalPrice += calculatePriceInclusiveVat(itemDTO.price(), quantity , itemDTO.vatRate());
-        myTotalVat += calculateVatAmount(itemDTO.price() , quantity , itemDTO.vatRate());
+        Item itemToAdd = new Item(itemDTO, quantity);
+        this.myShoplist.add(itemToAdd);
+        myTotalPrice += itemToAdd.calculatePriceInclusiveVat(quantity);
+        myTotalVat += itemToAdd.calculateVatAmount(quantity);
         return new LastSaleUpdateDTO(itemDTO, quantity, myTotalPrice, myTotalVat);
     }
-
 
     public double getTotalPrice()
     {
@@ -169,6 +140,7 @@ public class Sale
         this.myDiscounts.add(discountInSale);
         return discountInSale;
     }
+
     public SaleDTO getSaleInfo()
     {
         return new SaleDTO(
