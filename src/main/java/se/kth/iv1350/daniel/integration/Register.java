@@ -1,9 +1,11 @@
 package se.kth.iv1350.daniel.integration;
-
-import se.kth.iv1350.daniel.model.Payment;
+import se.kth.iv1350.daniel.model.dto.PaymentDTO;
 
 public class Register
 {
+    /**
+     * Total money in the register
+     */
     private double currentAmount;
 
     public Register()
@@ -11,18 +13,25 @@ public class Register
         currentAmount = 0;
     }
 
-
-    public void registerPayment(Payment payment)
+    /**
+     * Adds the sum that customer has paid to the register
+     * @param paidAmount: contains the paid amount sum
+     */
+    public void registerPayment(double paidAmount)
     {
-        this.currentAmount += payment.getPaidAmount();
-        System.out.printf("Register increased with some money: %.2f SEK\n", payment.getPaidAmount());
+        this.currentAmount += paidAmount;
+        System.out.printf("[!]\tRegister increased with customer's paid money: %.2f SEK\n", paidAmount);
     }
 
-    public void decreaseAmount(double amount)
+    /**
+     * Subtracts the change that should be returned to the customer
+     * @param changeAmount: contains the change amount
+     */
+    public void decreaseAmount(double changeAmount)
     {
-        currentAmount -= amount;
-        System.out.printf("Register decreased with some money: %.2f SEK\n", amount);
-        System.out.printf("Register has currently: %.2f SEK\n", this.currentAmount);
+        currentAmount -= changeAmount;
+        System.out.printf("[!]\tRegister decreased with change money returned to customer: %.2f SEK\n", changeAmount);
+        System.out.printf("[!]\tRegister has currently: %.2f SEK\n", this.currentAmount);
     }
 
     public double getCurrentAmount()

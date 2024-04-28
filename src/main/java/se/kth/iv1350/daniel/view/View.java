@@ -4,6 +4,7 @@ import se.kth.iv1350.daniel.model.dto.AppliedDiscountDTO;
 import se.kth.iv1350.daniel.model.dto.LastSaleUpdateDTO;
 
 import java.util.List;
+import java.util.Random;
 
 public class View
 {
@@ -15,11 +16,14 @@ public class View
 
     public void runSampleTest(double customerPayAmount)
     {
+        Random rand = new Random();
         ctr.startNewSale();
-        LastSaleUpdateDTO lastSaleUpdate = ctr.addItem(1, 5);
-        System.out.println(lastSaleUpdate.toString());
-        LastSaleUpdateDTO lastSaleUpdate2 = ctr.addItem(1, 2);
-        System.out.println(lastSaleUpdate2.toString());
+        for (int i = 101, j = rand.nextInt(1, 10) ; i< 110; i++, j=rand.nextInt(1, 10))
+        {
+            LastSaleUpdateDTO lastSaleUpdate = ctr.addItem(i, j);
+            System.out.println(lastSaleUpdate.toString());
+        }
+
         List<AppliedDiscountDTO> appliedDiscounts = ctr.applyDiscountsOnSale();
         for(AppliedDiscountDTO ad : appliedDiscounts)
         {
@@ -27,7 +31,7 @@ public class View
         }
         AppliedDiscountDTO appliedDiscountByCustomerId = ctr.applyDiscountByCustomerId(1);
         System.out.println(appliedDiscountByCustomerId.toString());
-        ctr.pay(customerPayAmount);
+        System.out.printf("[*]\tCashier should return: %.2f SEK\n", ctr.pay(customerPayAmount));
         ctr.endSale();
     }
 

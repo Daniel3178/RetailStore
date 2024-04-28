@@ -10,10 +10,7 @@ public class Main
     public static void main(String[] args)
     {
         View view = new View(new Controller(new ExternalSysCreator()));
-        view.runSampleTest(200);
-        view.runSampleTest(300);
-        view.runSampleTest(400);
-
+        view.runSampleTest(1500);
         SaleLog.getInstance();
 
     }

@@ -5,7 +5,7 @@ import se.kth.iv1350.daniel.integration.ReceiptPrinter;
 import se.kth.iv1350.daniel.integration.Register;
 import se.kth.iv1350.daniel.integration.accounting_system.AccountingSystem;
 import se.kth.iv1350.daniel.integration.discount_db.DiscountDB;
-import se.kth.iv1350.daniel.integration.inventory_db.Inventory;
+import se.kth.iv1350.daniel.integration.inventory_db.InventoryDAO;
 import se.kth.iv1350.daniel.model.Item;
 import se.kth.iv1350.daniel.model.Payment;
 import se.kth.iv1350.daniel.model.Sale;
@@ -15,23 +15,31 @@ import se.kth.iv1350.daniel.model.dto.*;
 import java.util.ArrayList;
 import java.util.List;
 
+
 public class Controller
 {
     Sale myCurrentSale;
     AccountingSystem myAccountingSys;
     DiscountDB myDiscountDb;
-    Inventory myInventory;
+    InventoryDAO myInventoryDAO;
     Register myRegister;
     ReceiptPrinter myReceiptPrinter;
 
+    /**
+     * Initializes a new Controller instance with dependencies from ExternalSysCreator.
+     * @param externalSysCreator An instance of ExternalSysCreator providing external systems.
+     */
     public Controller(ExternalSysCreator externalSysCreator) {
         this.myAccountingSys = externalSysCreator.getAccountingSystem();
         this.myDiscountDb = externalSysCreator.getDiscountDB();
-        this.myInventory = externalSysCreator.getInventory();
+        this.myInventoryDAO = externalSysCreator.getInventory();
         this.myRegister = new Register();
         this.myReceiptPrinter = new ReceiptPrinter();
     }
 
+    /**
+     * Starts a new sale by initializing a new Sale instance.
+     */
     public void startNewSale()
     {
         this.myCurrentSale = new Sale();
@@ -43,10 +51,10 @@ public class Controller
     }
 
     /**
-     * It is view's responsibility to not send null as quantity!!
-     * @param itemId
-     * @param quantity
-     * @return
+     * Adds an item to the current sale or increases its quantity if already added.
+     * @param itemId The ID of the item to add.
+     * @param quantity The quantity of the item to add.
+     * @return LastSaleUpdateDTO containing information about the updated sale.
      */
     public LastSaleUpdateDTO addItem(int itemId, int quantity)
     {
@@ -56,16 +64,19 @@ public class Controller
         }
         else
         {
-            ItemDTO itemDTO = myInventory.fetchItem(itemId);
+            ItemDTO itemDTO = myInventoryDAO.fetchItem(itemId);
             return myCurrentSale.addItem(itemDTO, quantity);
         }
     }
 
-
+    /**
+     * Applies discounts on the current sale based on items and total price.
+     * @return List of AppliedDiscountDTOs containing information about applied discounts.
+     */
     public List<AppliedDiscountDTO> applyDiscountsOnSale()
     {
         List<AppliedDiscountDTO> appliedDiscounts = new ArrayList<>();
-        List<Item> shopList = myCurrentSale.getShopList();
+        List<ItemDTO> shopList = myCurrentSale.getShopList();
         DiscountDTO itemDiscount = myDiscountDb.calculateReducedAmount(shopList);
         appliedDiscounts.add(myCurrentSale.applyDiscount(itemDiscount));
         double totalPrice = myCurrentSale.getTotalPrice();
@@ -83,16 +94,16 @@ public class Controller
     }
 
 
-    public void pay(double amount)
+    public double pay(double amount)
     {
-        Payment payment = new Payment(amount);
         SaleDTO saleInfo = myCurrentSale.getSaleInfo();
-        myInventory.updateInventory(saleInfo.shoplist());
+        PaymentDTO payment = new Payment(amount, saleInfo);
+        myInventoryDAO.updateInventory(saleInfo.shoplist());
         myAccountingSys.updateAccountingSystem(saleInfo);
-        myRegister.registerPayment(payment);
+        myRegister.registerPayment(payment.getPaidAmount());
         ReceiptDTO receipt = payment.getReceipt(saleInfo);
-        myRegister.decreaseAmount(receipt.changeAmount());
+        myRegister.decreaseAmount(payment.getChangeAmount());
         myReceiptPrinter.printReceipt(receipt);
+        return payment.getChangeAmount();
     }
-
 }
