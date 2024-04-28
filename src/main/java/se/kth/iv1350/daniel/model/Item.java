@@ -5,24 +5,24 @@ import se.kth.iv1350.daniel.model.dto.ItemDescriptionDTO;
 
 public class Item
 {
-    private final double price;
-    private final double vatRate;
-    private final int itemId;
-    private final ItemDescriptionDTO descDTO;
+    private final double PRICE;
+    private final double VAT_RATE;
+    private final int ITEM_ID;
+    private final ItemDescriptionDTO DESC_DTO;
     private int quantity;
 
     public Item(ItemDTO itemInfo, int quantity)
     {
-        this.price = itemInfo.price();
-        this.vatRate = itemInfo.vatRate();
-        this.itemId = itemInfo.itemId();
-        this.descDTO = itemInfo.descDTO();
+        this.PRICE = itemInfo.price();
+        this.VAT_RATE = itemInfo.vatRate();
+        this.ITEM_ID = itemInfo.itemId();
+        this.DESC_DTO = itemInfo.descDTO();
         this.quantity = quantity;
     }
 
     public ItemDTO getItemDTO()
     {
-        return new ItemDTO(price, vatRate, itemId, descDTO, quantity);
+        return new ItemDTO(PRICE, VAT_RATE, ITEM_ID, DESC_DTO, quantity);
     }
 
     public int getQuantity()
@@ -32,7 +32,7 @@ public class Item
 
     public int getItemId()
     {
-        return this.itemId;
+        return this.ITEM_ID;
     }
 
     /**
@@ -43,7 +43,7 @@ public class Item
      */
     public double calculatePriceInclusiveVat(int itemQuantity)
     {
-        return price * itemQuantity * (1 + vatRate);
+        return PRICE * itemQuantity * (1 + VAT_RATE);
     }
 
     /**
@@ -54,16 +54,16 @@ public class Item
      */
     public double calculateVatAmount(int itemQuantity)
     {
-        return price * itemQuantity * vatRate;
+        return PRICE * itemQuantity * VAT_RATE;
     }
 
     public double getItemPrice()
     {
-        return this.price;
+        return this.PRICE;
     }
     public double getItemVat()
     {
-        return this.vatRate;
+        return this.VAT_RATE;
     }
 
     /**

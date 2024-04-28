@@ -6,7 +6,6 @@ import se.kth.iv1350.daniel.integration.Register;
 import se.kth.iv1350.daniel.integration.accounting_system.AccountingSystem;
 import se.kth.iv1350.daniel.integration.discount_db.DiscountDB;
 import se.kth.iv1350.daniel.integration.inventory_db.InventoryDAO;
-import se.kth.iv1350.daniel.model.Item;
 import se.kth.iv1350.daniel.model.Payment;
 import se.kth.iv1350.daniel.model.Sale;
 import se.kth.iv1350.daniel.model.SaleLog;
@@ -46,7 +45,7 @@ public class Controller
     }
     public void endSale()
     {
-        SaleLog.getInstance().addSale(this.myCurrentSale.getSaleInfo());
+        SaleLog.getInstance().addSale(this.myCurrentSale.getSaleDTO());
         this.myCurrentSale = null;
     }
 
@@ -96,7 +95,7 @@ public class Controller
 
     public double pay(double amount)
     {
-        SaleDTO saleInfo = myCurrentSale.getSaleInfo();
+        SaleDTO saleInfo = myCurrentSale.getSaleDTO();
         PaymentDTO payment = new Payment(amount, saleInfo);
         myInventoryDAO.updateInventory(saleInfo.shoplist());
         myAccountingSys.updateAccountingSystem(saleInfo);

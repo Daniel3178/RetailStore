@@ -11,19 +11,19 @@ public class Sale
 {
     private static int saleId = 0;
     private double myTotalPrice;
-    private final String myCurrentDate;
+    private final String MY_CURRENT_DATE;
     private double myTotalVat;
-    private final List<AppliedDiscountDTO> myDiscounts;
-    private final List<Item> myShoplist;
+    private final List<AppliedDiscountDTO> MY_DISCOUNTS;
+    private final List<Item> MY_SHOPLIST;
 
     public Sale()
     {
-        this.myDiscounts = new ArrayList<>();
-        this.myShoplist = new ArrayList<>();
+        this.MY_DISCOUNTS = new ArrayList<>();
+        this.MY_SHOPLIST = new ArrayList<>();
         this.myTotalVat = 0;
         this.myTotalPrice = 0;
         LocalDateTime now = LocalDateTime.now();
-        this.myCurrentDate = now.format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss"));
+        this.MY_CURRENT_DATE = now.format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss"));
         saleId += 1;
     }
 
@@ -34,7 +34,7 @@ public class Sale
      */
     public boolean contains(int itemId)
     {
-        return myShoplist.stream().anyMatch(item -> item.getItemId() == itemId);
+        return MY_SHOPLIST.stream().anyMatch(item -> item.getItemId() == itemId);
     }
 
     /**
@@ -43,7 +43,7 @@ public class Sale
     public List<ItemDTO> getShopList()
     {
         List<ItemDTO> shopList = new ArrayList<>();
-        for (Item item : this.myShoplist)
+        for (Item item : this.MY_SHOPLIST)
         {
             shopList.add(item.getItemDTO());
         }
@@ -60,7 +60,7 @@ public class Sale
     public LastSaleUpdateDTO increaseQuantity(int itemId, int quantity)
     {
         assert quantity > 0 : "Quantity should be > 0";
-        for (Item item : myShoplist)
+        for (Item item : MY_SHOPLIST)
         {
             if (item.getItemId() == itemId)
             {
@@ -84,7 +84,7 @@ public class Sale
     {
         assert quantity > 0 : "Quantity should be > 0";
         Item itemToAdd = new Item(itemDTO, quantity);
-        this.myShoplist.add(itemToAdd);
+        this.MY_SHOPLIST.add(itemToAdd);
         myTotalPrice += itemToAdd.calculatePriceInclusiveVat(quantity);
         myTotalVat += itemToAdd.calculateVatAmount(quantity);
         return new LastSaleUpdateDTO(itemDTO, quantity, myTotalPrice, myTotalVat);
@@ -123,7 +123,7 @@ public class Sale
         AppliedDiscountDTO discountInSale = new AppliedDiscountDTO(discount, discount.getDiscountValue(),
                                                                    this.myTotalPrice
         );
-        this.myDiscounts.add(discountInSale);
+        this.MY_DISCOUNTS.add(discountInSale);
         return discountInSale;
     }
 
@@ -137,14 +137,14 @@ public class Sale
         double tempReducedAmount = myTotalPrice * discount.getDiscountValue();
         this.myTotalPrice -= tempReducedAmount;
         AppliedDiscountDTO discountInSale = new AppliedDiscountDTO(discount, tempReducedAmount, this.myTotalPrice);
-        this.myDiscounts.add(discountInSale);
+        this.MY_DISCOUNTS.add(discountInSale);
         return discountInSale;
     }
 
-    public SaleDTO getSaleInfo()
+    public SaleDTO getSaleDTO()
     {
         return new SaleDTO(
-                saleId, this.getShopList(), this.myTotalPrice, this.myTotalVat, this.myCurrentDate, this.myDiscounts);
+                saleId, this.getShopList(), this.myTotalPrice, this.myTotalVat, this.MY_CURRENT_DATE, this.MY_DISCOUNTS);
     }
 
 }
