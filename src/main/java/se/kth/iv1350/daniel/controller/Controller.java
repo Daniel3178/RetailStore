@@ -96,13 +96,14 @@ public class Controller
     public double pay(double amount)
     {
         SaleDTO saleInfo = myCurrentSale.getSaleDTO();
-        PaymentDTO payment = new Payment(amount, saleInfo);
+        PaymentDTO payment = new Payment(amount);
         myInventoryDAO.updateInventory(saleInfo.shoplist());
         myAccountingSys.updateAccountingSystem(saleInfo);
         myRegister.registerPayment(payment.getPaidAmount());
         ReceiptDTO receipt = payment.getReceipt(saleInfo);
-        myRegister.decreaseAmount(payment.getChangeAmount());
+        double change = payment.calculateChange(saleInfo.totalPrice());
+        myRegister.decreaseAmount(change);
         myReceiptPrinter.printReceipt(receipt);
-        return payment.getChangeAmount();
+        return change;
     }
 }

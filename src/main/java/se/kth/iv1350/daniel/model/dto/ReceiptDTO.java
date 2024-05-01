@@ -1,6 +1,4 @@
 package se.kth.iv1350.daniel.model.dto;
-import se.kth.iv1350.daniel.model.Item;
-
 public record ReceiptDTO(SaleDTO saleInfo, double amountPaid, double changeAmount)
 {
     public String generateReceipt()

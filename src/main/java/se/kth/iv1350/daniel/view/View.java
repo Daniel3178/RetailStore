@@ -21,9 +21,9 @@ public class View
     {
         Random rand = new Random();
         ctr.startNewSale();
-        for (int i = 101, j = rand.nextInt(1, 10) ; i< 110; i++, j=rand.nextInt(1, 10))
+        for (int itemId = 101, quantity = rand.nextInt(1, 10) ; itemId< 110; itemId++, quantity=rand.nextInt(1, 10))
         {
-            LastSaleUpdateDTO lastSaleUpdate = ctr.addItem(i, j);
+            LastSaleUpdateDTO lastSaleUpdate = ctr.addItem(itemId, quantity);
             System.out.println(stringifyLastUpdateToCashier(lastSaleUpdate));
         }
 
@@ -73,7 +73,7 @@ public class View
 
     private String stringifyItemToCashier(ItemDTO item)
     {
-        String formatedPriceInclVat = String.format("%.2f", item.price() * (1 + item.vatRate()));
+        String formatedPriceInclVat = String.format("%.2f", item.getItemPriceInclVat());
         StringBuilder sb = new StringBuilder();
         sb.append("[*]\tItemID: ").append(item.itemId()).append("\n");
         sb.append("[*]\tPrice inclusive VAT: ").append(formatedPriceInclVat).append("\n");

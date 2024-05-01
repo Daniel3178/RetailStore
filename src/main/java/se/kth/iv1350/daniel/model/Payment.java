@@ -7,11 +7,9 @@ import se.kth.iv1350.daniel.model.dto.SaleDTO;
 public class Payment implements PaymentDTO
 {
     private final double PAID_AMOUNT;
-    private final double CHANGE_AMOUNT;
-    public Payment(double amount, SaleDTO saleInfo)
+    public Payment(double amount)
     {
         this.PAID_AMOUNT = amount;
-        this.CHANGE_AMOUNT = calculateChange(saleInfo.totalPrice());
     }
 
     @Override
@@ -19,14 +17,14 @@ public class Payment implements PaymentDTO
     {
         return this.PAID_AMOUNT;
     }
-    @Override
-    public double getChangeAmount(){return this.CHANGE_AMOUNT;}
+
     /**
      * Exception: It should alter if the change is negative i.e. customer has not paid fully.
      * @param totalPrice: the total price of the sale.
      * @return: the amount that should be returned to customer
      */
-    private double calculateChange(double totalPrice)
+    @Override
+    public double calculateChange(double totalPrice)
     {
         assert PAID_AMOUNT - totalPrice >= 0: "Customer has not paid fully";
         return PAID_AMOUNT - totalPrice;
@@ -40,7 +38,7 @@ public class Payment implements PaymentDTO
     @Override
     public ReceiptDTO getReceipt(SaleDTO saleInfo)
     {
-        return new ReceiptDTO(saleInfo, this.PAID_AMOUNT, this.CHANGE_AMOUNT);
+        return new ReceiptDTO(saleInfo, this.PAID_AMOUNT, calculateChange(saleInfo.totalPrice()));
     }
 
 }
