@@ -20,6 +20,7 @@ class InventoryDAOTest
     private ByteArrayOutputStream inMemPrintOut;
     private PrintStream originalSysOut;
 
+
     @BeforeEach
     void setUp()
     {
@@ -30,6 +31,8 @@ class InventoryDAOTest
         System.setOut(inMemSysOut);
     }
 
+
+
     @AfterEach
     void tearDown()
     {
@@ -37,6 +40,7 @@ class InventoryDAOTest
         inMemPrintOut = null;
         System.setOut(originalSysOut);
     }
+
 
     @Test
     void fetchItemItemExist()
@@ -46,6 +50,7 @@ class InventoryDAOTest
         assertEquals(ITEM_ID, result.itemId(), "Item is not found");
     }
 
+
     @Test
     void fetchItemItemNoteExist()
     {
@@ -54,13 +59,14 @@ class InventoryDAOTest
         assertNull(result, "Item does not exist, null should have been returned");
     }
 
-    @Disabled
+@Disabled
     @Test
     void updateInventoryNullArgument()
     {
         assertDoesNotThrow(() -> instanceToTest.updateInventory(null), "Null argument is not handled");
 
     }
+
 
     @Test
     void updateInventory()

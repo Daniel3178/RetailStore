@@ -12,7 +12,7 @@ class Inventory
      */
     private final String PATH = "src/main/resources/";
     private static Inventory instance;
-    private Map<Integer, List<String>> myCurrentData;
+    private Map<Integer, ItemDTO> myCurrentData;
 
     /**
      * Private constructor is used for implementing a Singletone design pattern
@@ -37,23 +37,7 @@ class Inventory
      */
     ItemDTO findItemById(int itemId)
     {
-        List<String> info = myCurrentData.get(itemId);
-        if (info != null && !info.isEmpty())
-        {
-            ItemDescriptionDTO description = new ItemDescriptionDTO(
-                    info.get(NAME.getIndex()),
-                    info.get(DESCRIPTION.getIndex()),
-                    info.get(EXPIRATION_DATE.getIndex()),
-                    info.get(CATEGORY.getIndex()),
-                    info.get(SUPPLIER.getIndex())
-            );
-            return new ItemDTO(
-                    Double.parseDouble(info.get(PRICE.getIndex())),
-                    Double.parseDouble(info.get(VAT_RATE.getIndex())),
-                    itemId, description
-            );
-        }
-        return null;
+        return getItemInfo(myCurrentData.get(itemId));
     }
 
     /**
@@ -63,11 +47,11 @@ class Inventory
     void updateInventory(List<ItemDTO> shoplist){
         for(ItemDTO eachItem: shoplist)
         {
-            List<String> info = myCurrentData.get(eachItem.itemId());
-            int quantity = Integer.parseInt(info.get(QUANTITY.getIndex()));
+            ItemDTO info = myCurrentData.get(eachItem.itemId());
+            int quantity = info.quantity();
             quantity -= eachItem.quantity();
-            info.set(QUANTITY.getIndex(), Integer.toString(quantity));
-            myCurrentData.replace(eachItem.itemId(), info);
+            ItemDTO modifiedItem = new ItemDTO(info.price(), info.vatRate(), info.itemId(), info.descDTO(), quantity);
+            myCurrentData.replace(eachItem.itemId(), modifiedItem);
         }
 //        saveData();
     }
@@ -79,7 +63,7 @@ class Inventory
     private void loadData()
     {
         LinkedList<String> allLines = new LinkedList<>();
-        Map<Integer, List<String>> allItems = new HashMap<>();
+        Map<Integer, ItemDTO> allItems = new HashMap<>();
         try
         {
             BufferedReader reader = new BufferedReader(new FileReader( PATH + "inventory_data"));
@@ -102,10 +86,50 @@ class Inventory
                 String[] parts = line.split(";");
                 int itemId = Integer.parseInt(parts[0]);
                 List<String> itemDetails = Arrays.asList(parts).subList(1, parts.length);
-                allItems.put(itemId, itemDetails);
+                ItemDTO item = getItemDTO(itemDetails, itemId);
+                allItems.put(itemId, item);
             }
             this.myCurrentData = allItems;
         }
+    }
+
+    private ItemDTO getItemInfo(ItemDTO item)
+    {
+        if (item == null)
+        {
+            return null;
+        }
+        return new ItemDTO(item.price(), item.vatRate(), item.itemId(), item.descDTO());
+    }
+    private ItemDTO getItemDTO(List<String> itemDetails, int itemId)
+    {
+        ItemDescriptionDTO description = new ItemDescriptionDTO(
+                itemDetails.get(NAME.getIndex()),
+                itemDetails.get(DESCRIPTION.getIndex()),
+                itemDetails.get(EXPIRATION_DATE.getIndex()),
+                itemDetails.get(CATEGORY.getIndex()),
+                itemDetails.get(SUPPLIER.getIndex())
+        );
+        return new ItemDTO(
+                Double.parseDouble(itemDetails.get(PRICE.getIndex())),
+                Double.parseDouble(itemDetails.get(VAT_RATE.getIndex())),
+                itemId, description,
+                Integer.parseInt(itemDetails.get(QUANTITY.getIndex()))
+        );
+    }
+
+    private List<String> getItemDetails(ItemDTO item)
+    {
+        List<String> itemDetails = new ArrayList<>(Collections.nCopies(8, null));
+        itemDetails.set(NAME.getIndex(), item.descDTO().name());
+        itemDetails.set(DESCRIPTION.getIndex(), item.descDTO().description());
+        itemDetails.set(EXPIRATION_DATE.getIndex(), item.descDTO().expirationDate());
+        itemDetails.set(CATEGORY.getIndex(), item.descDTO().category());
+        itemDetails.set(SUPPLIER.getIndex(), item.descDTO().supplier());
+        itemDetails.set(PRICE.getIndex(), Double.toString(item.price()));
+        itemDetails.set(VAT_RATE.getIndex(), Double.toString(item.vatRate()));
+        itemDetails.set(QUANTITY.getIndex(), Integer.toString(item.quantity()));
+        return itemDetails;
     }
 
     /**
@@ -116,10 +140,11 @@ class Inventory
         try
         {
             BufferedWriter writer = new BufferedWriter(new FileWriter(PATH +"inventory_data_UPDATED.txt"));
-            for (Map.Entry<Integer, List<String>> entry : myCurrentData.entrySet())
+            for (Map.Entry<Integer, ItemDTO> entry : myCurrentData.entrySet())
             {
                 int itemId = entry.getKey();
-                List<String> itemDetails = entry.getValue();
+                ItemDTO item = entry.getValue();
+                List<String> itemDetails = getItemDetails(item);
                 StringBuilder lineBuilder = new StringBuilder();
                 lineBuilder.append(itemId);
                 for (String detail : itemDetails)
