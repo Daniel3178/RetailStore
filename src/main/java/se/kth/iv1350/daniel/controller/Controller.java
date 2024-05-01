@@ -6,9 +6,7 @@ import se.kth.iv1350.daniel.integration.Register;
 import se.kth.iv1350.daniel.integration.accounting_system.AccountingSystem;
 import se.kth.iv1350.daniel.integration.discount_db.DiscountDB;
 import se.kth.iv1350.daniel.integration.inventory_db.InventoryDAO;
-import se.kth.iv1350.daniel.model.Payment;
-import se.kth.iv1350.daniel.model.Sale;
-import se.kth.iv1350.daniel.model.SaleLog;
+import se.kth.iv1350.daniel.model.*;
 import se.kth.iv1350.daniel.model.dto.*;
 
 import java.util.ArrayList;
@@ -63,8 +61,8 @@ public class Controller
         }
         else
         {
-            ItemDTO itemDTO = myInventoryDAO.fetchItem(itemId);
-            return myCurrentSale.addItem(itemDTO, quantity);
+            Item itemToAdd = new Item(myInventoryDAO.fetchItem(itemId), quantity);
+            return myCurrentSale.addItem(itemToAdd);
         }
     }
 
@@ -76,10 +74,10 @@ public class Controller
     {
         List<AppliedDiscountDTO> appliedDiscounts = new ArrayList<>();
         List<ItemDTO> shopList = myCurrentSale.getShopList();
-        DiscountDTO itemDiscount = myDiscountDb.calculateReducedAmount(shopList);
+        Discount itemDiscount = new Discount(myDiscountDb.findDiscountByShopList(shopList));
         appliedDiscounts.add(myCurrentSale.applyDiscount(itemDiscount));
         double totalPrice = myCurrentSale.getTotalPrice();
-        DiscountDTO totalPriceDiscount = myDiscountDb.findDiscountByTotalSum(totalPrice);
+        Discount totalPriceDiscount = new Discount(myDiscountDb.findDiscountByTotalSum(totalPrice));
         appliedDiscounts.add(myCurrentSale.applyDiscount(totalPriceDiscount));
         return appliedDiscounts;
     }
@@ -87,7 +85,7 @@ public class Controller
     public AppliedDiscountDTO applyDiscountByCustomerId(int customerId)
     {
         AppliedDiscountDTO appliedDiscount;
-        DiscountDTO customerDiscount = myDiscountDb.findDiscountByCustomerId(customerId);
+        Discount customerDiscount = new Discount(myDiscountDb.findDiscountByCustomerId(customerId));
         appliedDiscount = myCurrentSale.applyDiscount(customerDiscount);
         return appliedDiscount;
     }

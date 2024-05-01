@@ -25,7 +25,7 @@ class DiscountDBTest
     @Test
     void calculateReducedAmountNullArgumentException()
     {
-        assertDoesNotThrow(()->instanceToTest.calculateReducedAmount(null), "It does not handle null argument exception ");
+        assertDoesNotThrow(()->instanceToTest.findDiscountByShopList(null), "It does not handle null argument exception ");
     }
 
 //    @Test

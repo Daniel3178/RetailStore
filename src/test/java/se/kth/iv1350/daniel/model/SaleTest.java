@@ -24,16 +24,16 @@ class SaleTest
     void setUp()
     {
         instanceToTest = new Sale();
-        instanceToTest.addItem(new ItemDTO(275.99, 0.06, EXISTED_ITEM_ID_ONE,
+        instanceToTest.addItem(new Item( new ItemDTO(275.99, 0.06, EXISTED_ITEM_ID_ONE,
                                            new ItemDescriptionDTO("Red Apples", "Fresh, juicy red apples", "2024-04-20",
                                                                   "Fruits", "Agriculture Inc"
                                            )
-        ), QUANTITY);
-        instanceToTest.addItem(new ItemDTO(100.99, 0.06, EXISTED_ITEM_ID_TWO,
+        ), QUANTITY));
+        instanceToTest.addItem(new Item(new ItemDTO(100.99, 0.06, EXISTED_ITEM_ID_TWO,
                                            new ItemDescriptionDTO("Chocolate Bar", "Milk chocolate bar, 100g",
                                                                   "2024-06-01", "Snacks", "Candy Corp"
                                            )
-        ), QUANTITY);
+        ), QUANTITY));
     }
 
     @AfterEach
@@ -96,14 +96,14 @@ class SaleTest
     void addItemNullAsItemDTO()
     {
         final int ANY_NUMBER = 10;
-        assertDoesNotThrow(()->instanceToTest.addItem(null, ANY_NUMBER), "addItem does not handle null argument exception");
+        assertDoesNotThrow(()->instanceToTest.addItem(new Item(null, ANY_NUMBER)), "addItem does not handle null argument exception");
     }
 
     @Test
     void addItemNullAsItemDescriptionDTO()
     {
         final int ANY_NUMBER = 10;
-        assertDoesNotThrow(()->instanceToTest.addItem(new ItemDTO(20.0, 0.06, EXISTED_ITEM_ID_ONE, null), ANY_NUMBER), "addItem does not handle null argument exception");
+        assertDoesNotThrow(()->instanceToTest.addItem(new Item(new ItemDTO(20.0, 0.06, EXISTED_ITEM_ID_ONE, null), ANY_NUMBER)), "addItem does not handle null argument exception");
     }
 
     @Test

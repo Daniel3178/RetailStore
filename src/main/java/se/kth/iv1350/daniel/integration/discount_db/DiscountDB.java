@@ -1,6 +1,5 @@
 package se.kth.iv1350.daniel.integration.discount_db;
 
-import se.kth.iv1350.daniel.model.Item;
 import se.kth.iv1350.daniel.model.dto.DiscountDTO;
 import se.kth.iv1350.daniel.model.DiscountEnums.DiscountType;
 import se.kth.iv1350.daniel.model.dto.DiscountTypeDTO;
@@ -10,7 +9,7 @@ import java.util.List;
 
 public class DiscountDB
 {
-    public DiscountDTO calculateReducedAmount(List<ItemDTO> allItem)
+    public DiscountDTO findDiscountByShopList(List<ItemDTO> allItem)
     {
         return new DiscountDTO(
                 new DiscountTypeDTO(DiscountType.ITEM_DISC, 30.0),

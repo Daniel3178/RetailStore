@@ -46,6 +46,15 @@ public class Item
         return PRICE * itemQuantity * (1 + VAT_RATE);
     }
 
+    public double getPriceInclusiveVat()
+    {
+        return PRICE * quantity * (1 + VAT_RATE);
+    }
+
+    public double getVatAmount()
+    {
+        return PRICE * quantity * VAT_RATE;
+    }
     /**
      * Calculates the VAT amount for a given quantity of items.
      *
