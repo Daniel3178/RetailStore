@@ -48,7 +48,7 @@ class SaleLogTest
     void addNullToSaleLog()
     {
         instanceToTest.addSale(null);
-        assertDoesNotThrow(()->instanceToTest.addSale(null),
+        assertThrows(Exception.class,()->instanceToTest.addSale(null),
                      "AddSale method does not handle adding null exception to the list"
         );
     }

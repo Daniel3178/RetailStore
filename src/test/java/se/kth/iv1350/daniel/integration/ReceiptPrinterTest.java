@@ -56,10 +56,10 @@ class ReceiptPrinterTest
         assertTrue(printOut.contains(expectedOutput), "Printer is not working");
     }
 
-    @Disabled
+//    @Disabled
     @Test
     void printReceiptNullArg()
     {
-        assertDoesNotThrow(()->instanceToTest.printReceipt(null), "Null argument is not handled");
+        assertThrows(Exception.class,()->instanceToTest.printReceipt(null), "Null argument is not handled");
     }
 }

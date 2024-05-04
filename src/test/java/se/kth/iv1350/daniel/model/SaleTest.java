@@ -91,12 +91,12 @@ class SaleTest
         );
     }
 
-    @Disabled
+//    @Disabled
     @Test
     void addItemNullAsItemDTO()
     {
         final int ANY_NUMBER = 10;
-        assertDoesNotThrow(()->instanceToTest.addItem(new Item(null, ANY_NUMBER)), "addItem does not handle null argument exception");
+        assertThrows(Exception.class, ()->instanceToTest.addItem(new Item(null, ANY_NUMBER)), "addItem does not handle null argument exception");
     }
 
     @Test

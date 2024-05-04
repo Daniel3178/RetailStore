@@ -24,9 +24,11 @@ public class Controller
 
     /**
      * Initializes a new Controller instance with dependencies from ExternalSysCreator.
+     *
      * @param externalSysCreator An instance of ExternalSysCreator providing external systems.
      */
-    public Controller(ExternalSysCreator externalSysCreator) {
+    public Controller(ExternalSysCreator externalSysCreator)
+    {
         this.myAccountingSys = externalSysCreator.getAccountingSystem();
         this.myDiscountDb = externalSysCreator.getDiscountDB();
         this.myInventoryDAO = externalSysCreator.getInventory();
@@ -41,6 +43,7 @@ public class Controller
     {
         this.myCurrentSale = new Sale();
     }
+
     /**
      * Ends the current sale and logs it.
      * Clears the current sale information.
@@ -53,13 +56,14 @@ public class Controller
 
     /**
      * Adds an item to the current sale or increases its quantity if already added.
-     * @param itemId The ID of the item to add.
+     *
+     * @param itemId   The ID of the item to add.
      * @param quantity The quantity of the item to add.
      * @return LastSaleUpdateDTO containing information about the updated sale.
      */
     public LastSaleUpdateDTO addItem(int itemId, int quantity)
     {
-        if(myCurrentSale.contains(itemId))
+        if (myCurrentSale.contains(itemId))
         {
             return myCurrentSale.increaseQuantity(itemId, quantity);
         }
@@ -72,6 +76,7 @@ public class Controller
 
     /**
      * Applies discounts on the current sale based on items and total price.
+     *
      * @return List of AppliedDiscountDTOs containing information about applied discounts.
      */
     public List<AppliedDiscountDTO> applyDiscountsOnSale()

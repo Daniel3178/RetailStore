@@ -98,7 +98,7 @@ class ItemTest
     void increaseQuantityByNegativeNumber()
     {
         final int NEGATIVE_NUMBER = -10;
-        assertDoesNotThrow(()->
+        assertThrows(Exception.class,()->
                 myItem.increaseQuantity(NEGATIVE_NUMBER), "IncreasedQuantity method does not handle negative numbers");
     }
 }

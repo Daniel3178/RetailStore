@@ -59,11 +59,11 @@ class InventoryDAOTest
         assertNull(result, "Item does not exist, null should have been returned");
     }
 
-@Disabled
+//@Disabled
     @Test
     void updateInventoryNullArgument()
     {
-        assertDoesNotThrow(() -> instanceToTest.updateInventory(null), "Null argument is not handled");
+        assertThrows(Exception.class, () -> instanceToTest.updateInventory(null), "Null argument is not handled");
 
     }
 
