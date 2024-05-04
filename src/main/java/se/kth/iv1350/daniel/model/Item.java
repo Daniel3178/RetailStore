@@ -5,18 +5,18 @@ import se.kth.iv1350.daniel.model.dto.ItemDescriptionDTO;
 
 public class Item
 {
-    private final double PRICE;
-    private final double VAT_RATE;
-    private final int ITEM_ID;
-    private final ItemDescriptionDTO DESC_DTO;
+    private final double price;
+    private final double vatRate;
+    private final int itemId;
+    private final ItemDescriptionDTO descDTO;
     private int quantity;
 
     public Item(ItemDTO itemInfo, int quantity)
     {
-        this.PRICE = itemInfo.price();
-        this.VAT_RATE = itemInfo.vatRate();
-        this.ITEM_ID = itemInfo.itemId();
-        this.DESC_DTO = itemInfo.descDTO();
+        this.price = itemInfo.price();
+        this.vatRate = itemInfo.vatRate();
+        this.itemId = itemInfo.itemId();
+        this.descDTO = itemInfo.descDTO();
         this.quantity = quantity;
     }
 
@@ -38,7 +38,7 @@ public class Item
      */
     public double calculatePriceInclusiveVat(int itemQuantity)
     {
-        return PRICE * itemQuantity * (1 + VAT_RATE);
+        return price * itemQuantity * (1 + vatRate);
     }
     /**
      * Calculates the VAT amount for a given quantity of items.
@@ -48,7 +48,7 @@ public class Item
      */
     public double calculateVatAmount(int itemQuantity)
     {
-        return PRICE * itemQuantity * VAT_RATE;
+        return price * itemQuantity * vatRate;
     }
     /**
      * Calculates the price inclusive of VAT for the item.
@@ -57,7 +57,7 @@ public class Item
      */
     public double getPriceInclusiveVat()
     {
-        return PRICE * quantity * (1 + VAT_RATE);
+        return price * quantity * (1 + vatRate);
     }
     /**
      * Calculates the VAT amount for the item.
@@ -66,19 +66,19 @@ public class Item
      */
     public double getVatAmount()
     {
-        return PRICE * quantity * VAT_RATE;
+        return price * quantity * vatRate;
     }
     public double getItemPrice()
     {
-        return this.PRICE;
+        return this.price;
     }
     public double getItemVat()
     {
-        return this.VAT_RATE;
+        return this.vatRate;
     }
     public ItemDTO getItemDTO()
     {
-        return new ItemDTO(PRICE, VAT_RATE, ITEM_ID, DESC_DTO, quantity);
+        return new ItemDTO(price, vatRate, itemId, descDTO, quantity);
     }
     public int getQuantity()
     {
@@ -86,7 +86,7 @@ public class Item
     }
     public int getItemId()
     {
-        return this.ITEM_ID;
+        return this.itemId;
     }
 
     @Override

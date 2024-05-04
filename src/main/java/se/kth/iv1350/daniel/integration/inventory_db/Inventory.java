@@ -1,37 +1,62 @@
 package se.kth.iv1350.daniel.integration.inventory_db;
+
+import java.io.BufferedReader;
+import java.io.BufferedWriter;
+import java.io.FileReader;
+import java.io.FileWriter;
+import java.io.IOException;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collections;
+import java.util.HashMap;
+import java.util.LinkedList;
+import java.util.List;
+import java.util.Map;
+
+import static se.kth.iv1350.daniel.integration.inventory_db.ItemConstants.CATEGORY;
+import static se.kth.iv1350.daniel.integration.inventory_db.ItemConstants.DESCRIPTION;
+import static se.kth.iv1350.daniel.integration.inventory_db.ItemConstants.EXPIRATION_DATE;
+import static se.kth.iv1350.daniel.integration.inventory_db.ItemConstants.NAME;
+import static se.kth.iv1350.daniel.integration.inventory_db.ItemConstants.PRICE;
+import static se.kth.iv1350.daniel.integration.inventory_db.ItemConstants.QUANTITY;
+import static se.kth.iv1350.daniel.integration.inventory_db.ItemConstants.SUPPLIER;
+import static se.kth.iv1350.daniel.integration.inventory_db.ItemConstants.VAT_RATE;
+
 import se.kth.iv1350.daniel.model.dto.ItemDTO;
 import se.kth.iv1350.daniel.model.dto.ItemDescriptionDTO;
-import java.io.*;
-import java.util.*;
-import static se.kth.iv1350.daniel.integration.inventory_db.ItemConstants.*;
 
 class Inventory
 {
     /**
      * The path where all the data on items exist and it will be written
      */
-    private final String PATH = "src/main/resources/";
+    private static final String PATH = "src/main/resources/";
     private static Inventory instance;
     private Map<Integer, ItemDTO> myCurrentData;
 
     /**
      * Private constructor is used for implementing a Singletone design pattern
      */
-    private Inventory() {
+    private Inventory()
+    {
         myCurrentData = new HashMap<>();
         loadData();
     }
 
-    static Inventory getInstance() {
-        if (instance == null) {
+    static Inventory getInstance()
+    {
+        if (instance == null)
+        {
             instance = new Inventory();
         }
         return instance;
     }
 
     /**
-     * It searches for the item with a specific id in myCurrentData and uses the info found there to create a dto
+     * It searches for the item with a specific id in myCurrentData and uses the
+     * info found there to create a dto
      * object
+     *
      * @param itemId: id to lookup in myCurrentData
      * @return: itemDTO with the required information
      */
@@ -41,11 +66,15 @@ class Inventory
     }
 
     /**
-     * It looks up each item in myCurrentData based on itemId and updates the quantity.
-     * @param shoplist: list of items in the sale that should be subtracted from the inventory
+     * It looks up each item in myCurrentData based on itemId and updates the
+     * quantity.
+     *
+     * @param shoplist: list of items in the sale that should be subtracted from the
+     *                  inventory
      */
-    void updateInventory(List<ItemDTO> shoplist){
-        for(ItemDTO eachItem: shoplist)
+    void updateInventory(List<ItemDTO> shoplist)
+    {
+        for (ItemDTO eachItem : shoplist)
         {
             ItemDTO info = myCurrentData.get(eachItem.itemId());
             int quantity = info.quantity();
@@ -53,13 +82,14 @@ class Inventory
             ItemDTO modifiedItem = new ItemDTO(info.price(), info.vatRate(), info.itemId(), info.descDTO(), quantity);
             myCurrentData.replace(eachItem.itemId(), modifiedItem);
         }
-//        saveData();
+        saveData();
     }
 
-
     /**
-     * It reads all data on items and stores it in myCurrentData as a key-value pair where the key is the itemID
-     * and the value is an array of strings where each string is a name, price, vatRate etc
+     * It reads all data on items and stores it in myCurrentData as a key-value pair
+     * where the key is the itemID
+     * and the value is an array of strings where each string is a name, price,
+     * vatRate etc
      */
     private void loadData()
     {
@@ -81,7 +111,9 @@ class Inventory
 
     /**
      * Creates a copy of itemDTO that is sent as argument
-     * @param item: itemDTO to copy that has the total count in inventory as quantity
+     *
+     * @param item: itemDTO to copy that has the total count in inventory as
+     *              quantity
      * @return: a copy that has 1 as quantity.
      */
     private ItemDTO getItemInfo(ItemDTO item)
@@ -96,15 +128,17 @@ class Inventory
     private LinkedList<String> readDataFromFile() throws IOException
     {
         LinkedList<String> allLines = new LinkedList<>();
-        BufferedReader reader = new BufferedReader(new FileReader( PATH + "inventory_data"));
-        String line;
-        while ((line = reader.readLine()) != null)
+        try (BufferedReader reader = new BufferedReader(new FileReader(PATH + "inventory_data")))
         {
-            allLines.add(line);
+            String line;
+            while ((line = reader.readLine()) != null)
+            {
+                allLines.add(line);
+            }
         }
-        reader.close();
         return allLines;
     }
+
     private Map<Integer, ItemDTO> structureLoadedData(LinkedList<String> loadedData)
     {
         Map<Integer, ItemDTO> allItems = new HashMap<>();
@@ -126,14 +160,12 @@ class Inventory
                 itemDetails.get(DESCRIPTION.getIndex()),
                 itemDetails.get(EXPIRATION_DATE.getIndex()),
                 itemDetails.get(CATEGORY.getIndex()),
-                itemDetails.get(SUPPLIER.getIndex())
-        );
+                itemDetails.get(SUPPLIER.getIndex()));
         return new ItemDTO(
                 Double.parseDouble(itemDetails.get(PRICE.getIndex())),
                 Double.parseDouble(itemDetails.get(VAT_RATE.getIndex())),
                 itemId, description,
-                Integer.parseInt(itemDetails.get(QUANTITY.getIndex()))
-        );
+                Integer.parseInt(itemDetails.get(QUANTITY.getIndex())));
     }
 
     private List<String> parseToList(ItemDTO item)
@@ -151,18 +183,18 @@ class Inventory
     }
 
     /**
-     * It writes the data found in myCurrentData in a new file called inventory_data_UPDATED.txt.
+     * It writes the data found in myCurrentData in a new file called
+     * inventory_data_UPDATED.txt.
      */
     private void saveData()
     {
-        try
+
+        try (BufferedWriter writer = new BufferedWriter(new FileWriter(PATH + "inventory_data_UPDATED.txt")))
         {
-            BufferedWriter writer = new BufferedWriter(new FileWriter(PATH +"inventory_data_UPDATED.txt"));
             for (Map.Entry<Integer, ItemDTO> entry : myCurrentData.entrySet())
             {
                 writeLine(writer, entry);
             }
-            writer.close();
         }
         catch (IOException e)
         {
@@ -170,7 +202,7 @@ class Inventory
         }
     }
 
-    private void writeLine(BufferedWriter writer, Map.Entry<Integer, ItemDTO> entry ) throws IOException
+    private void writeLine(BufferedWriter writer, Map.Entry<Integer, ItemDTO> entry) throws IOException
     {
         int itemId = entry.getKey();
         ItemDTO item = entry.getValue();
