@@ -15,7 +15,7 @@ public class Discount
     /**
      * Task: It applies a discount to the total price
      * @param totalPrice: total price on which the discount will be applied
-     * @return: An object that tells what kind of discount, the reduced amount from total price and the updated total
+     * @return : An object that tells what kind of discount, the reduced amount from total price and the updated total
      * price after the discount has been applied
      */
     public AppliedDiscountDTO applyDiscount(double totalPrice)

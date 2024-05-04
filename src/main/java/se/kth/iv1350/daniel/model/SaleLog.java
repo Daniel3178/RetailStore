@@ -1,9 +1,9 @@
 package se.kth.iv1350.daniel.model;
 
-import se.kth.iv1350.daniel.model.dto.SaleDTO;
-
 import java.util.ArrayList;
 import java.util.List;
+
+import se.kth.iv1350.daniel.model.dto.SaleDTO;
 
 public class SaleLog
 {
@@ -20,7 +20,7 @@ public class SaleLog
 
     /**
      * Creates an instance if there is none or return the current one
-     * @return: an instance of this class
+     * @return an instance of this class
      */
     public static SaleLog getInstance()
     {

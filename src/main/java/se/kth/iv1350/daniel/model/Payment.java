@@ -15,7 +15,7 @@ public class Payment implements PaymentDTO
     /**
      * Exception: It should alter if the change is negative i.e. customer has not paid fully.
      * @param totalPrice: the total price of the sale.
-     * @return: the amount that should be returned to customer
+     * @return the amount that should be returned to customer
      */
     @Override
     public double calculateChange(double totalPrice)
@@ -27,7 +27,7 @@ public class Payment implements PaymentDTO
     /**
      * Task: provides the required information for a receipt
      * @param saleInfo: Sale information required in the receipt such as price, vat, applied disc etc.
-     * @return: receipt object that put all info in a specific format.
+     * @return receipt object that put all info in a specific format.
      */
     @Override
     public ReceiptDTO getReceipt(SaleDTO saleInfo)

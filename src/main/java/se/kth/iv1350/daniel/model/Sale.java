@@ -1,11 +1,14 @@
 package se.kth.iv1350.daniel.model;
 
-import se.kth.iv1350.daniel.model.dto.*;
-
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
+
+import se.kth.iv1350.daniel.model.dto.AppliedDiscountDTO;
+import se.kth.iv1350.daniel.model.dto.ItemDTO;
+import se.kth.iv1350.daniel.model.dto.LastSaleUpdateDTO;
+import se.kth.iv1350.daniel.model.dto.SaleDTO;
 
 public class Sale
 {
@@ -31,7 +34,7 @@ public class Sale
      * Task: To check whether an item exist in the current sale
      *
      * @param itemId: ID to search for the item in the list
-     * @return: true if exist otherwise false
+     * @return true if exist otherwise false
      */
     public boolean contains(int itemId)
     {
@@ -43,7 +46,7 @@ public class Sale
      *
      * @param itemId:   Is used to find the specific item
      * @param quantity: Number of item to add
-     * @return: The description of the item that has been added and the updated total price
+     * @return The description of the item that has been added and the updated total price
      */
     public LastSaleUpdateDTO increaseQuantity(int itemId, int quantity)
     {
@@ -65,7 +68,7 @@ public class Sale
      * Task: To add a new item in the shopping list
      *
      * @param itemToAdd: Item that will be added to sale
-     * @return: The description of the item that has been added and the updated total price
+     * @return The description of the item that has been added and the updated total price
      */
     public LastSaleUpdateDTO addItem(Item itemToAdd)
     {
@@ -80,7 +83,7 @@ public class Sale
      * discount as applied discount for the sale report
      *
      * @param discount: contains type and description, here we use type to specify how a discount should be applied
-     * @return: An object that tells what kind of discount, the reduced amount from total price and the updated total
+     * @return An object that tells what kind of discount, the reduced amount from total price and the updated total
      * price after the discount has been applied
      */
     public AppliedDiscountDTO applyDiscount(Discount discount)
@@ -92,7 +95,7 @@ public class Sale
     }
 
     /**
-     * @return: all the items in the current sale
+     * @return all the items in the current sale
      */
     public List<ItemDTO> getShopList()
     {
@@ -108,7 +111,7 @@ public class Sale
         return this.myTotalPrice;
     }
     /**
-     * @return: a dto object of the sale
+     * @return a dto object of the sale
      */
     public SaleDTO getSaleDTO()
     {
