@@ -15,12 +15,12 @@ import java.util.List;
 
 public class Controller
 {
-    Sale myCurrentSale;
-    AccountingSystem myAccountingSys;
-    DiscountDB myDiscountDb;
-    InventoryDAO myInventoryDAO;
-    Register myRegister;
-    ReceiptPrinter myReceiptPrinter;
+    private Sale myCurrentSale;
+    private final AccountingSystem myAccountingSys;
+    private final DiscountDB myDiscountDb;
+    private final InventoryDAO myInventoryDAO;
+    private final Register myRegister;
+    private final ReceiptPrinter myReceiptPrinter;
 
     /**
      * Initializes a new Controller instance with dependencies from ExternalSysCreator.
