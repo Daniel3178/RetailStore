@@ -20,19 +20,14 @@ public class Item
         this.quantity = quantity;
     }
 
-    public ItemDTO getItemDTO()
+    /**
+     * Increases the current quantity by a number
+     *
+     * @param quantity: the number that will be added to the current count
+     */
+    public void increaseQuantity(int quantity)
     {
-        return new ItemDTO(PRICE, VAT_RATE, ITEM_ID, DESC_DTO, quantity);
-    }
-
-    public int getQuantity()
-    {
-        return this.quantity;
-    }
-
-    public int getItemId()
-    {
-        return this.ITEM_ID;
+        this.quantity += quantity;
     }
 
     /**
@@ -45,16 +40,6 @@ public class Item
     {
         return PRICE * itemQuantity * (1 + VAT_RATE);
     }
-
-    public double getPriceInclusiveVat()
-    {
-        return PRICE * quantity * (1 + VAT_RATE);
-    }
-
-    public double getVatAmount()
-    {
-        return PRICE * quantity * VAT_RATE;
-    }
     /**
      * Calculates the VAT amount for a given quantity of items.
      *
@@ -65,7 +50,24 @@ public class Item
     {
         return PRICE * itemQuantity * VAT_RATE;
     }
-
+    /**
+     * Calculates the price inclusive of VAT for the item.
+     *
+     * @return The price of the item inclusive of VAT.
+     */
+    public double getPriceInclusiveVat()
+    {
+        return PRICE * quantity * (1 + VAT_RATE);
+    }
+    /**
+     * Calculates the VAT amount for the item.
+     *
+     * @return The amount of VAT for the item.
+     */
+    public double getVatAmount()
+    {
+        return PRICE * quantity * VAT_RATE;
+    }
     public double getItemPrice()
     {
         return this.PRICE;
@@ -74,15 +76,17 @@ public class Item
     {
         return this.VAT_RATE;
     }
-
-    /**
-     * Increases the current quantity by a number
-     *
-     * @param quantity: the number that will be added to the current count
-     */
-    public void increaseQuantity(int quantity)
+    public ItemDTO getItemDTO()
     {
-        this.quantity += quantity;
+        return new ItemDTO(PRICE, VAT_RATE, ITEM_ID, DESC_DTO, quantity);
+    }
+    public int getQuantity()
+    {
+        return this.quantity;
+    }
+    public int getItemId()
+    {
+        return this.ITEM_ID;
     }
 
     @Override

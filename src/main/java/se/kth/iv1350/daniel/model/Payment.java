@@ -12,12 +12,6 @@ public class Payment implements PaymentDTO
         this.PAID_AMOUNT = amount;
     }
 
-    @Override
-    public double getPaidAmount()
-    {
-        return this.PAID_AMOUNT;
-    }
-
     /**
      * Exception: It should alter if the change is negative i.e. customer has not paid fully.
      * @param totalPrice: the total price of the sale.
@@ -40,5 +34,9 @@ public class Payment implements PaymentDTO
     {
         return new ReceiptDTO(saleInfo, this.PAID_AMOUNT, calculateChange(saleInfo.totalPrice()));
     }
-
+    @Override
+    public double getPaidAmount()
+    {
+        return this.PAID_AMOUNT;
+    }
 }

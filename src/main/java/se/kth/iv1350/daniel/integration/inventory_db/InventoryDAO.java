@@ -4,11 +4,22 @@ import java.util.List;
 
 public class InventoryDAO
 {
+    /**
+     * Fetches an item from the inventory based on the provided item ID.
+     *
+     * @param itemId The ID of the item to fetch.
+     * @return The ItemDTO object representing the fetched item.
+     */
     public ItemDTO fetchItem(int itemId)
     {
         return Inventory.getInstance().findItemById(itemId);
     }
 
+    /**
+     * Updates the inventory with the provided list of items.
+     *
+     * @param allItems The list of items to update the inventory with.
+     */
     public void updateInventory(List<ItemDTO> allItems)
     {
         System.out.println("[!]\tInventory is updated");

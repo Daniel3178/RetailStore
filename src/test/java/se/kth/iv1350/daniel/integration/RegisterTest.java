@@ -3,8 +3,6 @@ package se.kth.iv1350.daniel.integration;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import se.kth.iv1350.daniel.model.Payment;
-import se.kth.iv1350.daniel.model.dto.PaymentDTO;
 
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -28,7 +26,7 @@ class RegisterTest
     {
         final double POSITIVE_AMOUNT = 10.00;
         double before = instanceToRegister.getCurrentAmount();
-        instanceToRegister.registerPayment(POSITIVE_AMOUNT);
+        instanceToRegister.increaseAmount(POSITIVE_AMOUNT);
         double after = instanceToRegister.getCurrentAmount();
         double result = after - before;
         assertEquals(POSITIVE_AMOUNT, result, "Positive amount is not registered");
@@ -38,7 +36,7 @@ class RegisterTest
     void registerPaymentNegativeAmount()
     {
         final double NEGATIVE_AMOUNT = -10.00;
-        assertDoesNotThrow(()->instanceToRegister.registerPayment(NEGATIVE_AMOUNT), "Negative amount is not handled");
+        assertDoesNotThrow(()->instanceToRegister.increaseAmount(NEGATIVE_AMOUNT), "Negative amount is not handled");
     }
 
     @Test
@@ -46,7 +44,7 @@ class RegisterTest
     {
         final double ZERO_AMOUNT = 0.00;
         double before = instanceToRegister.getCurrentAmount();
-        instanceToRegister.registerPayment(ZERO_AMOUNT);
+        instanceToRegister.increaseAmount(ZERO_AMOUNT);
         double after = instanceToRegister.getCurrentAmount();
         double result = after - before;
         assertEquals(ZERO_AMOUNT, result, "Zero amount is not registered");

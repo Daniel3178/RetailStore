@@ -39,19 +39,6 @@ public class Sale
     }
 
     /**
-     * @return: all the items in the current sale
-     */
-    public List<ItemDTO> getShopList()
-    {
-        List<ItemDTO> shopList = new ArrayList<>();
-        for (Item item : this.MY_SHOPLIST)
-        {
-            shopList.add(item.getItemDTO());
-        }
-        return shopList;
-    }
-
-    /**
      * Task: increase the number of a specific item in the list
      *
      * @param itemId:   Is used to find the specific item
@@ -88,11 +75,6 @@ public class Sale
         return new LastSaleUpdateDTO(itemToAdd.getItemDTO(), itemToAdd.getQuantity(), myTotalPrice, myTotalVat);
     }
 
-    public double getTotalPrice()
-    {
-        return this.myTotalPrice;
-    }
-
     /**
      * Exception: It should not return null! Task: It applies a discount, updates the total price and stores the
      * discount as applied discount for the sale report
@@ -109,6 +91,22 @@ public class Sale
         return applied;
     }
 
+    /**
+     * @return: all the items in the current sale
+     */
+    public List<ItemDTO> getShopList()
+    {
+        List<ItemDTO> shopList = new ArrayList<>();
+        for (Item item : this.MY_SHOPLIST)
+        {
+            shopList.add(item.getItemDTO());
+        }
+        return shopList;
+    }
+    public double getTotalPrice()
+    {
+        return this.myTotalPrice;
+    }
     /**
      * @return: a dto object of the sale
      */

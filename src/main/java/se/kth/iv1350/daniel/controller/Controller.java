@@ -41,6 +41,10 @@ public class Controller
     {
         this.myCurrentSale = new Sale();
     }
+    /**
+     * Ends the current sale and logs it.
+     * Clears the current sale information.
+     */
     public void endSale()
     {
         SaleLog.getInstance().addSale(this.myCurrentSale.getSaleDTO());
@@ -82,6 +86,12 @@ public class Controller
         return appliedDiscounts;
     }
 
+    /**
+     * Applies a discount based on the provided customer ID to the current sale.
+     *
+     * @param customerId The ID of the customer for which the discount is to be applied.
+     * @return The AppliedDiscountDTO containing information about the applied discount.
+     */
     public AppliedDiscountDTO applyDiscountByCustomerId(int customerId)
     {
         AppliedDiscountDTO appliedDiscount;
@@ -90,14 +100,19 @@ public class Controller
         return appliedDiscount;
     }
 
-
+    /**
+     * Processes a payment for the current sale.
+     *
+     * @param amount The amount paid by the customer.
+     * @return The change returned to the customer.
+     */
     public double pay(double amount)
     {
         SaleDTO saleInfo = myCurrentSale.getSaleDTO();
         PaymentDTO payment = new Payment(amount);
         myInventoryDAO.updateInventory(saleInfo.shoplist());
         myAccountingSys.updateAccountingSystem(saleInfo);
-        myRegister.registerPayment(payment.getPaidAmount());
+        myRegister.increaseAmount(payment.getPaidAmount());
         ReceiptDTO receipt = payment.getReceipt(saleInfo);
         double change = payment.calculateChange(saleInfo.totalPrice());
         myRegister.decreaseAmount(change);

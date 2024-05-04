@@ -56,6 +56,7 @@ class Inventory
 //        saveData();
     }
 
+
     /**
      * It reads all data on items and stores it in myCurrentData as a key-value pair where the key is the itemID
      * and the value is an array of strings where each string is a name, price, vatRate etc
@@ -63,16 +64,9 @@ class Inventory
     private void loadData()
     {
         LinkedList<String> allLines = new LinkedList<>();
-        Map<Integer, ItemDTO> allItems = new HashMap<>();
         try
         {
-            BufferedReader reader = new BufferedReader(new FileReader( PATH + "inventory_data"));
-            String line = null;
-            while ((line = reader.readLine()) != null)
-            {
-                allLines.add(line);
-            }
-            reader.close();
+            allLines = readDataFromFile();
         }
         catch (IOException e)
         {
@@ -81,18 +75,15 @@ class Inventory
         }
         finally
         {
-            for (String line : allLines)
-            {
-                String[] parts = line.split(";");
-                int itemId = Integer.parseInt(parts[0]);
-                List<String> itemDetails = Arrays.asList(parts).subList(1, parts.length);
-                ItemDTO item = getItemDTO(itemDetails, itemId);
-                allItems.put(itemId, item);
-            }
-            this.myCurrentData = allItems;
+            this.myCurrentData = structureLoadedData(allLines);
         }
     }
 
+    /**
+     * Creates a copy of itemDTO that is sent as argument
+     * @param item: itemDTO to copy that has the total count in inventory as quantity
+     * @return: a copy that has 1 as quantity.
+     */
     private ItemDTO getItemInfo(ItemDTO item)
     {
         if (item == null)
@@ -101,7 +92,34 @@ class Inventory
         }
         return new ItemDTO(item.price(), item.vatRate(), item.itemId(), item.descDTO());
     }
-    private ItemDTO getItemDTO(List<String> itemDetails, int itemId)
+
+    private LinkedList<String> readDataFromFile() throws IOException
+    {
+        LinkedList<String> allLines = new LinkedList<>();
+        BufferedReader reader = new BufferedReader(new FileReader( PATH + "inventory_data"));
+        String line;
+        while ((line = reader.readLine()) != null)
+        {
+            allLines.add(line);
+        }
+        reader.close();
+        return allLines;
+    }
+    private Map<Integer, ItemDTO> structureLoadedData(LinkedList<String> loadedData)
+    {
+        Map<Integer, ItemDTO> allItems = new HashMap<>();
+        for (String line : loadedData)
+        {
+            String[] parts = line.split(";");
+            int itemId = Integer.parseInt(parts[0]);
+            List<String> itemDetails = Arrays.asList(parts).subList(1, parts.length);
+            ItemDTO item = parseToItemDTO(itemDetails, itemId);
+            allItems.put(itemId, item);
+        }
+        return allItems;
+    }
+
+    private ItemDTO parseToItemDTO(List<String> itemDetails, int itemId)
     {
         ItemDescriptionDTO description = new ItemDescriptionDTO(
                 itemDetails.get(NAME.getIndex()),
@@ -118,7 +136,7 @@ class Inventory
         );
     }
 
-    private List<String> getItemDetails(ItemDTO item)
+    private List<String> parseToList(ItemDTO item)
     {
         List<String> itemDetails = new ArrayList<>(Collections.nCopies(8, null));
         itemDetails.set(NAME.getIndex(), item.descDTO().name());
@@ -142,17 +160,7 @@ class Inventory
             BufferedWriter writer = new BufferedWriter(new FileWriter(PATH +"inventory_data_UPDATED.txt"));
             for (Map.Entry<Integer, ItemDTO> entry : myCurrentData.entrySet())
             {
-                int itemId = entry.getKey();
-                ItemDTO item = entry.getValue();
-                List<String> itemDetails = getItemDetails(item);
-                StringBuilder lineBuilder = new StringBuilder();
-                lineBuilder.append(itemId);
-                for (String detail : itemDetails)
-                {
-                    lineBuilder.append(";").append(detail);
-                }
-                writer.write(lineBuilder.toString());
-                writer.newLine();
+                writeLine(writer, entry);
             }
             writer.close();
         }
@@ -160,5 +168,21 @@ class Inventory
         {
             System.err.println("ERROR writing data to file.");
         }
+    }
+
+    private void writeLine(BufferedWriter writer, Map.Entry<Integer, ItemDTO> entry ) throws IOException
+    {
+        int itemId = entry.getKey();
+        ItemDTO item = entry.getValue();
+        List<String> itemDetails = parseToList(item);
+        StringBuilder lineBuilder = new StringBuilder();
+        lineBuilder.append(itemId);
+        for (String detail : itemDetails)
+        {
+            lineBuilder.append(";").append(detail);
+        }
+        writer.write(lineBuilder.toString());
+        writer.newLine();
+
     }
 }

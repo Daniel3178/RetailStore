@@ -1,5 +1,4 @@
 package se.kth.iv1350.daniel.integration;
-import se.kth.iv1350.daniel.model.dto.PaymentDTO;
 
 public class Register
 {
@@ -17,7 +16,7 @@ public class Register
      * Adds the sum that customer has paid to the register
      * @param paidAmount: contains the paid amount sum
      */
-    public void registerPayment(double paidAmount)
+    public void increaseAmount(double paidAmount)
     {
         this.currentAmount += paidAmount;
         System.out.printf("[!]\tRegister increased with customer's paid money: %.2f SEK\n", paidAmount);

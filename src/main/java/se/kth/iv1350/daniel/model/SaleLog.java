@@ -32,6 +32,14 @@ public class SaleLog
     }
 
     /**
+     * Adds a sale to the list of all sales.
+     * @param saleInfo The SaleDTO containing information about the sale to be added.
+     */
+    public void addSale(SaleDTO saleInfo)
+    {
+        allSale.add(saleInfo);
+    }
+    /**
      * Retrieves a list of all sales.
      * @return List of SaleDTO containing information about all sales.
      */
@@ -40,12 +48,5 @@ public class SaleLog
         return this.allSale;
     }
 
-    /**
-     * Adds a sale to the list of all sales.
-     * @param saleInfo The SaleDTO containing information about the sale to be added.
-     */
-    public void addSale(SaleDTO saleInfo)
-    {
-        allSale.add(saleInfo);
-    }
+
 }
