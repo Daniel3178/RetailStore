@@ -9,11 +9,11 @@ public class ReceiptPrinter
     public void printReceipt(ReceiptDTO receipt)
     {
         System.out.println("[!]\t++++++++++++ [PRINTING RECEIPT] ++++++++++++");
-        System.out.println(formatReceiptPrint(receipt));
+        System.out.println(formatReceiptPrinting(receipt));
         System.out.println("[!]\t++++++++++++   [DONE PRINTING]   ++++++++++++");
     }
 
-    private String formatReceiptPrint(ReceiptDTO receipt)
+    private String formatReceiptPrinting(ReceiptDTO receipt)
     {
         StringBuilder sb = new StringBuilder();
         String formattedString;
