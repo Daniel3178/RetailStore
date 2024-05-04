@@ -65,7 +65,7 @@ public class Controller
     {
         if (myCurrentSale.contains(itemId))
         {
-            return myCurrentSale.increaseQuantity(itemId, quantity);
+            return myCurrentSale.increaseItemQuantity(itemId, quantity);
         }
         else
         {

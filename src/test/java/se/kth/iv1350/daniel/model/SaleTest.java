@@ -68,7 +68,7 @@ class SaleTest
     void increaseQuantityByPositiveNumber()
     {
         final int LOC_QUANTITY = 1;
-        instanceToTest.increaseQuantity(EXISTED_ITEM_ID_ONE, LOC_QUANTITY);
+        instanceToTest.increaseItemQuantity(EXISTED_ITEM_ID_ONE, LOC_QUANTITY);
         List<ItemDTO> items = instanceToTest.getShopList();
         for (ItemDTO item : items)
         {
@@ -86,7 +86,7 @@ class SaleTest
     {
         final int NEGATIVE_QUANTITY = -1;
         assertDoesNotThrow(
-                () -> instanceToTest.increaseQuantity(EXISTED_ITEM_ID_ONE, NEGATIVE_QUANTITY),
+                () -> instanceToTest.increaseItemQuantity(EXISTED_ITEM_ID_ONE, NEGATIVE_QUANTITY),
                 "increaseQuantity does not catch negative number exception"
         );
     }
