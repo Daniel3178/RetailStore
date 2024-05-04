@@ -1,10 +1,9 @@
 package se.kth.iv1350.daniel.model;
 
-import se.kth.iv1350.daniel.model.dto.PaymentDTO;
 import se.kth.iv1350.daniel.model.dto.ReceiptDTO;
 import se.kth.iv1350.daniel.model.dto.SaleDTO;
 
-public class Payment implements PaymentDTO
+public class Payment
 {
     private final double paidAmount;
 
@@ -18,7 +17,7 @@ public class Payment implements PaymentDTO
      * @param totalPrice: the total price of the sale.
      * @return the amount that should be returned to customer
      */
-    @Override
+
     public double calculateChange(double totalPrice)
     {
         return paidAmount - totalPrice;
@@ -29,12 +28,12 @@ public class Payment implements PaymentDTO
      * @param saleInfo: Sale information required in the receipt such as price, vat, applied disc etc.
      * @return receipt object that put all info in a specific format.
      */
-    @Override
+
     public ReceiptDTO getReceipt(SaleDTO saleInfo)
     {
         return new ReceiptDTO(saleInfo, this.paidAmount, calculateChange(saleInfo.totalPrice()));
     }
-    @Override
+
     public double getPaidAmount()
     {
         return this.paidAmount;

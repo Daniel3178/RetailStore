@@ -114,7 +114,7 @@ public class Controller
     public double pay(double amount)
     {
         SaleDTO saleInfo = myCurrentSale.getSaleDTO();
-        PaymentDTO payment = new Payment(amount);
+        Payment payment = new Payment(amount);
         myInventoryDAO.updateInventory(saleInfo.shoplist());
         myAccountingSys.updateAccountingSystem(saleInfo);
         myRegister.increaseAmount(payment.getPaidAmount());
