@@ -14,6 +14,8 @@ public class View
     public View(Controller ctr)
     {
         this.ctr = ctr;
+        this.ctr.addSaleObserver(new TotalRevenueView());
+        this.ctr.addSaleObserver(new TotalRevenueFileOutput());
     }
 
     public void runSampleTest(double customerPayAmount)
@@ -23,17 +25,18 @@ public class View
         for (int itemId = 101, quantity = rand.nextInt(1, 10) ; itemId< 105; itemId++, quantity=rand.nextInt(1, 10))
         {
             LastSaleUpdateDTO lastSaleUpdate = ctr.addItem(itemId, quantity);
-            System.out.println(stringifyLastUpdateToCashier(lastSaleUpdate));
+//            System.out.println(stringifyLastUpdateToCashier(lastSaleUpdate));
         }
 
         List<AppliedDiscountDTO> appliedDiscounts = ctr.applyDiscountsOnSale();
         for(AppliedDiscountDTO ad : appliedDiscounts)
         {
-            System.out.println(stringifyAppliedDiscToCashier(ad));
+//            System.out.println(stringifyAppliedDiscToCashier(ad));
         }
         AppliedDiscountDTO appliedDiscountByCustomerId = ctr.applyDiscountByCustomerId(1);
-        System.out.println(stringifyAppliedDiscToCashier(appliedDiscountByCustomerId));
-        System.out.printf("[*]\tCashier should return: %.2f SEK\n", ctr.pay(customerPayAmount));
+//        System.out.println(stringifyAppliedDiscToCashier(appliedDiscountByCustomerId));
+        double change = ctr.pay(customerPayAmount);
+//        System.out.printf("[*]\tCashier should return: %.2f SEK\n", change);
         ctr.endSale();
     }
 

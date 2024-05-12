@@ -31,7 +31,7 @@ public class Register
     public void increaseAmount(double paidAmount)
     {
         this.currentAmount += paidAmount;
-        System.out.printf("[!]\tRegister increased with customer's paid money: %.2f SEK\n", paidAmount);
+//        System.out.printf("[!]\tRegister increased with customer's paid money: %.2f SEK\n", paidAmount);
     }
 
     /**
@@ -41,8 +41,8 @@ public class Register
     public void decreaseAmount(double changeAmount)
     {
         currentAmount -= changeAmount;
-        System.out.printf("[!]\tRegister decreased with change money returned to customer: %.2f SEK\n", changeAmount);
-        System.out.printf("[!]\tRegister has currently: %.2f SEK\n", this.currentAmount);
+//        System.out.printf("[!]\tRegister decreased with change money returned to customer: %.2f SEK\n", changeAmount);
+//        System.out.printf("[!]\tRegister has currently: %.2f SEK\n", this.currentAmount);
     }
 
     public double getCurrentAmount()

@@ -25,6 +25,6 @@ public class AccountingSystem
      */
     public void updateAccountingSystem(SaleDTO saleInfo)
     {
-        System.out.println("[!]\tAccounting System is updated");
+//        System.out.println("[!]\tAccounting System is updated");
     }
 }
