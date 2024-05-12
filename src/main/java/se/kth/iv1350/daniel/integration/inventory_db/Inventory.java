@@ -69,7 +69,7 @@ class Inventory
      * It looks up each item in myCurrentData based on itemId and updates the
      * quantity.
      *
-     * @param shoplist: list of items in the sale that should be subtracted from the
+     * @param shoplist : list of items in the sale that should be subtracted from the
      *                  inventory
      */
     void updateInventory(List<ItemDTO> shoplist)

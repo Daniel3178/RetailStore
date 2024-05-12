@@ -20,7 +20,7 @@ public class View
     {
         Random rand = new Random();
         ctr.startNewSale();
-        for (int itemId = 101, quantity = rand.nextInt(1, 10) ; itemId< 110; itemId++, quantity=rand.nextInt(1, 10))
+        for (int itemId = 101, quantity = rand.nextInt(1, 10) ; itemId< 105; itemId++, quantity=rand.nextInt(1, 10))
         {
             LastSaleUpdateDTO lastSaleUpdate = ctr.addItem(itemId, quantity);
             System.out.println(stringifyLastUpdateToCashier(lastSaleUpdate));
@@ -84,9 +84,9 @@ public class View
     private String stringifyItemDescToCashier(ItemDescriptionDTO desc)
     {
         StringBuilder sb = new StringBuilder();
-        sb.append("[*]\tname: ").append(desc.name()).append('\n');
-        sb.append("[*]\tdescription: ").append(desc.description()).append('\n');
-        sb.append("[*]\texpirationDate: ").append(desc.expirationDate()).append('\n');
+        sb.append("[*]\tName: ").append(desc.name()).append('\n');
+        sb.append("[*]\tDescription: ").append(desc.description()).append('\n');
+        sb.append("[*]\tExpirationDate: ").append(desc.expirationDate()).append('\n');
         sb.append("[*]\tCategory: ").append(desc.category()).append('\n');
         sb.append("[*]\tSupplier: ").append(desc.supplier()).append('\n');
         return sb.toString();

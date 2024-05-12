@@ -24,7 +24,7 @@ class InventoryDAOTest
     @BeforeEach
     void setUp()
     {
-        instanceToTest = new InventoryDAO();
+        instanceToTest = InventoryDAO.getInstance();
         inMemPrintOut = new ByteArrayOutputStream();
         PrintStream inMemSysOut = new PrintStream(inMemPrintOut);
         originalSysOut = System.out;
