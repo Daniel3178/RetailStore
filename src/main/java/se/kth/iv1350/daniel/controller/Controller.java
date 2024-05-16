@@ -15,25 +15,17 @@ import java.util.List;
 public class Controller
 {
     private Sale myCurrentSale;
-    private final List <SaleObserver> saleObservers;
 
     public Controller( )
     {
-        saleObservers = new ArrayList<>();
     }
 
-    public void addSaleObserver(SaleObserver observer)
-    {
-        saleObservers.add(observer);
-    }
     /**
      * Starts a new sale by initializing a new Sale instance.
      */
     public void startNewSale()
     {
         this.myCurrentSale = new Sale();
-        this.myCurrentSale.addObservers(saleObservers);
-
     }
 
     /**
@@ -103,12 +95,15 @@ public class Controller
      */
     public double pay(double amount)
     {
-        ReceiptDTO receipt = myCurrentSale.pay(new Payment(amount));
-        InventoryDAO.getInstance().updateInventory(receipt.getShopList());
-        AccountingSystem.getInstance().updateAccountingSystem(receipt.saleInfo());
-        Register.getInstance().increaseAmount(receipt.amountPaid());
-        Register.getInstance().decreaseAmount(receipt.changeAmount());
+        SaleDTO saleInfo = myCurrentSale.getSaleDTO();
+        Payment payment = new Payment(amount);
+        InventoryDAO.getInstance().updateInventory(saleInfo.shoplist());
+        AccountingSystem.getInstance().updateAccountingSystem(saleInfo);
+        Register.getInstance().increaseAmount(payment.getPaidAmount());
+        ReceiptDTO receipt = payment.getReceipt(saleInfo);
+        double change = payment.calculateChange(saleInfo.totalPrice());
+        Register.getInstance().decreaseAmount(change);
         ReceiptPrinter.getInstance().printReceipt(receipt);
-        return receipt.changeAmount();
+        return change;
     }
 }

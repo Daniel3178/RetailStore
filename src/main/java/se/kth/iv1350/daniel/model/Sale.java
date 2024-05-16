@@ -15,13 +15,11 @@ public class Sale
     private double myTotalVat;
     private final List<AppliedDiscountDTO> myDiscounts;
     private final List<Item> myShopList;
-    private final List<SaleObserver> mySaleObservers;
 
     public Sale()
     {
         this.myDiscounts = new ArrayList<>();
         this.myShopList = new ArrayList<>();
-        this.mySaleObservers = new ArrayList<>();
         this.myTotalVat = 0;
         this.myTotalPrice = 0;
         LocalDateTime now = LocalDateTime.now();
@@ -105,26 +103,6 @@ public class Sale
             shopList.add(item.getItemDTO());
         }
         return shopList;
-    }
-
-    public ReceiptDTO pay (Payment payment)
-    {
-        ReceiptDTO receipt = payment.generateReceipt(this.getSaleDTO());
-        notifyObservers();
-        return receipt;
-    }
-
-    public void addObservers(List<SaleObserver> observers)
-    {
-        mySaleObservers.addAll(observers);
-    }
-
-    private void notifyObservers()
-    {
-        for(SaleObserver obs : mySaleObservers)
-        {
-            obs.addToIncome(this.myTotalPrice);
-        }
     }
 
     public double getTotalPrice()
