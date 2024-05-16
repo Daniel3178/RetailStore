@@ -6,21 +6,6 @@ import java.util.List;
 
 public class InventoryDAO
 {
-    private static InventoryDAO instance;
-    private InventoryDAO ()
-    {
-
-    }
-
-    public static InventoryDAO getInstance()
-    {
-        if (instance == null)
-        {
-            instance = new InventoryDAO();
-        }
-        return instance;
-    }
-
     /**
      * Fetches an item from the inventory based on the provided item ID.
      *

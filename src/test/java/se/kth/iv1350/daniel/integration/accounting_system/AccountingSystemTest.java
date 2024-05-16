@@ -19,7 +19,7 @@ class AccountingSystemTest
     @BeforeEach
     void setUp()
     {
-        instanceToTest = AccountingSystem.getInstance();
+        instanceToTest = new AccountingSystem();
         inMemPrintOut = new ByteArrayOutputStream();
         PrintStream inMemSysOut = new PrintStream(inMemPrintOut);
         originalSysOut = System.out;

@@ -20,7 +20,7 @@ class ReceiptPrinterTest
     @BeforeEach
     void setUp()
     {
-        instanceToTest = ReceiptPrinter.getInstance();
+        instanceToTest = new ReceiptPrinter();
         inMemPrintOut = new ByteArrayOutputStream();
         PrintStream inMemSysOut = new PrintStream(inMemPrintOut);
         originalSysOut = System.out;
@@ -45,10 +45,7 @@ class ReceiptPrinterTest
         itemList.add(new ItemDTO(20, 0.06, 1, description));
 
         List<AppliedDiscountDTO> discList = new ArrayList<>();
-        discList.add(new AppliedDiscountDTO(new DiscountDTO(
-                30.0, DiscountType.AMOUNT, "Item Discount",
-                "This discount is based on shop list"
-        ), 20.0, 100.0));
+        discList.add(new AppliedDiscountDTO(new DiscountDTO(new DiscountTypeDTO(DiscountEnums.DiscountType.ITEM_DISC, 30), "Discount"),20, 100));
         SaleDTO saleInfo = new SaleDTO(1, itemList,200, 20,"TODAY",discList);
         ReceiptDTO arg = new ReceiptDTO(saleInfo, 20, 10);
         instanceToTest.printReceipt(arg);

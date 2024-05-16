@@ -3,7 +3,7 @@ package se.kth.iv1350.daniel.model;
 import se.kth.iv1350.daniel.model.dto.AppliedDiscountDTO;
 import se.kth.iv1350.daniel.model.dto.DiscountDTO;
 
-public class AmountDiscountImpl implements Discount
+public class AmountBasedDiscount implements IDiscount
 {
 
     @Override

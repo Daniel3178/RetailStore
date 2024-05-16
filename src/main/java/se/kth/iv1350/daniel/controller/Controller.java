@@ -1,5 +1,6 @@
 package se.kth.iv1350.daniel.controller;
 
+import se.kth.iv1350.daniel.integration.ExternalSysCreator;
 import se.kth.iv1350.daniel.integration.ReceiptPrinter;
 import se.kth.iv1350.daniel.integration.Register;
 import se.kth.iv1350.daniel.integration.accounting_system.AccountingSystem;
@@ -15,9 +16,20 @@ import java.util.List;
 public class Controller
 {
     private Sale myCurrentSale;
+    private final AccountingSystem myAccountingSys;
+    private final DiscountDB myDiscountDb;
+    private final InventoryDAO myInventoryDAO;
 
-    public Controller( )
+    /**
+     * Initializes a new Controller instance with dependencies from ExternalSysCreator.
+     *
+     * @param externalSysCreator An instance of ExternalSysCreator providing external systems.
+     */
+    public Controller(ExternalSysCreator externalSysCreator)
     {
+        this.myAccountingSys = externalSysCreator.getAccountingSystem();
+        this.myDiscountDb = externalSysCreator.getDiscountDB();
+        this.myInventoryDAO = externalSysCreator.getInventory();
     }
 
     /**
@@ -53,7 +65,7 @@ public class Controller
         }
         else
         {
-            Item itemToAdd = new Item(InventoryDAO.getInstance().fetchItem(itemId), quantity);
+            Item itemToAdd = new Item(myInventoryDAO.fetchItem(itemId), quantity);
             return myCurrentSale.addItem(itemToAdd);
         }
     }
@@ -67,11 +79,13 @@ public class Controller
     {
         List<AppliedDiscountDTO> appliedDiscounts = new ArrayList<>();
         List<ItemDTO> shopList = myCurrentSale.getShopList();
-        DiscountDTO itemDisInfo = DiscountDB.getInstance().findDiscountByShopList(shopList);
-        appliedDiscounts.add(myCurrentSale.applyDiscount(itemDisInfo));
+        DiscountDTO itemDisInfo = myDiscountDb.findDiscountByShopList(shopList);
+        Discount itemDiscount = new Discount(itemDisInfo, new AmountBasedDiscount());
+        appliedDiscounts.add(myCurrentSale.applyDiscount(itemDiscount));
         double totalPrice = myCurrentSale.getTotalPrice();
-        DiscountDTO totalPriceInfo = DiscountDB.getInstance().findDiscountByTotalSum(totalPrice);
-        appliedDiscounts.add(myCurrentSale.applyDiscount(totalPriceInfo));
+        DiscountDTO totalPriceInfo = myDiscountDb.findDiscountByTotalSum(totalPrice);
+        Discount totalPriceDiscount = new Discount(totalPriceInfo, new PrecentBasedDiscount());
+        appliedDiscounts.add(myCurrentSale.applyDiscount(totalPriceDiscount));
         return appliedDiscounts;
     }
 
@@ -83,8 +97,9 @@ public class Controller
      */
     public AppliedDiscountDTO applyDiscountByCustomerId(int customerId)
     {
-        DiscountDTO disInfo = DiscountDB.getInstance().findDiscountByCustomerId(customerId);
-        return myCurrentSale.applyDiscount(disInfo);
+        DiscountDTO disInfo = myDiscountDb.findDiscountByCustomerId(customerId);
+        Discount customerDiscount = new Discount(disInfo, new PrecentBasedDiscount());
+        return myCurrentSale.applyDiscount(customerDiscount);
     }
 
     /**
@@ -97,8 +112,8 @@ public class Controller
     {
         SaleDTO saleInfo = myCurrentSale.getSaleDTO();
         Payment payment = new Payment(amount);
-        InventoryDAO.getInstance().updateInventory(saleInfo.shoplist());
-        AccountingSystem.getInstance().updateAccountingSystem(saleInfo);
+        myInventoryDAO.updateInventory(saleInfo.shoplist());
+        myAccountingSys.updateAccountingSystem(saleInfo);
         Register.getInstance().increaseAmount(payment.getPaidAmount());
         ReceiptDTO receipt = payment.getReceipt(saleInfo);
         double change = payment.calculateChange(saleInfo.totalPrice());

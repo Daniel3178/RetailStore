@@ -5,7 +5,10 @@ import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
 
-import se.kth.iv1350.daniel.model.dto.*;
+import se.kth.iv1350.daniel.model.dto.AppliedDiscountDTO;
+import se.kth.iv1350.daniel.model.dto.ItemDTO;
+import se.kth.iv1350.daniel.model.dto.LastSaleUpdateDTO;
+import se.kth.iv1350.daniel.model.dto.SaleDTO;
 
 public class Sale
 {
@@ -82,11 +85,9 @@ public class Sale
      * @return An object that tells what kind of discount, the reduced amount from total price and the updated total
      * price after the discount has been applied
      */
-    public AppliedDiscountDTO applyDiscount(DiscountDTO discount)
+    public AppliedDiscountDTO applyDiscount(Discount discount)
     {
-        AppliedDiscountDTO applied = DiscountFactory.getInstance()
-                                                    .getDiscount(discount.type())
-                                                    .applyDiscount(this.myTotalPrice, discount);
+        AppliedDiscountDTO applied = discount.applyDiscount(this.myTotalPrice);
         this.myTotalPrice = applied.updatedTotalPrice();
         this.myDiscounts.add(applied);
         return applied;
@@ -104,12 +105,10 @@ public class Sale
         }
         return shopList;
     }
-
     public double getTotalPrice()
     {
         return this.myTotalPrice;
     }
-
     /**
      * @return a dto object of the sale
      */

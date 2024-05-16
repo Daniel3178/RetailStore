@@ -3,6 +3,7 @@ package se.kth.iv1350.daniel.controller;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import se.kth.iv1350.daniel.integration.ExternalSysCreator;
 import se.kth.iv1350.daniel.model.dto.LastSaleUpdateDTO;
 
 import static org.junit.jupiter.api.Assertions.*;
@@ -14,7 +15,8 @@ class ControllerTest
     @BeforeEach
     void setUp()
     {
-        instanceToTest = new Controller();
+        ExternalSysCreator excSys = new ExternalSysCreator();
+        instanceToTest = new Controller(excSys);
 
     }
 
