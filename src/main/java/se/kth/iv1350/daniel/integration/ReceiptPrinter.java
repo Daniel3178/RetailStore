@@ -6,18 +6,6 @@ import se.kth.iv1350.daniel.model.dto.ReceiptDTO;
 
 public class ReceiptPrinter
 {
-    private static ReceiptPrinter instance;
-    private ReceiptPrinter(){};
-
-    public static ReceiptPrinter getInstance()
-    {
-        if (instance == null)
-        {
-            instance = new ReceiptPrinter();
-        }
-        return instance;
-    }
-
     public void printReceipt(ReceiptDTO receipt)
     {
         System.out.println("[!]\t++++++++++++ [PRINTING RECEIPT] ++++++++++++");
@@ -52,7 +40,7 @@ public class ReceiptPrinter
         for (AppliedDiscountDTO discount : receipt.saleInfo().discountsApplied())
         {
             formattedString = String.format("%.2f", discount.reducedAmount());
-            sb.append(String.format("\tDiscount: \t\t%-20s -%s\n", discount.discountDTO().discountName(),
+            sb.append(String.format("\tDiscount: \t\t%-20s -%s\n", discount.discountDTO().getDiscountType(),
                                     formattedString));
         }
         return sb.toString();

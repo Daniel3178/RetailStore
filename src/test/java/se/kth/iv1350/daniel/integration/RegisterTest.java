@@ -12,7 +12,7 @@ class RegisterTest
     @BeforeEach
     void setUp()
     {
-        instanceToRegister = Register.getInstance();
+        instanceToRegister = new Register();
     }
 
     @AfterEach

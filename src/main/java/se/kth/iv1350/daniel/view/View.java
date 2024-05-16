@@ -1,5 +1,6 @@
 package se.kth.iv1350.daniel.view;
 import se.kth.iv1350.daniel.controller.Controller;
+import se.kth.iv1350.daniel.model.DiscountEnums;
 import se.kth.iv1350.daniel.model.dto.AppliedDiscountDTO;
 import se.kth.iv1350.daniel.model.dto.ItemDTO;
 import se.kth.iv1350.daniel.model.dto.ItemDescriptionDTO;
@@ -39,14 +40,14 @@ public class View
 
     private String stringifyAppliedDiscToCashier(AppliedDiscountDTO ad)
     {
-        String formattedDiscountValue = String.format("%.2f", ad.discountDTO().value());
-        String formattedDiscountValuePrecent = String.format("%.0f", ad.discountDTO().value() * 100);
+        String formattedDiscountValue = String.format("%.2f", ad.discountDTO().getDiscountValue());
+        String formattedDiscountValuePrecent = String.format("%.0f", ad.discountDTO().getDiscountValue() * 100);
         String formattedReducedAmount = String.format("%.2f", ad.reducedAmount());
         String formattedTotalPrice = String.format("%.2f", ad.updatedTotalPrice());
 
         StringBuilder sb = new StringBuilder();
-        sb.append("[*]\tDiscount Type : ").append(ad.discountDTO().discountName()).append(" ");
-        if(ad.discountDTO().value() < 1 && ad.discountDTO().value() > 0){
+        sb.append("[*]\tDiscount Type : ").append(ad.discountDTO().getDiscountType()).append(" ");
+        if(ad.discountDTO().getAmountType() == DiscountEnums.DiscountAmountType.PERCENT){
             sb.append(formattedDiscountValuePrecent).append("%\n");
         }
         else{
