@@ -1,43 +1,63 @@
 package se.kth.iv1350.daniel.view;
 import se.kth.iv1350.daniel.controller.Controller;
+import se.kth.iv1350.daniel.controller.exceptions.ConnectionFailed;
+import se.kth.iv1350.daniel.integration.inventory_db.inventory_exc.ItemDoesNotExist;
 import se.kth.iv1350.daniel.model.dto.AppliedDiscountDTO;
 import se.kth.iv1350.daniel.model.dto.ItemDTO;
 import se.kth.iv1350.daniel.model.dto.ItemDescriptionDTO;
 import se.kth.iv1350.daniel.model.dto.LastSaleUpdateDTO;
 
+import java.io.IOException;
 import java.util.List;
 import java.util.Random;
 
 public class View
 {
     private final Controller ctr;
-    public View(Controller ctr)
+    private final ErrorMessageHandler errorHandler;
+    public View(Controller ctr) throws IOException
     {
         this.ctr = ctr;
         this.ctr.addSaleObserver(new TotalRevenueView());
         this.ctr.addSaleObserver(new TotalRevenueFileOutput());
+        this.errorHandler = new ErrorMessageHandler();
     }
 
     public void runSampleTest(double customerPayAmount)
     {
-        Random rand = new Random();
-        ctr.startNewSale();
-        for (int itemId = 101, quantity = rand.nextInt(1, 10) ; itemId< 105; itemId++, quantity=rand.nextInt(1, 10))
+        try
         {
-            LastSaleUpdateDTO lastSaleUpdate = ctr.addItem(itemId, quantity);
-//            System.out.println(stringifyLastUpdateToCashier(lastSaleUpdate));
-        }
 
-        List<AppliedDiscountDTO> appliedDiscounts = ctr.applyDiscountsOnSale();
-        for(AppliedDiscountDTO ad : appliedDiscounts)
-        {
+            Random rand = new Random();
+            ctr.startNewSale();
+            for (
+                    int itemId = 101, quantity = rand.nextInt(1, 10); itemId < 105;
+                    itemId++, quantity = rand.nextInt(1, 10)
+            )
+            {
+                LastSaleUpdateDTO lastSaleUpdate = ctr.addItem(itemId, quantity);
+//            System.out.println(stringifyLastUpdateToCashier(lastSaleUpdate));
+            }
+
+            List<AppliedDiscountDTO> appliedDiscounts = ctr.applyDiscountsOnSale();
+            for (AppliedDiscountDTO ad : appliedDiscounts)
+            {
 //            System.out.println(stringifyAppliedDiscToCashier(ad));
-        }
-        AppliedDiscountDTO appliedDiscountByCustomerId = ctr.applyDiscountByCustomerId(1);
+            }
+            AppliedDiscountDTO appliedDiscountByCustomerId = ctr.applyDiscountByCustomerId(1);
 //        System.out.println(stringifyAppliedDiscToCashier(appliedDiscountByCustomerId));
-        double change = ctr.pay(customerPayAmount);
+            double change = ctr.pay(customerPayAmount);
 //        System.out.printf("[*]\tCashier should return: %.2f SEK\n", change);
-        ctr.endSale();
+            ctr.endSale();
+        }
+        catch (ItemDoesNotExist exc)
+        {
+            errorHandler.showErrorMsg("Item ID " + exc.getNonExistedItemId() + " not found.");
+        }
+        catch (ConnectionFailed conExc)
+        {
+            errorHandler.showErrorMsg(conExc.getMessage());
+        }
     }
 
     private String stringifyAppliedDiscToCashier(AppliedDiscountDTO ad)

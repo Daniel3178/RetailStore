@@ -1,7 +1,10 @@
 package se.kth.iv1350.daniel.integration.inventory_db;
 
+import se.kth.iv1350.daniel.integration.inventory_db.inventory_exc.DatabaseConnectionFailed;
+import se.kth.iv1350.daniel.integration.inventory_db.inventory_exc.ItemDoesNotExist;
 import se.kth.iv1350.daniel.model.dto.ItemDTO;
 
+import java.sql.SQLException;
 import java.util.List;
 
 public class InventoryDAO
@@ -27,9 +30,20 @@ public class InventoryDAO
      * @param itemId The ID of the item to fetch.
      * @return The ItemDTO object representing the fetched item.
      */
-    public ItemDTO fetchItem(int itemId)
+    public ItemDTO fetchItem(int itemId) throws ItemDoesNotExist, DatabaseConnectionFailed
     {
-        return Inventory.getInstance().findItemById(itemId);
+        try
+        {
+            if (itemId == 111)
+            {
+                throw new ItemDoesNotExist(itemId);
+            }
+            return Inventory.getInstance().findItemById(itemId);
+        }
+        catch (SQLException sqlException)
+        {
+            throw new DatabaseConnectionFailed();
+        }
     }
 
     /**

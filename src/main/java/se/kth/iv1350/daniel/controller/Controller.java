@@ -1,13 +1,17 @@
 package se.kth.iv1350.daniel.controller;
 
+import se.kth.iv1350.daniel.controller.exceptions.ConnectionFailed;
 import se.kth.iv1350.daniel.integration.ReceiptPrinter;
 import se.kth.iv1350.daniel.integration.Register;
 import se.kth.iv1350.daniel.integration.accounting_system.AccountingSystem;
 import se.kth.iv1350.daniel.integration.discount_db.DiscountDB;
 import se.kth.iv1350.daniel.integration.inventory_db.InventoryDAO;
+import se.kth.iv1350.daniel.integration.inventory_db.inventory_exc.DatabaseConnectionFailed;
+import se.kth.iv1350.daniel.integration.inventory_db.inventory_exc.ItemDoesNotExist;
 import se.kth.iv1350.daniel.model.*;
 import se.kth.iv1350.daniel.model.dto.*;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -16,10 +20,12 @@ public class Controller
 {
     private Sale myCurrentSale;
     private final List <SaleObserver> saleObservers;
+    private final LogHandler logger;
 
-    public Controller( )
+    public Controller( ) throws IOException
     {
         saleObservers = new ArrayList<>();
+        this.logger = new LogHandler();
     }
 
     public void addSaleObserver(SaleObserver observer)
@@ -33,6 +39,7 @@ public class Controller
     {
         this.myCurrentSale = new Sale();
         this.myCurrentSale.addObservers(saleObservers);
+
 
     }
 
@@ -53,16 +60,25 @@ public class Controller
      * @param quantity The quantity of the item to add.
      * @return LastSaleUpdateDTO containing information about the updated sale.
      */
-    public LastSaleUpdateDTO addItem(int itemId, int quantity)
+    public LastSaleUpdateDTO addItem(int itemId, int quantity) throws ItemDoesNotExist, ConnectionFailed
     {
-        if (myCurrentSale.contains(itemId))
+        try
         {
-            return myCurrentSale.increaseItemQuantity(itemId, quantity);
+
+            if (myCurrentSale.contains(itemId))
+            {
+                return myCurrentSale.increaseItemQuantity(itemId, quantity);
+            }
+            else
+            {
+                Item itemToAdd = new Item(InventoryDAO.getInstance().fetchItem(itemId), quantity);
+                return myCurrentSale.addItem(itemToAdd);
+            }
         }
-        else
+        catch (DatabaseConnectionFailed dbExc)
         {
-            Item itemToAdd = new Item(InventoryDAO.getInstance().fetchItem(itemId), quantity);
-            return myCurrentSale.addItem(itemToAdd);
+            logger.logException(dbExc);
+            throw new ConnectionFailed("Ops! There has been an issue to connect to database, pls try again!");
         }
     }
 
