@@ -80,6 +80,7 @@ public class Controller
             logger.logException(dbExc);
             throw new ConnectionFailed("Ops! There has been an issue to connect to database, pls try again!");
         }
+
     }
 
     /**

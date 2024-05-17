@@ -18,6 +18,11 @@ public class ReceiptPrinter
         return instance;
     }
 
+    /**
+     * Prints the receipt details to the console.
+     *
+     * @param receipt the receipt to print
+     */
     public void printReceipt(ReceiptDTO receipt)
     {
         System.out.println("[!]\t++++++++++++ [PRINTING RECEIPT] ++++++++++++");

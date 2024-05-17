@@ -95,6 +95,27 @@ public class Sale
     }
 
     /**
+     * It executes a payment and notifies all the observers.
+     * @param payment : an object that handles the transaction
+     * @return : an object that contains the information required for receipt
+     */
+    public ReceiptDTO pay (Payment payment)
+    {
+        ReceiptDTO receipt = payment.handlePayment(this.getSaleDTO());
+        notifyObservers();
+        return receipt;
+    }
+
+    /**
+     * Adds objects that observe this class
+     * @param observers : objects that can observe this class
+     */
+    public void addObservers(List<SaleObserver> observers)
+    {
+        mySaleObservers.addAll(observers);
+    }
+
+    /**
      * @return all the items in the current sale
      */
     public List<ItemDTO> getShopList()
@@ -107,26 +128,9 @@ public class Sale
         return shopList;
     }
 
-    public ReceiptDTO pay (Payment payment)
-    {
-        ReceiptDTO receipt = payment.generateReceipt(this.getSaleDTO());
-        notifyObservers();
-        return receipt;
-    }
-
-    public void addObservers(List<SaleObserver> observers)
-    {
-        mySaleObservers.addAll(observers);
-    }
-
-    private void notifyObservers()
-    {
-        for(SaleObserver obs : mySaleObservers)
-        {
-            obs.addToIncome(this.myTotalPrice);
-        }
-    }
-
+    /**
+     * @return the current total price
+     */
     public double getTotalPrice()
     {
         return this.myTotalPrice;
@@ -143,4 +147,11 @@ public class Sale
         );
     }
 
+    private void notifyObservers()
+    {
+        for(SaleObserver obs : mySaleObservers)
+        {
+            obs.addToIncome(this.myTotalPrice);
+        }
+    }
 }

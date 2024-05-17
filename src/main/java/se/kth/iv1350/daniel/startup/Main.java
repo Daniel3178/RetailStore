@@ -13,10 +13,10 @@ public class Main
         {
 
             View view = new View(new Controller());
-            for (int i = 0; i < 4; i++)
-            {
+//            for (int i = 0; i < 4; i++)
+//            {
                 view.runSampleTest(3500);
-            }
+//            }
         }
         catch (IOException ioExc)
         {

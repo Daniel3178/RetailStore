@@ -12,7 +12,6 @@ public class InventoryDAO
     private static InventoryDAO instance;
     private InventoryDAO ()
     {
-
     }
 
     public static InventoryDAO getInstance()

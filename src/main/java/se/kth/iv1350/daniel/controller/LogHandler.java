@@ -16,6 +16,11 @@ public class LogHandler
         logFile = new PrintWriter(new FileWriter(LOG_FILE_NAME), true);
     }
 
+    /**
+     * Logs the exception details to the log file.
+     *
+     * @param exception the exception to log
+     */
     public void logException(Exception exception)
     {
         String logMsgBuilder = createTime() +

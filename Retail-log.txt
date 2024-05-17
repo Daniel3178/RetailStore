@@ -1,0 +1,6 @@
+2024-05-17 14:53:49, Exception was thrown: Connection to inventory database failed.
+se.kth.iv1350.daniel.integration.inventory_db.inventory_exc.DatabaseConnectionFailed: Connection to inventory database failed.
+	at se.kth.iv1350.daniel.integration.inventory_db.InventoryDAO.fetchItem(InventoryDAO.java:44)
+	at se.kth.iv1350.daniel.controller.Controller.addItem(Controller.java:74)
+	at se.kth.iv1350.daniel.view.View.runSampleTest(View.java:42)
+	at se.kth.iv1350.daniel.startup.Main.main(Main.java:18)

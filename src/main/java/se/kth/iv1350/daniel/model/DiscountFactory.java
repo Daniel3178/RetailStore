@@ -23,7 +23,8 @@ public class DiscountFactory
         return instance;
     }
 
-    public Discount getDiscount(DiscountType type) {
+    public Discount getDiscount(DiscountType type)
+    {
         return switch (type)
         {
             case PERCENT -> percentDiscount;

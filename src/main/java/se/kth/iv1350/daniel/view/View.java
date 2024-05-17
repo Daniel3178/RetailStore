@@ -39,6 +39,10 @@ public class View
 //            System.out.println(stringifyLastUpdateToCashier(lastSaleUpdate));
             }
 
+            LastSaleUpdateDTO lastSaleUpdateThrowsDbException = ctr.addItem(113, 2);
+
+            LastSaleUpdateDTO lastSaleUpdateThrowsItemDoesNotExc = ctr.addItem(111, 2);
+
             List<AppliedDiscountDTO> appliedDiscounts = ctr.applyDiscountsOnSale();
             for (AppliedDiscountDTO ad : appliedDiscounts)
             {

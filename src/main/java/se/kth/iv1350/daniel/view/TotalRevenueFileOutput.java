@@ -23,6 +23,12 @@ public class TotalRevenueFileOutput implements SaleObserver
             ioException.printStackTrace();
         }
     }
+
+    /**
+     * Adds the given amount to the total income and updates the file output.
+     *
+     * @param totalSum the amount to add to the total income
+     */
     @Override
     public void addToIncome(double totalSum)
     {
