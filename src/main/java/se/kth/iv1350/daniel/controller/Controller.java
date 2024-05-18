@@ -39,8 +39,6 @@ public class Controller
     {
         this.myCurrentSale = new Sale();
         this.myCurrentSale.addObservers(saleObservers);
-
-
     }
 
     /**
@@ -64,7 +62,6 @@ public class Controller
     {
         try
         {
-
             if (myCurrentSale.contains(itemId))
             {
                 return myCurrentSale.increaseItemQuantity(itemId, quantity);
