@@ -28,6 +28,10 @@ public class Controller
         this.logger = new LogHandler();
     }
 
+    public void addSaleObserver(SaleObserver observer)
+    {
+        saleObservers.add(observer);
+    }
     /**
      * Starts a new sale by initializing a new Sale instance.
      */
@@ -85,10 +89,10 @@ public class Controller
     {
         List<AppliedDiscountDTO> appliedDiscounts = new ArrayList<>();
         List<ItemDTO> shopList = myCurrentSale.getShopList();
-        Discount itemDiscount = new Discount(myDiscountDb.findDiscountByShopList(shopList));
+        DiscountDTO itemDiscount = DiscountDB.getInstance().findDiscountByShopList(shopList);
         appliedDiscounts.add(myCurrentSale.applyDiscount(itemDiscount));
         double totalPrice = myCurrentSale.getTotalPrice();
-        Discount totalPriceDiscount = new Discount(myDiscountDb.findDiscountByTotalSum(totalPrice));
+        DiscountDTO totalPriceDiscount = DiscountDB.getInstance().findDiscountByTotalSum(totalPrice);
         appliedDiscounts.add(myCurrentSale.applyDiscount(totalPriceDiscount));
         return appliedDiscounts;
     }
@@ -101,10 +105,8 @@ public class Controller
      */
     public AppliedDiscountDTO applyDiscountByCustomerId(int customerId)
     {
-        AppliedDiscountDTO appliedDiscount;
-        Discount customerDiscount = new Discount(myDiscountDb.findDiscountByCustomerId(customerId));
-        appliedDiscount = myCurrentSale.applyDiscount(customerDiscount);
-        return appliedDiscount;
+        DiscountDTO customerDiscount = DiscountDB.getInstance().findDiscountByCustomerId(customerId);
+        return myCurrentSale.applyDiscount(customerDiscount);
     }
 
     /**
@@ -115,15 +117,12 @@ public class Controller
      */
     public double pay(double amount)
     {
-        SaleDTO saleInfo = myCurrentSale.getSaleDTO();
-        Payment payment = new Payment(amount);
-        myInventoryDAO.updateInventory(saleInfo.shoplist());
-        myAccountingSys.updateAccountingSystem(saleInfo);
-        myRegister.increaseAmount(payment.getPaidAmount());
-        ReceiptDTO receipt = payment.getReceipt(saleInfo);
-        double change = payment.calculateChange(saleInfo.totalPrice());
-        myRegister.decreaseAmount(change);
-        myReceiptPrinter.printReceipt(receipt);
-        return change;
+        ReceiptDTO receipt = myCurrentSale.pay(new Payment(amount));
+        InventoryDAO.getInstance().updateInventory(receipt.getShopList());
+        AccountingSystem.getInstance().updateAccountingSystem(receipt.saleInfo());
+        Register.getInstance().increaseAmount(receipt.amountPaid());
+        Register.getInstance().decreaseAmount(receipt.changeAmount());
+        ReceiptPrinter.getInstance().printReceipt(receipt);
+        return receipt.changeAmount();
     }
 }

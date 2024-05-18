@@ -5,10 +5,7 @@ import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
 
-import se.kth.iv1350.daniel.model.dto.AppliedDiscountDTO;
-import se.kth.iv1350.daniel.model.dto.ItemDTO;
-import se.kth.iv1350.daniel.model.dto.LastSaleUpdateDTO;
-import se.kth.iv1350.daniel.model.dto.SaleDTO;
+import se.kth.iv1350.daniel.model.dto.*;
 
 public class Sale
 {
@@ -18,11 +15,13 @@ public class Sale
     private double myTotalVat;
     private final List<AppliedDiscountDTO> myDiscounts;
     private final List<Item> myShopList;
+    private final List<SaleObserver> mySaleObservers;
 
     public Sale()
     {
         this.myDiscounts = new ArrayList<>();
         this.myShopList = new ArrayList<>();
+        this.mySaleObservers = new ArrayList<>();
         this.myTotalVat = 0;
         this.myTotalPrice = 0;
         LocalDateTime now = LocalDateTime.now();
@@ -85,9 +84,9 @@ public class Sale
      * @return An object that tells what kind of discount, the reduced amount from total price and the updated total
      * price after the discount has been applied
      */
-    public AppliedDiscountDTO applyDiscount(Discount discount)
+    public AppliedDiscountDTO applyDiscount(DiscountDTO discount)
     {
-        AppliedDiscountDTO applied = discount.applyDiscount(this.myTotalPrice);
+        AppliedDiscountDTO applied = DiscountFactory.getInstance().getDiscount(discount.type()).applyDiscount(this.myTotalPrice, discount);
         this.myTotalPrice = applied.updatedTotalPrice();
         this.myDiscounts.add(applied);
         return applied;
@@ -134,6 +133,7 @@ public class Sale
     {
         return this.myTotalPrice;
     }
+
     /**
      * @return a dto object of the sale
      */

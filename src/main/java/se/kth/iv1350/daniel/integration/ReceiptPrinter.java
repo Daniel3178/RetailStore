@@ -57,7 +57,7 @@ public class ReceiptPrinter
         for (AppliedDiscountDTO discount : receipt.saleInfo().discountsApplied())
         {
             formattedString = String.format("%.2f", discount.reducedAmount());
-            sb.append(String.format("\tDiscount: \t\t%-20s -%s\n", discount.discountDTO().getDiscountType(),
+            sb.append(String.format("\tDiscount: \t\t%-20s -%s\n", discount.discountDTO().discountName(),
                                     formattedString));
         }
         return sb.toString();

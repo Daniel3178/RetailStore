@@ -1,4 +1,5 @@
 package se.kth.iv1350.daniel.view;
+
 import se.kth.iv1350.daniel.controller.Controller;
 import se.kth.iv1350.daniel.controller.exceptions.ConnectionFailed;
 import se.kth.iv1350.daniel.integration.inventory_db.inventory_exc.ItemDoesNotExist;
@@ -15,6 +16,7 @@ public class View
 {
     private final Controller ctr;
     private final ErrorMessageHandler errorHandler;
+
     public View(Controller ctr) throws IOException
     {
         this.ctr = ctr;
@@ -36,22 +38,22 @@ public class View
             )
             {
                 LastSaleUpdateDTO lastSaleUpdate = ctr.addItem(itemId, quantity);
-//            System.out.println(stringifyLastUpdateToCashier(lastSaleUpdate));
+                System.out.println(stringifyLastUpdateToCashier(lastSaleUpdate));
             }
 
-            LastSaleUpdateDTO lastSaleUpdateThrowsDbException = ctr.addItem(113, 2);
-
-            LastSaleUpdateDTO lastSaleUpdateThrowsItemDoesNotExc = ctr.addItem(111, 2);
+            //TODO: Uncomment the below lines to see the exception handling
+//            LastSaleUpdateDTO lastSaleUpdateThrowsDbException = ctr.addItem(113, 2);
+//            LastSaleUpdateDTO lastSaleUpdateThrowsItemDoesNotExc = ctr.addItem(111, 2);
 
             List<AppliedDiscountDTO> appliedDiscounts = ctr.applyDiscountsOnSale();
             for (AppliedDiscountDTO ad : appliedDiscounts)
             {
-//            System.out.println(stringifyAppliedDiscToCashier(ad));
+                System.out.println(stringifyAppliedDiscToCashier(ad));
             }
             AppliedDiscountDTO appliedDiscountByCustomerId = ctr.applyDiscountByCustomerId(1);
-//        System.out.println(stringifyAppliedDiscToCashier(appliedDiscountByCustomerId));
+            System.out.println(stringifyAppliedDiscToCashier(appliedDiscountByCustomerId));
             double change = ctr.pay(customerPayAmount);
-//        System.out.printf("[*]\tCashier should return: %.2f SEK\n", change);
+            System.out.printf("[*]\tCashier should return: %.2f SEK\n", change);
             ctr.endSale();
         }
         catch (ItemDoesNotExist exc)
@@ -66,17 +68,19 @@ public class View
 
     private String stringifyAppliedDiscToCashier(AppliedDiscountDTO ad)
     {
-        String formattedDiscountValue = String.format("%.2f", ad.discountDTO().getDiscountValue());
-        String formattedDiscountValuePrecent = String.format("%.0f", ad.discountDTO().getDiscountValue() * 100);
+        String formattedDiscountValue = String.format("%.2f", ad.discountDTO().value());
+        String formattedDiscountValuePrecent = String.format("%.0f", ad.discountDTO().value() * 100);
         String formattedReducedAmount = String.format("%.2f", ad.reducedAmount());
         String formattedTotalPrice = String.format("%.2f", ad.updatedTotalPrice());
 
         StringBuilder sb = new StringBuilder();
-        sb.append("[*]\tDiscount Type : ").append(ad.discountDTO().getDiscountType()).append(" ");
-        if(ad.discountDTO().getAmountType() == DiscountEnums.DiscountAmountType.PERCENT){
+        sb.append("[*]\tDiscount Type : ").append(ad.discountDTO().discountName()).append(" ");
+        if (ad.discountDTO().value() < 1 && ad.discountDTO().value() > 0)
+        {
             sb.append(formattedDiscountValuePrecent).append("%\n");
         }
-        else{
+        else
+        {
             sb.append(formattedDiscountValue).append(" SEK\n");
         }
         sb.append("[*]\tReduced amount : ").append(formattedReducedAmount).append(" SEK \n");
@@ -103,7 +107,7 @@ public class View
         StringBuilder sb = new StringBuilder();
         sb.append("[*]\tItemID: ").append(item.itemId()).append("\n");
         sb.append("[*]\tPrice inclusive VAT: ").append(formatedPriceInclVat).append("\n");
-        sb.append("[*]\tVAT Rate: ").append(item.vatRate()*100).append(" %\n");
+        sb.append("[*]\tVAT Rate: ").append(item.vatRate() * 100).append(" %\n");
         sb.append(stringifyItemDescToCashier(item.descDTO()));
         return sb.toString();
     }
@@ -118,9 +122,6 @@ public class View
         sb.append("[*]\tSupplier: ").append(desc.supplier()).append('\n');
         return sb.toString();
     }
-
-
-
 
 
 }

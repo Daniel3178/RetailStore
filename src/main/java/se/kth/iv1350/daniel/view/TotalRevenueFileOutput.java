@@ -15,7 +15,7 @@ public class TotalRevenueFileOutput implements SaleObserver
     public TotalRevenueFileOutput(){
         try
         {
-            logStream = new PrintWriter(new FileWriter(PATH+"log.txt"), true);
+            logStream = new PrintWriter(new FileWriter(PATH+"Observer_Log_File.txt"), true);
         }
         catch (IOException ioException)
         {
