@@ -6,6 +6,23 @@ import se.kth.iv1350.daniel.model.dto.ReceiptDTO;
 
 public class ReceiptPrinter
 {
+    private static ReceiptPrinter instance;
+    private ReceiptPrinter(){};
+
+    public static ReceiptPrinter getInstance()
+    {
+        if (instance == null)
+        {
+            instance = new ReceiptPrinter();
+        }
+        return instance;
+    }
+
+    /**
+     * Prints the receipt details to the console.
+     *
+     * @param receipt the receipt to print
+     */
     public void printReceipt(ReceiptDTO receipt)
     {
         System.out.println("[!]\t++++++++++++ [PRINTING RECEIPT] ++++++++++++");

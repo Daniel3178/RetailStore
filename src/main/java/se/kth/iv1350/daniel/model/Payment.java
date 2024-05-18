@@ -29,13 +29,10 @@ public class Payment
      * @return receipt object that put all info in a specific format.
      */
 
-    public ReceiptDTO getReceipt(SaleDTO saleInfo)
+    public ReceiptDTO handlePayment(SaleDTO saleInfo)
     {
-        return new ReceiptDTO(saleInfo, this.paidAmount, calculateChange(saleInfo.totalPrice()));
+        double change = calculateChange(saleInfo.totalPrice());
+        return new ReceiptDTO(saleInfo, this.paidAmount, change);
     }
 
-    public double getPaidAmount()
-    {
-        return this.paidAmount;
-    }
 }

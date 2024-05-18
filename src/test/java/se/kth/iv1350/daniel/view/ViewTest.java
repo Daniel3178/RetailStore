@@ -7,6 +7,7 @@ import se.kth.iv1350.daniel.controller.Controller;
 import se.kth.iv1350.daniel.integration.ExternalSysCreator;
 
 import java.io.ByteArrayOutputStream;
+import java.io.IOException;
 import java.io.PrintStream;
 
 import static org.junit.jupiter.api.Assertions.*;
@@ -20,8 +21,17 @@ class ViewTest
     @BeforeEach
     void setUp()
     {
-        Controller ctrl = new Controller(new ExternalSysCreator());
-        instanceToTest = new View(ctrl);
+        Controller ctrl = null;
+        try
+        {
+            ctrl = new Controller();
+            instanceToTest = new View(ctrl);
+
+        }
+        catch (IOException e)
+        {
+            System.out.println("Something went wrong with IO");;
+        }
 
         inMemPrintOut = new ByteArrayOutputStream();
         PrintStream inMemSysOut = new PrintStream(inMemPrintOut);

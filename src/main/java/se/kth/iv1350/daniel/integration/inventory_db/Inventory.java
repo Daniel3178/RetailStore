@@ -5,6 +5,7 @@ import java.io.BufferedWriter;
 import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
+import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
@@ -60,8 +61,11 @@ class Inventory
      * @param itemId: id to lookup in myCurrentData
      * @return: itemDTO with the required information
      */
-    ItemDTO findItemById(int itemId)
+    ItemDTO findItemById(int itemId) throws SQLException
     {
+        if(itemId == 113){
+            throw new SQLException();
+        }
         return getItemInfo(myCurrentData.get(itemId));
     }
 

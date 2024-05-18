@@ -39,6 +39,7 @@ public class SaleLog
     {
         allSale.add(saleInfo);
     }
+
     /**
      * Retrieves a list of all sales.
      * @return List of SaleDTO containing information about all sales.

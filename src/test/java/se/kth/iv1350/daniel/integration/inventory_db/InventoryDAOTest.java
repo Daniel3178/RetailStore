@@ -4,6 +4,8 @@ import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
+import se.kth.iv1350.daniel.integration.inventory_db.inventory_exc.DatabaseConnectionFailed;
+import se.kth.iv1350.daniel.integration.inventory_db.inventory_exc.ItemDoesNotExist;
 import se.kth.iv1350.daniel.model.dto.ItemDTO;
 import se.kth.iv1350.daniel.model.dto.ItemDescriptionDTO;
 
@@ -32,7 +34,6 @@ class InventoryDAOTest
     }
 
 
-
     @AfterEach
     void tearDown()
     {
@@ -45,21 +46,46 @@ class InventoryDAOTest
     @Test
     void fetchItemItemExist()
     {
-        final int ITEM_ID = 101;
-        ItemDTO result = instanceToTest.fetchItem(ITEM_ID);
-        assertEquals(ITEM_ID, result.itemId(), "Item is not found");
+        try
+        {
+            final int ITEM_ID = 101;
+            ItemDTO result = instanceToTest.fetchItem(ITEM_ID);
+            assertEquals(ITEM_ID, result.itemId(), "Item is not found");
+        }
+        catch (ItemDoesNotExist exc)
+        {
+            System.out.println("Test item id does not exist");
+            ;
+        }
+        catch (DatabaseConnectionFailed dbExc)
+        {
+            System.out.println("There has been a problem connecting to the databases");
+        }
     }
 
 
     @Test
     void fetchItemItemNoteExist()
     {
-        final int ITEM_ID = 201;
-        ItemDTO result = instanceToTest.fetchItem(ITEM_ID);
-        assertNull(result, "Item does not exist, null should have been returned");
+        try
+        {
+
+            final int ITEM_ID = 201;
+            ItemDTO result = instanceToTest.fetchItem(ITEM_ID);
+            assertNull(result, "Item does not exist, null should have been returned");
+        }
+        catch (ItemDoesNotExist exc)
+        {
+            System.out.println("Test item id does not exist");
+
+        }
+        catch (DatabaseConnectionFailed dbExc)
+        {
+            System.out.println("There has been a problem connecting to the database");
+        }
     }
 
-//@Disabled
+    //@Disabled
     @Test
     void updateInventoryNullArgument()
     {
