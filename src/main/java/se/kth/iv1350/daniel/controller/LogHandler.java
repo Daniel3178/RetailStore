@@ -8,7 +8,7 @@ import java.time.format.DateTimeFormatter;
 
 public class LogHandler
 {
-    private static final String LOG_FILE_NAME = "Retail-log.txt";
+    private static final String LOG_FILE_NAME = "Retail-DB-connection-failure-log.txt";
     private final PrintWriter logFile;
 
     public LogHandler() throws IOException

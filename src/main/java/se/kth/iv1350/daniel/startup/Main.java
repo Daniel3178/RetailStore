@@ -1,7 +1,6 @@
 package se.kth.iv1350.daniel.startup;
 
 import se.kth.iv1350.daniel.controller.Controller;
-import se.kth.iv1350.daniel.integration.ExternalSysCreator;
 import se.kth.iv1350.daniel.view.View;
 
 import java.io.IOException;

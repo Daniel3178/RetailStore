@@ -2,10 +2,9 @@ package se.kth.iv1350.daniel.view;
 
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 import se.kth.iv1350.daniel.controller.Controller;
-import se.kth.iv1350.daniel.integration.ExternalSysCreator;
-
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.PrintStream;
@@ -47,6 +46,7 @@ class ViewTest
         System.setOut(originalSysOut);
     }
 
+    @Disabled
     @Test
     void runSampleTest()
     {

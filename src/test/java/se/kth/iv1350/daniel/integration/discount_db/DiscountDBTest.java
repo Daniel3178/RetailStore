@@ -13,7 +13,7 @@ class DiscountDBTest
     @BeforeEach
     void setUp()
     {
-        instanceToTest = new DiscountDB();
+        instanceToTest = DiscountDB.getInstance();
     }
 
     @AfterEach

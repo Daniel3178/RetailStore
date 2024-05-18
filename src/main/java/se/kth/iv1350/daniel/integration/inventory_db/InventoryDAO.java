@@ -33,7 +33,8 @@ public class InventoryDAO
     {
         try
         {
-            if (itemId == 111)
+            ItemDTO itemToReturn = Inventory.getInstance().findItemById(itemId);
+            if (itemToReturn == null)
             {
                 throw new ItemDoesNotExist(itemId);
             }

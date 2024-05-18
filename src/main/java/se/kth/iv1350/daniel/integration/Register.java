@@ -6,10 +6,20 @@ public class Register
      * Total money in the register
      */
     private double currentAmount;
+private static Register instance;
 
-    public Register()
+    private Register()
     {
         currentAmount = 0;
+    }
+
+    public static Register getInstance()
+    {
+        if (instance == null)
+        {
+            instance = new Register();
+        }
+        return instance;
     }
 
     /**

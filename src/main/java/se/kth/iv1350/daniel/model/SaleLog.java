@@ -11,7 +11,7 @@ public class SaleLog
     private final List<SaleDTO> allSale;
 
     /**
-     * Private constructor is used to implement a Singletone design pattern
+     * Private constructor is used to implement a Singleton design pattern
      */
     private SaleLog()
     {

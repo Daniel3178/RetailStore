@@ -23,12 +23,12 @@ public class Payment
         return paidAmount - totalPrice;
     }
 
+
     /**
      * Task: provides the required information for a receipt
      * @param saleInfo: Sale information required in the receipt such as price, vat, applied disc etc.
      * @return receipt object that put all info in a specific format.
      */
-
     public ReceiptDTO handlePayment(SaleDTO saleInfo)
     {
         double change = calculateChange(saleInfo.totalPrice());
