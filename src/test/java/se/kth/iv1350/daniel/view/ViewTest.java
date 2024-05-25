@@ -5,9 +5,12 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 import se.kth.iv1350.daniel.controller.Controller;
+
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.PrintStream;
+import java.util.ArrayList;
+import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -17,6 +20,7 @@ class ViewTest
     private View instanceToTest;
     private ByteArrayOutputStream inMemPrintOut;
     private PrintStream originalSysOut;
+
     @BeforeEach
     void setUp()
     {
@@ -29,7 +33,8 @@ class ViewTest
         }
         catch (IOException e)
         {
-            System.out.println("Something went wrong with IO");;
+            System.out.println("Something went wrong with IO");
+            ;
         }
 
         inMemPrintOut = new ByteArrayOutputStream();
@@ -46,13 +51,24 @@ class ViewTest
         System.setOut(originalSysOut);
     }
 
-    @Disabled
     @Test
     void runSampleTest()
     {
         instanceToTest.runSampleTest(4000);
+        boolean result = true;
         String printOut = inMemPrintOut.toString();
-        String expectedOutput = "Cashier should return";
-        assertTrue(printOut.contains(expectedOutput), "UI did not start correctly");
+        List<String> expectedOutputs = List.of("Cashier should return", "Discount Type", "Item Information",
+                                               "SCREEN NOTIFICATION", "Total Price", "Total VAT");
+
+        for (String eachOutput : expectedOutputs)
+        {
+            if (!printOut.contains(eachOutput))
+            {
+                result = false;
+                break;
+            }
+        }
+        assertTrue(result, "UI did not start correctly");
     }
+
 }

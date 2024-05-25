@@ -2,7 +2,6 @@ package se.kth.iv1350.daniel.integration;
 
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 import se.kth.iv1350.daniel.model.dto.*;
 
@@ -55,7 +54,6 @@ class ReceiptPrinterTest
         assertTrue(printOut.contains(expectedOutput), "Printer is not working");
     }
 
-//    @Disabled
     @Test
     void printReceiptNullArg()
     {
