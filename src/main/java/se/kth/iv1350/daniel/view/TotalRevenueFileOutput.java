@@ -2,43 +2,24 @@ package se.kth.iv1350.daniel.view;
 
 import se.kth.iv1350.daniel.model.SaleObserver;
 
-import java.io.File;
 import java.io.FileWriter;
-import java.io.IOException;
 import java.io.PrintWriter;
 
-public class TotalRevenueFileOutput implements SaleObserver
+public class TotalRevenueFileOutput extends SaleObserver
 {
     private static final String PATH = "src/main/resources/";
-    private double totalIncome;
-    private PrintWriter logStream;
-    public TotalRevenueFileOutput(){
-        try
-        {
-            logStream = new PrintWriter(new FileWriter(PATH+"Observer_Log_File.txt"), true);
-        }
-        catch (IOException ioException)
-        {
-            System.out.println("CAN NOT LOG.");
-            ioException.printStackTrace();
-        }
-    }
-
-    /**
-     * Adds the given amount to the total income and updates the file output.
-     *
-     * @param totalSum the amount to add to the total income
-     */
     @Override
-    public void addToIncome(double totalSum)
+    protected void doShowTotalIncome() throws Exception
     {
-        this.totalIncome += totalSum;
-        updateFileOutput();
+        PrintWriter logStream = new PrintWriter(new FileWriter(PATH + "Observer_Log_File.txt"), true);
+        String formattedTotalIncome = String.format("%.2f", super.totalIncome);
+        logStream.println("[SCREEN NOTIFICATION] Total Revenue File Output is updated, total income increased to: " + formattedTotalIncome + " SEK");
     }
 
-    private void updateFileOutput()
+    @Override
+    protected void handleErrors(Exception e)
     {
-        String formattedTotalIncome = String.format("%.2f", totalIncome);
-        logStream.println("[!!!] Total Revenue File Output is updated, total income increased to: " + formattedTotalIncome + " SEK");
+        System.out.println("CAN NOT LOG.");
+        e.printStackTrace();
     }
 }

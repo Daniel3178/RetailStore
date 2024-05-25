@@ -5,6 +5,7 @@ import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
 
+import se.kth.iv1350.daniel.model.discount.DiscountFactory;
 import se.kth.iv1350.daniel.model.dto.*;
 
 public class Sale
@@ -149,7 +150,7 @@ public class Sale
     {
         for(SaleObserver obs : mySaleObservers)
         {
-            obs.addToIncome(this.myTotalPrice);
+            obs.updateTotalIncome(this.myTotalPrice);
         }
     }
 }

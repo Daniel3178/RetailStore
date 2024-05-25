@@ -1,4 +1,4 @@
-package se.kth.iv1350.daniel.model;
+package se.kth.iv1350.daniel.model.discount;
 
 import se.kth.iv1350.daniel.model.dto.DiscountType;
 

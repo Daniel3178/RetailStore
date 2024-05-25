@@ -1,9 +1,15 @@
-package se.kth.iv1350.daniel.model;
+package se.kth.iv1350.daniel.model.discount;
+import se.kth.iv1350.daniel.model.discount.Discount;
 import se.kth.iv1350.daniel.model.dto.AppliedDiscountDTO;
 import se.kth.iv1350.daniel.model.dto.DiscountDTO;
 
 public class PercentDiscountImpl implements Discount
 {
+
+    PercentDiscountImpl()
+    {
+
+    }
 
     /**
      * Applies a discount to the total price and returns the result.

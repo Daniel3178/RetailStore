@@ -2,24 +2,21 @@ package se.kth.iv1350.daniel.view;
 
 import se.kth.iv1350.daniel.model.SaleObserver;
 
-public class TotalRevenueView implements SaleObserver
+public class TotalRevenueView extends SaleObserver
 {
-    private double totalIncome;
 
-    /**
-     * Adds the given amount to the total income and updates the screen.
-     *
-     * @param totalSum the amount to add to the total income
-     */
     @Override
-    public void addToIncome(double totalSum)
+    protected void doShowTotalIncome() throws Exception
     {
-        this.totalIncome += totalSum;
-        updateScreen();
+
+        String formattedTotalIncome = String.format("%.2f", super.totalIncome);
+        System.out.println("[SCREEN NOTIFICATION] Total Revenue Screen is updated, total income increased to: " + formattedTotalIncome + " SEK");
     }
 
-    private void updateScreen() {
-        String formattedTotalIncome = String.format("%.2f", totalIncome);
-        System.out.println("[!!!] Total Revenue Screen is updated, total income increased to: " + formattedTotalIncome + " SEK");
+    @Override
+    protected void handleErrors(Exception e)
+    {
+        System.out.println("There was a problem displaying the total income ");
+        e.printStackTrace();
     }
 }
