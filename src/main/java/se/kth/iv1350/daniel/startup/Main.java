@@ -11,8 +11,9 @@ public class Main
 {
     public static void main(String[] args)
     {
-//        retailStoreSampleRun();
-        compositionVsInheritanceSampleRun();
+        retailStoreSampleRun();
+        //TODO: uncomment the line below for additional higher grade task 2
+//        compositionVsInheritanceSampleRun();
     }
 
     private static void retailStoreSampleRun()
