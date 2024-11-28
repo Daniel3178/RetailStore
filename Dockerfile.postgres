@@ -3,5 +3,5 @@ ENV POSTGRES_USER = postgres
 ENV POSTGRES_PASSWORD = postgrespw
 ENV POSTGRES_DB = retail-store
 
-COPY ./src/main/resources/schema.sql /docker-entrypoint-initdb.d/
-COPY ./src/main/resources/data.sql /docker-entrypoint-initdb.d/
+COPY ./src/main/resources/1_schema.sql /docker-entrypoint-initdb.d/
+COPY ./src/main/resources/2_data.sql /docker-entrypoint-initdb.d/

@@ -7,15 +7,6 @@
     <build>
         <plugins>
             <plugin>
-                <groupId>org.codehaus.mojo</groupId>
-                <artifactId>exec-maven-plugin</artifactId>
-                <version>3.1.0</version>
-                <configuration>
-                    <mainClass>se.kth.iv1350.daniel.startup.Main</mainClass>
-                </configuration>
-            </plugin>
-
-            <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-jar-plugin</artifactId>
                 <configuration>
@@ -26,7 +17,7 @@
                     </archive>
                 </configuration>
             </plugin>
-            <!-- Maven Shade Plugin for creating an uber-jar with all dependencies included - stand alone jar file -->
+            <!-- Maven Shade Plugin for creating an uber-jar with all dependencies included -->
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-shade-plugin</artifactId>

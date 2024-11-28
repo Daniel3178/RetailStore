@@ -1,0 +1,23 @@
+services:
+  retail_store_database:
+    build:
+      context: .
+      dockerfile: Dockerfile.postgres
+    container_name: retail-store-db
+    image: retail-store-db-image
+    ports:
+      - "5434:5432"
+    volumes:
+      - retail-store-database:/var/lib/postgresql/data
+  retail_store_java_app:
+    build:
+      context: .
+      dockerfile: Dockerfile.java
+    container_name: retail-store-java-app
+    image: retail-store-app-image
+    tty: true
+    depends_on:
+      - retail_store_database
+
+volumes:
+  retail-store-database:
