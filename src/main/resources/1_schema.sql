@@ -1,6 +1,4 @@
 
-CREATE DATABASE product_inventory;
-
 CREATE TABLE products (
     product_id SERIAL PRIMARY KEY,
     stock INT NOT NULL,

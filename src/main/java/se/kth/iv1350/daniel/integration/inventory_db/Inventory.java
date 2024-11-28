@@ -22,7 +22,6 @@ import static se.kth.iv1350.daniel.integration.inventory_db.ItemConstants.PRICE;
 import static se.kth.iv1350.daniel.integration.inventory_db.ItemConstants.QUANTITY;
 import static se.kth.iv1350.daniel.integration.inventory_db.ItemConstants.SUPPLIER;
 import static se.kth.iv1350.daniel.integration.inventory_db.ItemConstants.VAT_RATE;
-
 import se.kth.iv1350.daniel.model.dto.ItemDTO;
 import se.kth.iv1350.daniel.model.dto.ItemDescriptionDTO;
 
