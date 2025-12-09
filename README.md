@@ -2,34 +2,65 @@
 
 ## Description
 
-This is a **console-based program** developed as the final project for the **IV1350 (Object-Oriented Design)** course. The project applies best practices in designing and implementing an object-oriented program for a retail store. The program demonstrates concepts such as **low coupling**, **high cohesion**, **encapsulation**, **fault tolerance**, **unit testing**, and the **layer pattern**.
+RetailStore is a **console-based application** developed as the final project for the **IV1350 (Object-Oriented Design)** course at KTH.  
+The project applies best practices in designing and implementing an object-oriented retail system, demonstrating principles such as:
 
-In the final iteration, **design patterns** such as **Observer**, **Singleton**, and **Composition** have been utilized.
+- **Low coupling**
+- **High cohesion**
+- **Encapsulation**
+- **Fault tolerance**
+- **Unit testing**
+- **Layered architecture**
 
-> **Note:** The current version uses one hard-coded sample to demonstrate example output. The program provides a solid foundation to build upon and extend its functionalities. For example, user interactivity could be added through terminal commands.
+In the final iteration, several key **design patterns** have been incorporated, including **Observer**, **Singleton**, and **Composition**.
+
+> **Note:** The current version uses a hard-coded example to demonstrate the program’s flow.  
+> The system provides a solid foundation for future expansion — for example, richer terminal interactivity or more advanced features.
 
 The **domain model** for this project is illustrated below:
 
 <img src="./src/main/resources/diagrams/domain_model/domain_model_v1.8.png" width="900">
 
-## To see the rest of the design please check out ./src/main/resources/diagrams
+## Additional Diagrams
+
+All other design diagrams are available in:  
+`./src/main/resources/diagrams`
+
+---
 
 ## Setup
 
-1. **Install Maven** on your machine.
+### 1. Install Maven
 
-   - Instructions for installing Maven on different operating systems can be found [here](https://maven.apache.org/install.html).
-   - **Windows users:** Ensure the Maven `bin` folder is added to your **PATH** environment variable.
+- Follow the official installation guide:  
+  https://maven.apache.org/install.html
+- **Windows users:** Ensure the Maven `bin` folder is added to your **PATH** environment variable.
 
-2. **Run the program**:
+### 2. Run the program
 
 ```bash
 mvnd exec:java
+```
 
-Run the tests:
-    mvnd test
+## Alternative: Running with Docker
 
-Other useful Maven commands:
-    mvnd clean
-    mvnd package
+> **Note:** The system does not currently use the database at runtime.  
+> A basic database schema exists, but the `Inventory` class still reads from a local text file.  
+> Future improvements may include switching to SQL queries for full database integration.
+
+### 1. Install Docker
+
+Follow the official installation guide:  
+https://docs.docker.com/get-docker/
+
+### 2. Start the containers
+
+```bash
+docker-compose up
+```
+
+Stop the containers
+
+```bash
+docker-compose down
 ```
