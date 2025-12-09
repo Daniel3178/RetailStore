@@ -5,6 +5,8 @@ import java.io.BufferedWriter;
 import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -27,10 +29,6 @@ import se.kth.iv1350.daniel.model.dto.ItemDescriptionDTO;
 
 class Inventory
 {
-    /**
-     * The path where all the data on items exist and it will be written
-     */
-    private static final String PATH = "src/main/resources/";
     private static Inventory instance;
     private Map<Integer, ItemDTO> myCurrentData;
 
@@ -131,7 +129,12 @@ class Inventory
     private LinkedList<String> readDataFromFile() throws IOException
     {
         LinkedList<String> allLines = new LinkedList<>();
-        try (BufferedReader reader = new BufferedReader(new FileReader(PATH + "inventory_data")))
+        InputStream inputStream = getClass().getClassLoader().getResourceAsStream("inventory_data");
+        if (inputStream == null)
+        {
+            throw new IOException("Resource inventory_data not found in classpath");
+        }
+        try (BufferedReader reader = new BufferedReader(new InputStreamReader(inputStream)))
         {
             String line;
             while ((line = reader.readLine()) != null)
@@ -192,7 +195,7 @@ class Inventory
     private void saveData()
     {
 
-        try (BufferedWriter writer = new BufferedWriter(new FileWriter(PATH + "inventory_data_UPDATED.txt")))
+        try (BufferedWriter writer = new BufferedWriter(new FileWriter("inventory_data_UPDATED.txt")))
         {
             for (Map.Entry<Integer, ItemDTO> entry : myCurrentData.entrySet())
             {

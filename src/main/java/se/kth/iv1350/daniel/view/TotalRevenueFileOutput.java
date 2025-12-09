@@ -7,11 +7,10 @@ import java.io.PrintWriter;
 
 public class TotalRevenueFileOutput extends SaleObserver
 {
-    private static final String PATH = "src/main/resources/";
     @Override
     protected void doShowTotalIncome() throws Exception
     {
-        PrintWriter logStream = new PrintWriter(new FileWriter(PATH + "Observer_Log_File.txt"), true);
+        PrintWriter logStream = new PrintWriter(new FileWriter("Observer_Log_File.txt"), true);
         String formattedTotalIncome = String.format("%.2f", super.totalIncome);
         logStream.println("[SCREEN NOTIFICATION] Total Revenue File Output is updated, total income increased to: " + formattedTotalIncome + " SEK");
     }
