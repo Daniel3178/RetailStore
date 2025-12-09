@@ -66,6 +66,7 @@ docker-compose down
 ```
 
 Developed by: Daniel Ibrahimi
+
 Course: IV1350 - Object Oriented Design, KTH - Stockholm
 
 Date: 30-05/24
