@@ -10,9 +10,9 @@ In the final iteration, **design patterns** such as **Observer**, **Singleton**,
 
 The **domain model** for this project is illustrated below:
 
-<img src="./main/resources/diagrams/domain_model/domain_model_v1.8.png" width="900">
+<img src="./src/main/resources/diagrams/domain_model/domain_model_v1.8.png" width="900">
 
-## To see the rest of the design please check out ./main/resources/diagrams
+## To see the rest of the design please check out ./src/main/resources/diagrams
 
 ## Setup
 
