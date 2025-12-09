@@ -1,7 +1,7 @@
-101;44;20.0;0.06;Red Apples;Fresh, juicy red apples;2024-04-20;Fruits;Agriculture Inc
-102;41;10.0;0.06;Chocolate Bar;Milk chocolate bar, 100g;2024-06-01;Snacks;Candy Corp
-103;49;48.0;0.06;Chicken Breast;Skinless chicken breast, 500g;2024-06-16;Meat;Organic Farms Ltd
-104;43;7.9;0.06;Mineral Water;Natural mineral water, 500ml;2024-06-17;Water;Spring Water Co
+101;35;20.0;0.06;Red Apples;Fresh, juicy red apples;2024-04-20;Fruits;Agriculture Inc
+102;39;10.0;0.06;Chocolate Bar;Milk chocolate bar, 100g;2024-06-01;Snacks;Candy Corp
+103;48;48.0;0.06;Chicken Breast;Skinless chicken breast, 500g;2024-06-16;Meat;Organic Farms Ltd
+104;41;7.9;0.06;Mineral Water;Natural mineral water, 500ml;2024-06-17;Water;Spring Water Co
 105;50;16.04;0.06;Organic Spinach;Organic spinach, 200g;2024-08-18;Leafy Greens;Organic Veggies Co
 106;50;15.95;0.06;Bananas;Ripe bananas, per bunch;2024-05-29;Fruits;Agriculture Inc
 107;50;6.0;0.06;Yogurt;Natural yogurt, 200g;2024-06-30;Yogurt;Local Milk Coop
